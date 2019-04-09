@@ -1,6 +1,6 @@
 package com.mycompany.tests;
 
-import com.mycompany.control.GenericDao;
+import com.mycompany.control.DaoUser;
 import com.mycompany.model.User;
 
 public class UserTest {
@@ -8,7 +8,7 @@ public class UserTest {
 	
 	public static void main(String[] args) {
 		User user = new User();
-		GenericDao<User> dao = new GenericDao<User>();
+		DaoUser<User> dao = new DaoUser<User>();
 		
 		user.setUsername("Teste2");
 		user.setPassword("testes123");
