@@ -10,9 +10,9 @@ public class UserTest {
 		User user = new User();
 		GenericDao<User> dao = new GenericDao<User>();
 		
-		user.setUsername("Teste");
+		user.setUsername("Teste2");
 		user.setPassword("testes123");
-		user.setPerfil("Gerente");
+		user.setPerfil("Cliente");
 		
 		dao.insert(user);
 		
