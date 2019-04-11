@@ -12,7 +12,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
-import com.mycompany.control.DaoUser;
+import com.mycompany.DAO.DaoUser;
 import com.mycompany.model.User;
 
 public class Login extends WebPage {
@@ -76,6 +76,7 @@ public class Login extends WebPage {
 
 					if (user.getPassword().equals(password_string)) {
 						System.out.println("Usuário Autorizado!");
+						System.out.println(user.getPerfil());
 					} else {
 						feedbackPanel.error("Incorrect username or password!");
 						target.add(feedbackPanel);

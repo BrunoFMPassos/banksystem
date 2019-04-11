@@ -1,8 +1,12 @@
 package com.mycompany;
 
+import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.mapper.parameter.UrlPathPageParametersEncoder;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.vision.HomePage;
 import com.mycompany.vision.Login;
 
 /**
@@ -24,11 +28,13 @@ public class WicketApplication extends WebApplication
 
 	/**
 	 * @see org.apache.wicket.Application#init()
+	
 	 */
 	@Override
 	public void init()
 	{
 		super.init();
+		mount(new MountedMapper("/home", HomePage.class, new UrlPathPageParametersEncoder()));
 
 		// add your configuration here
 	}

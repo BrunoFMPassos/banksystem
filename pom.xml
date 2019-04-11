@@ -28,12 +28,19 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+
+
 	<properties>
 		<wicket.version>6.30.0</wicket.version>
 		<jetty.version>7.6.16.v20140903</jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
+
+		<org.springframework.security.version>5.1.5.RELEASE</org.springframework.security.version>
+		<org.springframework.version>5.1.6.RELEASE</org.springframework.version>
+
 	</properties>
 
 	<dependencies>
@@ -192,6 +199,12 @@
 			<version>5.1.6.RELEASE</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.1.6.RELEASE</version>
+		</dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
@@ -213,6 +226,20 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>5.1.5.RELEASE</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>2.1.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+
 
 
 	</dependencies>

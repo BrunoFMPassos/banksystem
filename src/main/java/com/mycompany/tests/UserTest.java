@@ -1,6 +1,6 @@
 package com.mycompany.tests;
 
-import com.mycompany.control.DaoUser;
+import com.mycompany.DAO.DaoUser;
 import com.mycompany.model.User;
 
 public class UserTest {
