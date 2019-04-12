@@ -1,16 +1,28 @@
 package com.mycompany.control;
 
 import com.mycompany.DAO.DaoUser;
-import com.mycompany.DAO.GenericDao;
 import com.mycompany.model.User;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ServiceUser {
 
-    private GenericDao<User> dao = new GenericDao<User>();
-    private DaoUser daouser = new DaoUser();
+    @SpringBean(name="userDao")
+    private DaoUser userDao;
 
     public void insert(User user){
-        dao.insert(user);
+        userDao.insert(user);
+    }
+
+    public User searchforname(String username){
+        return userDao.searchForUserName(username);
+    }
+
+    public DaoUser getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(DaoUser dao) {
+        this.userDao = dao;
     }
 
 

@@ -1,107 +1,99 @@
 package com.mycompany.vision;
 
+import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
+import com.mycompany.control.ServiceLogin;
+import com.mycompany.control.ServiceUser;
+import com.mycompany.model.User;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.CompoundPropertyModel;
-
-import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
-import com.mycompany.DAO.DaoUser;
-import com.mycompany.model.User;
-
 public class Login extends WebPage {
 
-	private static final long serialVersionUID = 3634362543497996554L;
-	User user = new User();
-	DaoUser<User> gd = new DaoUser<User>();
-	Form<User> form;
-	TextField<String> username;
-	TextField<String> password;
-	FeedbackPanel feedbackPanel;
-	private List<User> listusers = new ArrayList<User>();
-	String username_string;
-	String password_string;
+    @SpringBean(name = "userService")
+    private ServiceUser service;
 
-	public Login() {
+    @SpringBean(name = "loginService")
+    private ServiceLogin servicelogin;
 
-		CompoundPropertyModel<User> compoundPropertyModelEmpresa = new CompoundPropertyModel<User>(
-				user);
+    User user = new User();
+    StatelessForm<User> form;
+    TextField<String> username;
+    PasswordTextField password;
+    FeedbackPanel feedbackPanel;
+    private List<User> listusers = new ArrayList<User>();
+    String username_string;
+    String password_string;
 
-		form = new Form<User>("formulariologin", compoundPropertyModelEmpresa);
+    public Login() {
 
-		add(form);
-		form.add(addFeedbackPanel());
-		form.add(addUsername());
-		form.add(addPassword());
-		form.add(addLoginButton());
+        CompoundPropertyModel<User> compoundPropertyModelEmpresa = new CompoundPropertyModel<User>(user);
 
-	}
+        //statelessform faz com que a sessão não expire após um determinado tempo na página de loggin
+        form = new StatelessForm<User>("formulariologin", compoundPropertyModelEmpresa);
 
-	public TextField<String> addUsername() {
+        add(form);
+        form.add(addFeedbackPanel());
+        form.add(addUsername());
+        form.add(addPassword());
+        form.add(addLoginButton());
 
-		username = new RequiredTextField<String>("username");
-		return username;
-	}
+    }
 
-	public TextField<String> addPassword() {
+    private TextField<String> addUsername() {
 
-		password = new RequiredTextField<String>("password");
-		return password;
-	}
+        username = new RequiredTextField<String>("username");
+        return username;
+    }
 
-	private AjaxButton addLoginButton() {
+    private PasswordTextField addPassword() {
 
-		AjaxButton botaologin = new AjaxButton("btnlogin", form) {
+        password = new PasswordTextField("password");
+        return password;
+    }
 
-			private static final long serialVersionUID = 9139263898606661858L;
+    private AjaxButton addLoginButton() {
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+        AjaxButton botaologin = new AjaxButton("btnlogin", form) {
 
-				super.onSubmit(target, form);
-				System.out.println("Entrou no onSubmit!");
-				username_string = username.getInput();
-				password_string = password.getInput();
+            private static final long serialVersionUID = 9139263898606661858L;
 
-				if (username_string.isEmpty() == false
-						&& password_string.isEmpty() == false) {
-					listusers.clear();
-					user = gd.searchForUserName(username_string);
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 
-					if (user.getPassword().equals(password_string)) {
-						System.out.println("Usuário Autorizado!");
-						System.out.println(user.getPerfil());
-					} else {
-						feedbackPanel.error("Incorrect username or password!");
-						target.add(feedbackPanel);
-					}
-				}
-			}
+                super.onSubmit(target, form);
+                System.out.println("Entrou no onSubmit!");
+                username_string = username.getInput();
+                password_string = password.getInput();
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				super.onError(target, form);
-				target.add(feedbackPanel);
-			}
+                servicelogin.loginValidate(target,username_string,password_string,listusers,user,feedbackPanel);
 
-		};
+            }
 
-		return botaologin;
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+                target.add(feedbackPanel);
+            }
 
-	}
+        };
 
-	private FeedbackPanel addFeedbackPanel() {
+        return botaologin;
 
-		feedbackPanel = new FeedbackPanel("message");
-		feedbackPanel.setOutputMarkupId(true);
-		return feedbackPanel;
+    }
 
-	}
+    private FeedbackPanel addFeedbackPanel() {
+
+        feedbackPanel = new FeedbackPanel("message");
+        feedbackPanel.setOutputMarkupId(true);
+        return feedbackPanel;
+
+    }
 
 }

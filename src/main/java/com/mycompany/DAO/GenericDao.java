@@ -1,5 +1,6 @@
 package com.mycompany.DAO;
 
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,11 +11,18 @@ import java.util.List;
 
 public class GenericDao <T extends Object> implements Serializable {
 
+    GenericDao<T> dao;
+
+    @SpringBean(name = "sessionFactory")
+    protected SessionFactory sessionFactory;
+
+    public void setDao(GenericDao<T> dao) {
+        this.dao = dao;
+    }
+
     public void insert(T obj) {
 
-        SessionFactory factory = new AnnotationConfiguration().configure()
-                .buildSessionFactory();
-        Session session = factory.openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.saveOrUpdate(obj);
         System.out.println(obj);
@@ -24,9 +32,7 @@ public class GenericDao <T extends Object> implements Serializable {
 
     public List<T> list(T obj) {
 
-        SessionFactory factory = new AnnotationConfiguration().configure()
-                .buildSessionFactory();
-        Session session = factory.openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Criteria criterio = session.createCriteria(obj.getClass());
@@ -40,12 +46,18 @@ public class GenericDao <T extends Object> implements Serializable {
     }
 
     public void delete(T obj) {
-        SessionFactory factory = new AnnotationConfiguration().configure()
-                .buildSessionFactory();
-        Session session = factory.openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(obj);
         session.getTransaction().commit();
         session.close();
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }
