@@ -30,6 +30,7 @@ public class User implements Serializable{
     @Column(nullable=false) 
     private String perfil;
 
+
 	public Long getId() {
 		return id;
 	}
@@ -61,6 +62,5 @@ public class User implements Serializable{
 	public void setPerfil(String perfil) {
 		this.perfil = perfil;
 	}
-
 
 }

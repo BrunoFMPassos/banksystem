@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="ISO-8859-1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+	<form id="formulariologininternet" wicket:id="formulariologininternet"
+		name="formulariologininternet">
+		<div id="1" class="col-sm-12"
+			style="width: 100vw; height: 100vh; background: #6C7A89; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+			<div
+				style="background: white; width: 20%; min-width: 200px; min-height: 200px; max-heigth: 200px; padding: 10px; padding-top: 2%; border-radius: 5px;">
+				<div wicket:id="message"></div>
+				<div
+					style="display: flex; justify-content: center; align-items: center;">
+					<input style="" class="form-control" id="textfieldcpf"
+						wicket:id="cpf" type="text" placeholder="CPF:" />
+				</div>
+				<br />
+				<div
+					style="display: flex; justify-content: center; align-items: center;">
+					<input style="" class="form-control" id="textfieldp"
+						wicket:id="password" type="password" placeholder="Password:" />
+				</div>
+				<br />
+				<div
+					style="display: flex; justify-content: center; align-items: center;">
+					<button class="btn btn-primary" id="btnLogin" wicket:id="btnlogin"
+						type="submit" name="submit">Login</button>
+				</div>
+				<br />
+				<div
+					style="display: flex; justify-content: center; align-items: center;">
+					<a href="HomePage.html">Esqueceu sua senha?</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</body>
+</html>

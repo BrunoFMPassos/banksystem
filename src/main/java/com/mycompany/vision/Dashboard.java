@@ -23,26 +23,10 @@ public class Dashboard extends BasePage {
 
             }
         };
-        Label titulo = new Label("titulo", "Empresa");
+        Label titulo = new Label("titulo", "SystemBank");
         add(form);
         form.add(titulo);
-        form.add(addLogoutButton());
     }
 
-    private AjaxButton addLogoutButton() {
-
-        AjaxButton botaologout = new AjaxButton("logoutBtn", form) {
-
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
-                System.out.println("Entrou no onSubmit logout!");
-                getSession().invalidate();
-                setResponsePage(Login.class);
-            }
-        };
-
-        return botaologout;
-    }
 
 }

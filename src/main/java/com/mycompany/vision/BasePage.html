@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:wicket="http://wicket.apache.org">
+<html xmlns:wicket="http://wicket.apache.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/basepage.css">
@@ -20,20 +20,50 @@
                     </a>
                 </li>
                 <li>
-                    <a href="Inicio.html">Home</a>
+                    <a href="Dashboard.html">Home</a>
                 </li>
                 <li>
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" >Empresas</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <a href="#homeSubmenucliente" data-toggle="collapse" aria-expanded="false"
+                       class="dropdown-toggle">Cliente</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenucliente">
                         <wicket:link>
                             <li>
-                                <a href="CrudEmpresa.html" style="color:white">Cadastro de Empresas </a>
+                                <a href="" style="color:white">Pessoa Física</a>
                             </li>
                             <li>
-                                <a href="CrudVendedor.html" style="color:white">Cadastro de Vendedores </a>
+                                <a href="" style="color:white">Pessoa Jurídica</a>
                             </li>
                         </wicket:link>
                     </ul>
+                </li>
+                <li>
+                    <a href="#homeSubmenuconta" data-toggle="collapse" aria-expanded="false"
+                       class="dropdown-toggle">Conta</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenuconta">
+                        <wicket:link>
+                            <li>
+                                <a href="" style="color:white">Conta</a>
+                            </li>
+                            <li>
+                                <a href="" style="color:white">Empréstimo</a>
+                            </li>
+                            <li>
+                                <a href="" style="color:white">Financiamento</a>
+                            </li>
+                            <li>
+                                <a href="" style="color:white">Investimentos</a>
+                            </li>
+                            <li>
+                                <a href="" style="color:white">Cartão de Crédito</a>
+                            </li>
+                        </wicket:link>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">Agências</a>
+                </li>
+                <li>
+                    <a href="">Colaboradores</a>
                 </li>
             </ul>
         </div>
@@ -41,7 +71,17 @@
     <!-- /#wrapper -->
     <!-- Menu Toggle Script -->
     <div class="col-sm-10">
-        <div id="blocodireito" style="margin-left:10px;">
+        <div id="blocodireito">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">BankSystem</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" wicket:id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
             <wicket:child/>
         </div>
     </div>

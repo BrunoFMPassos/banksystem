@@ -2,6 +2,7 @@ package com.mycompany.DAO;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -42,6 +43,25 @@ public class GenericDao <T extends Object> implements Serializable {
         session.close();
         System.out.println("Resultado da listagem" + resultado);
         return resultado;
+
+    }
+
+    public List<T> searchForString(T obj,String string, String colum){
+
+        SessionFactory factory = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session session = factory.openSession();
+        session.beginTransaction();
+
+        String hql = "from "+obj.getClass().getCanonicalName()+ " as c where c."+"colum"+" like :string";
+        System.out.println(hql);
+
+        Query query = session.createQuery(hql);
+        query.setParameter("nome","%"+string+"%");
+        @SuppressWarnings("unchecked")
+        List<T> results = query.list();
+        session.close();
+        System.out.println(results);
+        return results;
 
     }
 
