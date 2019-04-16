@@ -54,4 +54,9 @@
         <property name="serviceuser" ref="userService"/>
     </bean>
 
+    <bean id = "perfilService" class = "com.mycompany.control.ServicePerfil">
+    </bean>
+
+
+
 </beans>

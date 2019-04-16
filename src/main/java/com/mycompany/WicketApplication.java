@@ -1,7 +1,6 @@
 package com.mycompany;
 
 import com.mycompany.vision.BaseSession;
-import com.mycompany.vision.InternetBanking.LoginInternetBanking;
 import org.apache.wicket.Session;
 import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.WebPage;
@@ -41,7 +40,7 @@ public class WicketApplication extends WebApplication {
     public void init() {
         super.init();
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
-        mount(new MountedMapper("/internetbanking", LoginInternetBanking.class, new UrlPathPageParametersEncoder()));
+        //mount(new MountedMapper("/internetbanking", LoginInternetBanking.class, new UrlPathPageParametersEncoder()));
 
         // add your configuration here
     }

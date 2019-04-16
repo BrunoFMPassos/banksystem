@@ -3,12 +3,15 @@ package com.mycompany.control;
 import com.mycompany.model.User;
 import com.mycompany.vision.BaseSession;
 import com.mycompany.vision.Dashboard;
+import com.mycompany.vision.Login;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
+
+import static org.apache.wicket.ThreadContext.getSession;
 
 public class ServiceLogin {
 
@@ -37,15 +40,15 @@ public class ServiceLogin {
                     RequestCycle.get().setResponsePage(dashboard);
 
                 } else {
-                    fb.error("Incorrect username or password!");
+                    fb.error("Usuário ou senha incorretos!");
                     target.add(fb);
                 }
             }else{
-                fb.error("Incorrect username or password!");
+                fb.error("Usuário ou senha incorretos!");
                 target.add(fb);
             }
         }else{
-            fb.error("Incorrect username or password!");
+            fb.error("Usuário ou senha incorretos!");
             target.add(fb);
         }
     }
@@ -54,4 +57,11 @@ public class ServiceLogin {
     public void setServiceuser(ServiceUser serviceuser) {
         this.serviceuser = serviceuser;
     }
+
+    public void logout(){
+        getSession().invalidate();
+        RequestCycle.get().setResponsePage(Login.class);
+    }
 }
+
+

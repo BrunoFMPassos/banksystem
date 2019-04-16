@@ -3,88 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/basepage.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
     <title>Project 1</title>
 </head>
 <body>
 <wicket:link>
-    <div class="col-sm-2" style="background-color:#2E2E2E;">
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        Menu Principal
-                    </a>
-                </li>
-                <li>
-                    <a href="Dashboard.html">Home</a>
-                </li>
-                <li>
-                    <a href="#homeSubmenucliente" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Cliente</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenucliente">
-                        <wicket:link>
-                            <li>
-                                <a href="" style="color:white">Pessoa Física</a>
-                            </li>
-                            <li>
-                                <a href="" style="color:white">Pessoa Jurídica</a>
-                            </li>
-                        </wicket:link>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#homeSubmenuconta" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Conta</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenuconta">
-                        <wicket:link>
-                            <li>
-                                <a href="" style="color:white">Conta</a>
-                            </li>
-                            <li>
-                                <a href="" style="color:white">Empréstimo</a>
-                            </li>
-                            <li>
-                                <a href="" style="color:white">Financiamento</a>
-                            </li>
-                            <li>
-                                <a href="" style="color:white">Investimentos</a>
-                            </li>
-                            <li>
-                                <a href="" style="color:white">Cartão de Crédito</a>
-                            </li>
-                        </wicket:link>
-                    </ul>
-                </li>
-                <li>
-                    <a href="">Agências</a>
-                </li>
-                <li>
-                    <a href="">Colaboradores</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /#wrapper -->
-    <!-- Menu Toggle Script -->
-    <div class="col-sm-10">
-        <div id="blocodireito">
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">BankSystem</a>
+    <div class="page-wrapper chiller-theme toggled">
+        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+            <i class="fas fa-bars"></i>
+        </a>
+        <nav id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-content">
+                <div class="sidebar-brand">
+                    <a href="#">Bank</a>
+                    <div id="close-sidebar">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
                     </div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" wicket:id="logoutBtn"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                    </ul>
                 </div>
-            </nav>
-            <wicket:child/>
-        </div>
+
+                <div class="sidebar-header">
+
+                    <div class="user-info">
+                    </div>
+                    <!-- sidebar-header  -->
+
+
+                    <div class="sidebar-menu">
+                        <ul>
+                            <li>
+                                <a href="Dashboard.html">
+                                    <i class="fa fa-tachometer-alt"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-dropdown" wicket:id="containerpessoas">
+                                <a href="#">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                    <span>Pessoas</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="PessoaFisica.html">Pessoa Física
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Pessoa Jurídica</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-address-card" aria-hidden="true"></i>
+                                    <span>Contas</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#">Conta</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Operações</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Análise de Cliente</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-university" aria-hidden="true"></i>
+                                    <span>Empresarial</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#">Agências</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Colaboradores</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Usuários</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- sidebar-menu  -->
+                    </div>
+                    <!-- sidebar-content  -->
+                    <div class="sidebar-footer">
+                        <a href="#" wicket:id="logoutBtn">
+                            <i class="fa fa-power-off"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- sidebar-wrapper  -->
+        <main class="page-content">
+            <div class="container-fluid">
+                <wicket:child/>
+            </div>
+        </main>
+        <!-- page-content" -->
     </div>
 </wicket:link>
+<!-- page-wrapper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script>
+
+    jQuery(function ($) {
+
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
+
+        $("#close-sidebar").click(function () {
+            $(".page-wrapper").removeClass("toggled");
+        });
+        $("#show-sidebar").click(function () {
+            $(".page-wrapper").addClass("toggled");
+        });
+
+
+    });
+
+</script>
 </body>
 </html>
