@@ -6,12 +6,12 @@ import org.apache.wicket.MarkupContainer;
 public class ServicePerfil {
 
 
-    public String verificaPerfil(){
-        String perfil =  BaseSession.get().getUser().getPerfil();
-        System.out.println(perfil);
+    public String verificaPerfil() {
+        String perfil = BaseSession.get().getUser().getPerfil();
         return perfil;
     }
-    public void hide(MarkupContainer m){
+
+    public void hide(MarkupContainer m) {
         m.setVisible(false);
     }
 

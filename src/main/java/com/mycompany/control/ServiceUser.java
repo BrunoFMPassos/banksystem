@@ -11,6 +11,7 @@ public class ServiceUser {
 
     @SpringBean(name = "userDao")
     private DaoUser userDao;
+    @SpringBean(name = "genericDao")
     private GenericDao<User> genericDao;
 
     public void insert(User user) {

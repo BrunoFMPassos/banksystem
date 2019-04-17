@@ -219,6 +219,13 @@
             </exclusions>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>3.2.18.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
 
 
 

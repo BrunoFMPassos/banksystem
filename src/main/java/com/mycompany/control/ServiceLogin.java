@@ -1,5 +1,6 @@
 package com.mycompany.control;
 
+import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
 import com.mycompany.vision.BaseSession;
 import com.mycompany.vision.Dashboard;
@@ -30,24 +31,21 @@ public class ServiceLogin {
             listusers.clear();
             user = serviceuser.searchForName(username);
 
-            if(user != null) {
+            if (user != null) {
 
                 if (user.getPassword().equals(password)) {
                     BaseSession.get().setUser(user);
-                    System.out.println("Usuário Autorizado!");
-                    System.out.println(user.getPerfil());
                     Dashboard dashboard = new Dashboard();
                     RequestCycle.get().setResponsePage(dashboard);
-
                 } else {
                     fb.error("Usuário ou senha incorretos!");
                     target.add(fb);
                 }
-            }else{
+            } else {
                 fb.error("Usuário ou senha incorretos!");
                 target.add(fb);
             }
-        }else{
+        } else {
             fb.error("Usuário ou senha incorretos!");
             target.add(fb);
         }
@@ -58,7 +56,8 @@ public class ServiceLogin {
         this.serviceuser = serviceuser;
     }
 
-    public void logout(){
+
+    public void logout() {
         getSession().invalidate();
         RequestCycle.get().setResponsePage(Login.class);
     }

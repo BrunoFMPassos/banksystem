@@ -20,24 +20,68 @@ public class BasePage extends WebPage {
     private ServicePerfil p;
 
 
-
-     public BasePage() {
-         if(BaseSession.get().getUser() != null) {
-             add(addContainerPessoas());
-             add(addLogoutButton());
-         }else{
-             RequestCycle.get().setResponsePage(Login.class);
-         }
+    public BasePage() {
+        if (BaseSession.get().getUser() != null) {
+            add(addContainerPessoas());
+            add(addContainerConta());
+            add(addContainerEmpresarial());
+            add(addLogoutButton());
+        } else {
+            RequestCycle.get().setResponsePage(Login.class);
+        }
     }
 
-    public MarkupContainer addContainerPessoas(){
-         MarkupContainer pessoas = new MarkupContainer("containerpessoas") {
-         };
-         if(p.verificaPerfil().equals("Gerente")){
-             p.hide(pessoas);
-         }
-         return pessoas;
+    public MarkupContainer addContainerPessoas() {
+        MarkupContainer pessoas = new MarkupContainer("containerpessoas") {
+        };
+        if (p.verificaPerfil().equals("Gerente") || p.verificaPerfil().equals("Caixa")) {
+            p.hide(pessoas);
+        }
+        return pessoas;
     }
+
+    public MarkupContainer addContainerConta() {
+        MarkupContainer conta = new MarkupContainer("containerconta") {
+        };
+        conta.add(addcontali());
+        conta.add(addoperacoesli());
+        conta.add(addanaliseli());
+        return conta;
+    }
+
+    public MarkupContainer addcontali() {
+        MarkupContainer contali = new MarkupContainer("conta-conta") {
+        };
+        if (p.verificaPerfil().equals("Caixa")) {
+            p.hide(contali);
+        }
+        return contali;
+    }
+
+    public MarkupContainer addoperacoesli() {
+        MarkupContainer operacoesli = new MarkupContainer("conta-operacoes") {
+        };
+        return operacoesli;
+    }
+
+    public MarkupContainer addanaliseli() {
+        MarkupContainer analiseli = new MarkupContainer("conta-analise") {
+        };
+        if (p.verificaPerfil().equals("Caixa")) {
+            p.hide(analiseli);
+        }
+        return analiseli;
+    }
+
+    public MarkupContainer addContainerEmpresarial() {
+        MarkupContainer empresarial = new MarkupContainer("containerempresarial") {
+        };
+        if (p.verificaPerfil().equals("Gerente") || p.verificaPerfil().equals("Caixa")) {
+            p.hide(empresarial);
+        }
+        return empresarial;
+    }
+
 
     public AjaxLink addLogoutButton() {
 
@@ -45,7 +89,6 @@ public class BasePage extends WebPage {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
-                System.out.println("Entrou no onSubmit logout!");
                 s.logout();
             }
 

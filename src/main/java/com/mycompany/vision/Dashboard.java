@@ -13,7 +13,7 @@ public class Dashboard extends BasePage {
         pageCreate();
     }
 
-    public void pageCreate(){
+    public void pageCreate() {
         form = new Form("formulariodash") {
 
             @Override

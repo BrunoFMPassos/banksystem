@@ -3,6 +3,7 @@ package com.mycompany.vision;
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.mycompany.control.ServiceLogin;
 import com.mycompany.control.ServiceUser;
+import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
@@ -22,6 +23,8 @@ public class Login extends WebPage {
     @SpringBean(name = "loginService")
     private ServiceLogin servicelogin;
 
+
+
     User user = new User();
     StatelessForm<User> form;
     TextField<String> username;
@@ -34,7 +37,6 @@ public class Login extends WebPage {
     public Login() {
 
         CompoundPropertyModel<User> compoundPropertyModelEmpresa = new CompoundPropertyModel<User>(user);
-
         //statelessform faz com que a sessão não expire após um determinado tempo na página de loggin
         form = new StatelessForm<User>("formulariologin", compoundPropertyModelEmpresa);
 
@@ -72,7 +74,7 @@ public class Login extends WebPage {
                 username_string = username.getInput();
                 password_string = password.getInput();
 
-                servicelogin.loginValidate(target,username_string,password_string,listusers,user,feedbackPanel);
+                servicelogin.loginValidate(target, username_string, password_string, listusers, user, feedbackPanel);
 
             }
 

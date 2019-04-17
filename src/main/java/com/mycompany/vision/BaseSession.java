@@ -7,17 +7,18 @@ import org.apache.wicket.request.Request;
 
 public class BaseSession extends WebSession {
 
-    public static BaseSession get(){
+    public static BaseSession get() {
         return (BaseSession) Session.get();
     }
+
     private User user;
 
     public BaseSession(Request request) {
         super(request);
     }
 
-    public boolean isAuthenticated(){
-        return(user !=null);
+    public boolean isAuthenticated() {
+        return (user != null);
     }
 
     public User getUser() {

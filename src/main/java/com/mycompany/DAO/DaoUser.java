@@ -23,9 +23,8 @@ public class DaoUser extends GenericDAOImpl<User, Long> implements Serializable 
 
     private static final long serialVersionUID = 5608018075698240400L;
 
-
+    //retorna o objeto
     public User searchForUserName(String username) {
-
 
 
         User user = new User();
@@ -49,7 +48,7 @@ public class DaoUser extends GenericDAOImpl<User, Long> implements Serializable 
         setSessionFactory(sessionFactory);
         sessionFactory.getCurrentSession().beginTransaction();
 
-        return search(new Search(User.class).addFilterLike("nome","%"+nome+"%"));
+        return search(new Search(User.class).addFilterLike("nome", "%" + nome + "%"));
     }
 
     @SuppressWarnings("static-access")
@@ -58,7 +57,7 @@ public class DaoUser extends GenericDAOImpl<User, Long> implements Serializable 
         session.beginTransaction();
 
         Filter fusername = new Filter();
-        fusername.like("username","%"+username+"%");
+        fusername.like("username", "%" + username + "%");
         Filter fperfil = new Filter();
         fperfil.equal("perfil", perfil);
 
@@ -67,7 +66,7 @@ public class DaoUser extends GenericDAOImpl<User, Long> implements Serializable 
         Search searchUser = new Search(User.class);
 
         filterOr.add(Filter.equal("perfil", perfil));
-        filterOr.add(Filter.like("username","%"+username+"%"));
+        filterOr.add(Filter.like("username", "%" + username + "%"));
 
         searchUser.addFilter(filterOr);
 
