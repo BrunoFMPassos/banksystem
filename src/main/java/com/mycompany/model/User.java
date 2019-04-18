@@ -15,17 +15,18 @@ public class User implements Serializable{
 	@JoinColumn(name="colaborador_id")
 	private Colaborador colaborador;
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-    @Column(nullable=false, length=200) 
+
+    @Column(nullable=false, length=200)
     private String username;
 
-    @Column(nullable=false) 
+    @Column(nullable=false)
     private String password;
-    
-    @Column(nullable=false) 
+
+    @Column(nullable=false)
     private String perfil;
 
 

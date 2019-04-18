@@ -18,7 +18,7 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     protected SessionFactory sessionFactory;
 
 
-    //retorna o objeto
+    //retorna o objeto Colaborador
     public Colaborador searchForName(String nome) {
         Colaborador colaborador = new Colaborador();
         Session session = sessionFactory.openSession();
@@ -36,6 +36,23 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
 
     }
 
+    //retorna o objeto Usuário vinculado ao Colaborador
+    public User searchForUser(Colaborador colaborador) {
+        User user = new User();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        String hql = "Select u from " + user.getClass().getCanonicalName()
+                + " as u " + "INNER JOIN u.colaborador c " + "where c.id = :colaborador_id";
+
+        Query query = session.createQuery(hql);
+        query.setParameter("colaborador_id", colaborador.getId());
+        user = (User) query.uniqueResult();;
+        session.close();
+
+        return user;
+    }
+
     public List<User> buscarporNomeSearch(String nome) {
         setSessionFactory(sessionFactory);
         sessionFactory.getCurrentSession().beginTransaction();
@@ -47,7 +64,10 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        User user = new User();
+        User user = searchForUser(colaborador);
+        if(user == null){
+            user = new User();
+        }
         user.setUsername(colaborador.getUsername());
         user.setPassword(colaborador.getPassword());
         user.setPerfil(colaborador.getPerfil());

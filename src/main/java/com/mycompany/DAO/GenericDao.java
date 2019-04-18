@@ -30,6 +30,7 @@ public class GenericDao<T extends Object> implements Serializable {
         session.close();
     }
 
+
     public List<T> list(T obj) {
 
         Session session = sessionFactory.openSession();

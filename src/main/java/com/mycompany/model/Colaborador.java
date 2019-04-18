@@ -12,13 +12,13 @@ public class Colaborador extends Pessoa implements Serializable {
             fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> users;
 
-    @Column(nullable = false, length = 50)
+    @Transient
     private String perfil;
 
-    @Column(nullable = false, length = 20)
+    @Transient
     private String username;
 
-    @Column(nullable = false, length = 10)
+    @Transient
     private String password;
 
 
