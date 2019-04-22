@@ -37,11 +37,11 @@ public class ServiceColaborador {
 
 
     public void deleteColaborador(Colaborador colaborador) {
-        genericDao.delete(colaborador);
+        colaboradorDao.delete(colaborador);
     }
 
-    public List<Colaborador> searchForNameList(Colaborador colaborador, String string, String colum){
-        return genericDao.searchForString(colaborador,string,colum);
+    public List<Colaborador> searchForNameList(Colaborador colaborador, String string, String colum) {
+        return genericDao.searchForString(colaborador, string, colum);
     }
 
     public void setColaboradorDao(DaoColaborador colaboradorDao) {

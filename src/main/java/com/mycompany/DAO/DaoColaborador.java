@@ -18,6 +18,32 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     protected SessionFactory sessionFactory;
 
 
+    public void insert(Colaborador colaborador) {
+
+        Colaborador colaboradorVerifica = searchForName(colaborador.getNome());
+
+        if (colaboradorVerifica == null) {
+
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            User user = searchForUser(colaborador);
+            if (user == null) {
+                user = new User();
+            }
+            user.setUsername(colaborador.getUsername());
+            user.setPassword(colaborador.getPassword());
+            user.setPerfil(colaborador.getPerfil());
+            user.setColaborador(colaborador);
+            session.saveOrUpdate(colaborador);
+            session.saveOrUpdate(user);
+            session.getTransaction().commit();
+            session.close();
+        } else {
+            System.out.println("Colaborador já existente!");
+        }
+    }
+
+
     //retorna o objeto Colaborador
     public Colaborador searchForName(String nome) {
         Colaborador colaborador = new Colaborador();
@@ -47,7 +73,8 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
 
         Query query = session.createQuery(hql);
         query.setParameter("colaborador_id", colaborador.getId());
-        user = (User) query.uniqueResult();;
+        user = (User) query.uniqueResult();
+        ;
         session.close();
 
         return user;
@@ -60,22 +87,14 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         return search(new Search(User.class).addFilterLike("nome", "%" + nome + "%"));
     }
 
-    public void insert(Colaborador colaborador) {
-
+    public void delete(Colaborador colaborador) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        User user = searchForUser(colaborador);
-        if(user == null){
-            user = new User();
-        }
-        user.setUsername(colaborador.getUsername());
-        user.setPassword(colaborador.getPassword());
-        user.setPerfil(colaborador.getPerfil());
-        user.setColaborador(colaborador);
-        session.saveOrUpdate(colaborador);
-        session.saveOrUpdate(user);
+        session.delete(searchForUser(colaborador));
+        session.delete(colaborador);
         session.getTransaction().commit();
         session.close();
+        ;
     }
 
 

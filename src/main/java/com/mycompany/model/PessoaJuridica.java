@@ -2,25 +2,30 @@ package com.mycompany.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
+import java.util.List;
 
 @Entity
-@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
-public class Pessoa  implements Serializable {
+@Table(name = "pessoa_juridica")
+public class PessoaJuridica  implements Serializable {
+
+    @OneToMany(mappedBy = "pessoaJuridica", targetEntity = Conta.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    private List<Conta> conta;
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     @Column(nullable=false, length=200)
-    private String nome;
+    private String razaoSocial;
     @Column(nullable=false, length=200)
-    private Long data_nascimento;
+    private String nomeFantasia;
     @Column(nullable=false, length=200)
-    private Long cpf;
+    private Long cnpj;
     @Column(nullable=false, length=200)
-    private Long rg;
+    private Long inscricaoEstadual;
     @Column(nullable=false, length=200)
-    private String sexo;
+    private Long Telefone;
     @Column(nullable=false, length=200)
     private String cidade;
     @Column(nullable=false, length=200)
@@ -41,44 +46,44 @@ public class Pessoa  implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getRazaoSocial() {
+        return razaoSocial;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
     }
 
-    public Long getData_nascimento() {
-        return data_nascimento;
+    public String getNomeFantasia() {
+        return nomeFantasia;
     }
 
-    public void setData_nascimento(Long data_nascimento) {
-        this.data_nascimento = data_nascimento;
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
     }
 
-    public Long getCpf() {
-        return cpf;
+    public Long getCnpj() {
+        return cnpj;
     }
 
-    public void setCpf(Long cpf) {
-        this.cpf = cpf;
+    public void setCnpj(Long cnpj) {
+        this.cnpj = cnpj;
     }
 
-    public Long getRg() {
-        return rg;
+    public Long getInscricaoEstadual() {
+        return inscricaoEstadual;
     }
 
-    public void setRg(Long rg) {
-        this.rg = rg;
+    public void setInscricaoEstadual(Long inscricaoEstadual) {
+        this.inscricaoEstadual = inscricaoEstadual;
     }
 
-    public String getSexo() {
-        return sexo;
+    public Long getTelefone() {
+        return Telefone;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setTelefone(Long telefone) {
+        Telefone = telefone;
     }
 
     public String getCidade() {
@@ -119,5 +124,13 @@ public class Pessoa  implements Serializable {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
+    }
+
+    public List<Conta> getConta() {
+        return conta;
+    }
+
+    public void setConta(List<Conta> conta) {
+        this.conta = conta;
     }
 }

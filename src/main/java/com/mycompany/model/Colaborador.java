@@ -10,6 +10,8 @@ public class Colaborador extends Pessoa implements Serializable {
 
     @OneToMany(mappedBy = "colaborador", targetEntity = User.class,
             fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+
     private List<User> users;
 
     @Transient

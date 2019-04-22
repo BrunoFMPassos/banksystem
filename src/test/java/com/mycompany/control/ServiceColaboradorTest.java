@@ -39,6 +39,11 @@ public class ServiceColaboradorTest {
         colaborador.setUsername("admin");
         colaborador.setPassword("123456");
         colaborador.setPerfil("Diretor");
+        colaborador.setCidade("Anápolis");
+        colaborador.setUF("GO");
+        colaborador.setEnderecoDesc("Rua teste");
+        colaborador.setNumero(102);
+        colaborador.setComplemento("testedecomplemento");
 
         colaborador2.setNome("João");
         colaborador2.setCpf(22222222222L);
@@ -48,6 +53,11 @@ public class ServiceColaboradorTest {
         colaborador2.setUsername("joao");
         colaborador2.setPassword("123456");
         colaborador2.setPerfil("Caixa");
+        colaborador2.setCidade("Anápolis");
+        colaborador2.setUF("GO");
+        colaborador2.setEnderecoDesc("Rua teste");
+        colaborador2.setNumero(102);
+        colaborador2.setComplemento("testedecomplemento");
 
         colaborador3.setNome("Maria");
         colaborador3.setCpf(88888888888L);
@@ -57,6 +67,11 @@ public class ServiceColaboradorTest {
         colaborador3.setUsername("maria");
         colaborador3.setPassword("123456");
         colaborador3.setPerfil("Gerente");
+        colaborador3.setCidade("Anápolis");
+        colaborador3.setUF("GO");
+        colaborador3.setEnderecoDesc("Rua teste");
+        colaborador3.setNumero(102);
+        colaborador3.setComplemento("testedecomplemento");
 
 
 
@@ -65,7 +80,7 @@ public class ServiceColaboradorTest {
     public void insert() {
 
         try {
-            serviceColaborador.insert(colaborador2);
+            serviceColaborador.insert(colaborador3);
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
@@ -117,7 +132,7 @@ public class ServiceColaboradorTest {
     @Test
     public void searchForNameList() {
         try {
-            List<Colaborador> lista = serviceColaborador.searchForNameList(colaborador,"Bruno","nome");
+            List<Colaborador> lista = serviceColaborador.searchForNameList(colaborador,"nome","o");
             System.out.println(lista);
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
@@ -137,7 +152,8 @@ public class ServiceColaboradorTest {
     @Test
     public void deleteColaborador() {
         try {
-            serviceColaborador.deleteColaborador(colaborador);
+            Colaborador colaboradordelete = serviceColaborador.searchForName("João");
+            serviceColaborador.deleteColaborador(colaboradordelete);
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
         }

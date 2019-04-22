@@ -14,6 +14,7 @@ public class GenericDao<T extends Object> implements Serializable {
 
     GenericDao<T> dao;
 
+
     @SpringBean(name = "sessionFactory")
     protected SessionFactory sessionFactory;
 
@@ -45,16 +46,17 @@ public class GenericDao<T extends Object> implements Serializable {
 
     }
 
-    public List<T> searchForString(T obj, String string, String colum) {
+    public List<T> searchForString(T obj, String colum, String string ) {
+       // SessionFactory factory = new AnnotationConfiguration().configure().buildSessionFactory();
 
-        SessionFactory factory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = factory.openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + "colum" + " like :string";
+        String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + colum + " like :string";
+        System.out.println("HQL: "+hql);
 
         Query query = session.createQuery(hql);
-        query.setParameter("nome", "%" + string + "%");
+        query.setParameter("string", "%"+string+"%");
         @SuppressWarnings("unchecked")
         List<T> results = query.list();
         session.close();

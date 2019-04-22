@@ -1,6 +1,6 @@
 package com.mycompany.control;
 
-import com.mycompany.model.Colaborador;
+
 import com.mycompany.model.User;
 import com.mycompany.vision.BaseSession;
 import com.mycompany.vision.Dashboard;
@@ -17,7 +17,7 @@ import static org.apache.wicket.ThreadContext.getSession;
 public class ServiceLogin {
 
     @SpringBean(name = "userService")
-    private ServiceUser serviceuser;
+    private ServiceUser serviceUser;
 
     public void loginValidate(AjaxRequestTarget target,
                               String username,
@@ -29,7 +29,7 @@ public class ServiceLogin {
         if (!username.isEmpty()
                 && !password.isEmpty()) {
             listusers.clear();
-            user = serviceuser.searchForName(username);
+            user = serviceUser.searchForName(username);
 
             if (user != null) {
 
@@ -52,8 +52,8 @@ public class ServiceLogin {
     }
 
 
-    public void setServiceuser(ServiceUser serviceuser) {
-        this.serviceuser = serviceuser;
+    public void setServiceUser(ServiceUser serviceUser) {
+        this.serviceUser = serviceUser;
     }
 
 

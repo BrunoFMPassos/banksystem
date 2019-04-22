@@ -11,17 +11,17 @@
     <context:annotation-config/>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-    destroy-method="close">
+          destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/unikabank?useTimezone=true&amp;serverTimezone=UTC"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>
 
-    <bean id = "SessionFactory" class = "org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-       <property name="dataSource">
-           <ref bean = "dataSource"/>
-       </property>
+    <bean id="SessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
 
         <property name="hibernateProperties">
             <props>
@@ -35,39 +35,43 @@
             <list>
                 <value>com.mycompany.model.User</value>
                 <value>com.mycompany.model.Colaborador</value>
+                <value>com.mycompany.model.PessoaJuridica</value>
+                <value>com.mycompany.model.PessoaFisica</value>
+                <value>com.mycompany.model.Agencia</value>
+                <value>com.mycompany.model.Conta</value>
+                <value>com.mycompany.model.Cartao</value>
             </list>
         </property>
     </bean>
 
-    <bean id = "userDao" class = "com.mycompany.DAO.DaoUser">
+    <bean id="userDao" class="com.mycompany.DAO.DaoUser">
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
-    <bean id = "colaboradorDao" class = "com.mycompany.DAO.DaoColaborador">
+    <bean id="colaboradorDao" class="com.mycompany.DAO.DaoColaborador">
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
-    <bean id = "genericDao" class = "com.mycompany.DAO.GenericDao">
+    <bean id="genericDao" class="com.mycompany.DAO.GenericDao">
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
-    <bean id = "userService" class = "com.mycompany.control.ServiceUser">
+    <bean id="userService" class="com.mycompany.control.ServiceUser">
         <property name="userDao" ref="userDao"/>
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
-    <bean id = "colaboradorService" class = "com.mycompany.control.ServiceColaborador">
+    <bean id="colaboradorService" class="com.mycompany.control.ServiceColaborador">
         <property name="colaboradorDao" ref="colaboradorDao"/>
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
-    <bean id = "loginService" class = "com.mycompany.control.ServiceLogin">
-        <property name="serviceuser" ref="userService"/>
+    <bean id="loginService" class="com.mycompany.control.ServiceLogin">
+        <property name="serviceUser" ref="userService"/>
     </bean>
 
-    <bean id = "perfilService" class = "com.mycompany.control.ServicePerfil">
+    <bean id="perfilService" class="com.mycompany.control.ServicePerfil">
     </bean>
-
 
 
 </beans>
