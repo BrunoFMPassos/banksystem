@@ -23,6 +23,9 @@ public class Colaborador extends Pessoa implements Serializable {
     @Transient
     private String password;
 
+    @Column(nullable=false, length=200)
+    private String agencia;
+
 
     public String getPerfil() {
         return perfil;
@@ -54,5 +57,13 @@ public class Colaborador extends Pessoa implements Serializable {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public String getAgencia() {
+        return agencia;
+    }
+
+    public void setAgencia(String agencia) {
+        this.agencia = agencia;
     }
 }

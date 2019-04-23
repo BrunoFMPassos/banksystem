@@ -26,6 +26,8 @@ public class Cartao implements Serializable {
     private String tipo; //credito,debito,credito/debito
     @Column(nullable=false, length=200)
     private Long limite;
+    @Column(nullable=false, length=200)
+    private Integer senha;
 
     public List<Conta> getConta() {
         return conta;

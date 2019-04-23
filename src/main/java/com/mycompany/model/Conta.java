@@ -29,7 +29,11 @@ public class Conta implements Serializable {
     @Column(nullable=false, length=200)
     private Long numero;
     @Column(nullable=false, length=200)
+    private Integer senha;
+    @Column(nullable=false, length=200)
     private String tipo;
+    @Column(nullable=false, length=200)
+    private String status;
     @Column(nullable=false, length=200)
     private Long limite_conta;
 

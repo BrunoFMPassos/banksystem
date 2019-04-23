@@ -64,6 +64,25 @@ public class GenericDao<T extends Object> implements Serializable {
 
     }
 
+    public List<T> searchForString2Tables(T obj, String colum1,String colum2, String string1, String string2 ) {
+        // SessionFactory factory = new AnnotationConfiguration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + colum1 + " like :string1 AND c." + colum2 + " like :string2";
+        System.out.println("HQL: "+hql);
+
+        Query query = session.createQuery(hql);
+        query.setParameter("string1", "%"+string1+"%");
+        query.setParameter("string2", "%"+string2+"%");
+        @SuppressWarnings("unchecked")
+        List<T> results = query.list();
+        session.close();
+        return results;
+
+    }
+
     public void delete(T obj) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();

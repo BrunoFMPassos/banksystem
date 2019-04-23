@@ -23,7 +23,6 @@ public class ServiceColaborador {
 
 
     public Colaborador searchForName(String nome) {
-
         return colaboradorDao.searchForName(nome);
     }
 
@@ -35,13 +34,16 @@ public class ServiceColaborador {
         return genericDao.list(colaborador);
     }
 
-
     public void deleteColaborador(Colaborador colaborador) {
         colaboradorDao.delete(colaborador);
     }
 
-    public List<Colaborador> searchForNameList(Colaborador colaborador, String string, String colum) {
-        return genericDao.searchForString(colaborador, string, colum);
+    public List<Colaborador> searchForNameList(Colaborador colaborador, String colum, String string) {
+        return genericDao.searchForString(colaborador,colum,string);
+    }
+
+    public List<Colaborador> searchForNameList2Tables(Colaborador colaborador, String colum1, String colum2, String string1, String string2){
+        return genericDao.searchForString2Tables(colaborador,colum1,colum2,string1,string2);
     }
 
     public void setColaboradorDao(DaoColaborador colaboradorDao) {

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/basepage.css">
+    <link rel="stylesheet" type="text/css" href="css/crud.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
@@ -31,84 +32,92 @@
                 </div>
 
                 <div class="sidebar-header">
+                </div>
+                <div class="user-info" style="padding: 5px;">
+                    <span class="user-name">Jhon
+                        <strong>Smith</strong>
+                    </span><br/>
+                    <span class="user-role">Administrator</span><br/>
+                    <span class="user-status">
+                    <i class="fa fa-circle">
+                    </i>
+                        <span>Online</span>
+                    </span>
+                </div>
+                <!-- sidebar-header  -->
 
-                    <div class="user-info">
-                    </div>
-                    <!-- sidebar-header  -->
 
-
-                    <div class="sidebar-menu">
-                        <ul>
-                            <li>
-                                <a href="Dashboard.html">
-                                    <i class="fa fa-tachometer-alt"></i>
-                                    <span>Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-dropdown" wicket:id="containerpessoas">
-                                <a href="#">
-                                    <i class="fa fa-users" aria-hidden="true"></i>
-                                    <span>Pessoas</span>
-                                </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="PessoaFisica.html">Pessoa Física
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Pessoa Jurídica</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="sidebar-dropdown" wicket:id="containerconta">
-                                <a href="#">
-                                    <i class="fa fa-address-card" aria-hidden="true"></i>
-                                    <span>Contas</span>
-                                </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li wicket:id="conta-conta">
-                                            <a href="#">Conta</a>
-                                        </li>
-                                        <li wicket:id="conta-operacoes">
-                                            <a href="#">Operações</a>
-                                        </li>
-                                        <li wicket:id="conta-analise">
-                                            <a href="#">Análise de Cliente</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="sidebar-dropdown" wicket:id="containerempresarial">
-                                <a href="#">
-                                    <i class="fa fa-university" aria-hidden="true"></i>
-                                    <span>Empresarial</span>
-                                </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="#">Agências</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Colaboradores</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Usuários</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                        <!-- sidebar-menu  -->
-                    </div>
-                    <!-- sidebar-content  -->
-                    <div class="sidebar-footer">
-                        <a href="#" wicket:id="logoutBtn">
-                            <i class="fa fa-power-off"></i>
-                        </a>
-                    </div>
+                <div class="sidebar-menu">
+                    <ul>
+                        <li>
+                            <a href="Dashboard.html">
+                                <i class="fa fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-dropdown" wicket:id="containerpessoas">
+                            <a href="#">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Pessoas</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="#">Pessoa Física
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Pessoa Jurídica</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidebar-dropdown" wicket:id="containerconta">
+                            <a href="#">
+                                <i class="fa fa-address-card" aria-hidden="true"></i>
+                                <span>Contas</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li wicket:id="conta-conta">
+                                        <a href="#">Conta</a>
+                                    </li>
+                                    <li wicket:id="conta-operacoes">
+                                        <a href="#">Operações</a>
+                                    </li>
+                                    <li wicket:id="conta-analise">
+                                        <a href="#">Análise de Cliente</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidebar-dropdown" wicket:id="containerempresarial">
+                            <a href="#">
+                                <i class="fa fa-university" aria-hidden="true"></i>
+                                <span>Empresarial</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="#">Agências</a>
+                                    </li>
+                                    <li>
+                                        <a href="CrudColaborador.html">Colaboradores</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Usuários</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- sidebar-menu  -->
+                </div>
+                <!-- sidebar-content  -->
+                <div class="sidebar-footer">
+                    <a href="#" wicket:id="logoutBtn">
+                        <i class="fa fa-power-off"></i>
+                    </a>
                 </div>
             </div>
         </nav>

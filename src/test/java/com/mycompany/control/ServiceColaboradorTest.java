@@ -44,6 +44,7 @@ public class ServiceColaboradorTest {
         colaborador.setEnderecoDesc("Rua teste");
         colaborador.setNumero(102);
         colaborador.setComplemento("testedecomplemento");
+        colaborador.setAgencia("1234");
 
         colaborador2.setNome("João");
         colaborador2.setCpf(22222222222L);
@@ -58,6 +59,7 @@ public class ServiceColaboradorTest {
         colaborador2.setEnderecoDesc("Rua teste");
         colaborador2.setNumero(102);
         colaborador2.setComplemento("testedecomplemento");
+        colaborador2.setAgencia("1234");
 
         colaborador3.setNome("Maria");
         colaborador3.setCpf(88888888888L);
@@ -72,6 +74,7 @@ public class ServiceColaboradorTest {
         colaborador3.setEnderecoDesc("Rua teste");
         colaborador3.setNumero(102);
         colaborador3.setComplemento("testedecomplemento");
+        colaborador3.setAgencia("1234");
 
 
 
@@ -80,7 +83,7 @@ public class ServiceColaboradorTest {
     public void insert() {
 
         try {
-            serviceColaborador.insert(colaborador3);
+            serviceColaborador.insert(colaborador);
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);

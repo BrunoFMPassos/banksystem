@@ -80,11 +80,19 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         return user;
     }
 
-    public List<User> buscarporNomeSearch(String nome) {
+    public List<User> buscarporNomeSearchUser(String nome) {
         setSessionFactory(sessionFactory);
         sessionFactory.getCurrentSession().beginTransaction();
 
         return search(new Search(User.class).addFilterLike("nome", "%" + nome + "%"));
+    }
+
+    public List<Colaborador> buscarporNomeSearch(String nome) {
+
+        setSessionFactory(sessionFactory);
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        return search(new Search(Colaborador.class).addFilterLike("nome", "%" + nome + "%"));
     }
 
     public void delete(Colaborador colaborador) {

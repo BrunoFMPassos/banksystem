@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+    <title>Colaboradores</title>
+</head>
+<body>
+<wicket:extend>
+    <form id="formcolaborador" wicket:id="formcolaborador" name="formulariocolaborador">
+        <div class="container">
+            <div class="col-sm-12 div1">
+                <h2 class="titulo">Colaboradores</h2>
+                <br/>
+                <input class="field noLast" id="textfield" wicket:id="nome" type="text"
+                       placeholder="Nome:"/>
+                <input class="field Last" id="textfield" wicket:id="agencia" type="text"
+                       placeholder="Agência:"/>
+                <button class="btn-confirma" wicket:id="btn" type="submit" name="submit">Filtrar</button>
+            </div>
+            <br/>
+            <div class="col-sm-1 div1">
+                <input style="margin-top:10px;" class="btn-confirma" type="button" wicket:id="inserir" value="+"/>
+            </div>
+            <div id="2" class="col-sm-12 div1">
+                <br/>
+                <div wicket:id="rowPanel">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th style="color: #6C7A89">Nome</th>
+                            <th style="color: #6C7A89">Usuário</th>
+                            <th style="color: #6C7A89">Perfil</th>
+                            <th style="text-align:center; color: #6C7A89;">Editar</th>
+                            <th style="text-align:center; color: #6C7A89;">Excluir</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr wicket:id="rows">
+                            <td style="color: #6C7A89" wicket:id="textnome">Col</td>
+                            <td style="color: #6C7A89" wicket:id="textusuario">Col</td>
+                            <td style="color: #6C7A89" wicket:id="textperfil">Col</td>
+                            <td style="text-align:center;"><input style="heigth: 60%; width:40%; padding:5px;"
+                                                                  class= "btn-warning-btn" type="submit"
+                                                                  wicket:id="editar"
+                                                                  value="Editar"/></td>
+                            <td style="text-align:center;"><input style="heigth: 60%; width:40%; padding:5px;"
+                                                                  class="btn-danger-btn" type="submit"
+                                                                  wicket:id="excluir"
+                                                                  value="Excluir"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="barra-navegacao" wicket:id="navigator"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</wicket:extend>
+</body>
+</html>

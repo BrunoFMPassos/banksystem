@@ -1,6 +1,7 @@
 package com.mycompany;
 
 import com.mycompany.vision.BaseSession;
+import com.mycompany.vision.CrudColaborador;
 import org.apache.wicket.Session;
 import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.WebPage;
