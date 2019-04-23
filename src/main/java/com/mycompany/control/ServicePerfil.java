@@ -10,6 +10,10 @@ public class ServicePerfil {
         String perfil = BaseSession.get().getUser().getPerfil();
         return perfil;
     }
+    public  String verificaUser(){
+        String user = BaseSession.get().getUser().getColaborador().getNome();
+        return user;
+    }
 
     public void hide(MarkupContainer m) {
         m.setVisible(false);

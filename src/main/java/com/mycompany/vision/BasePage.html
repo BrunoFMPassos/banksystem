@@ -33,16 +33,15 @@
 
                 <div class="sidebar-header">
                 </div>
-                <div class="user-info" style="padding: 5px;">
-                    <span class="user-name">Jhon
-                        <strong>Smith</strong>
+                <div class="user-info" style="padding: 20px; color: darkgrey; font-size: 12px;">
+                    <span class="user-name">Usuário:
+                        <strong wicket:id="usernome">nome</strong>
                     </span><br/>
-                    <span class="user-role">Administrator</span><br/>
-                    <span class="user-status">
-                    <i class="fa fa-circle">
-                    </i>
-                        <span>Online</span>
-                    </span>
+                    <span class="user-name">Perfil:
+                        <strong wicket:id="userperfil">perfil</strong>
+                    </span><br/><br/>
+                    <a style="color: darkgrey;" wicket:id="logoutBtn">Logout</a>
+                    <br/>
                 </div>
                 <!-- sidebar-header  -->
 
@@ -115,9 +114,6 @@
                 </div>
                 <!-- sidebar-content  -->
                 <div class="sidebar-footer">
-                    <a href="#" wicket:id="logoutBtn">
-                        <i class="fa fa-power-off"></i>
-                    </a>
                 </div>
             </div>
         </nav>

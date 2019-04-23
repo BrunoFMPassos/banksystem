@@ -83,7 +83,7 @@ public class ServiceColaboradorTest {
     public void insert() {
 
         try {
-            serviceColaborador.insert(colaborador);
+            serviceColaborador.insert(colaborador3);
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);

@@ -7,6 +7,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -26,9 +27,23 @@ public class BasePage extends WebPage {
             add(addContainerConta());
             add(addContainerEmpresarial());
             add(addLogoutButton());
+            add(addNomeUser());
+            add(addPerfilUser());
         } else {
             RequestCycle.get().setResponsePage(Login.class);
         }
+    }
+
+    public Label addNomeUser(){
+
+        Label usernome = new Label("usernome", p.verificaUser());
+        return usernome;
+    }
+
+    public Label addPerfilUser(){
+
+        Label userperfil = new Label("userperfil", p.verificaPerfil());
+        return userperfil;
     }
 
     public MarkupContainer addContainerPessoas() {
