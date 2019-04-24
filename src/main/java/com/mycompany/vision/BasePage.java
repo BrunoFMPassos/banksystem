@@ -1,6 +1,4 @@
 package com.mycompany.vision;
-
-;
 import com.mycompany.control.ServiceLogin;
 import com.mycompany.control.ServicePerfil;
 import org.apache.wicket.MarkupContainer;
@@ -15,14 +13,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class BasePage extends WebPage {
 
     @SpringBean(name = "loginService")
-    private ServiceLogin s;
+    private ServiceLogin serviceLogin;
 
     @SpringBean(name = "perfilService")
-    private ServicePerfil p;
-
+    private ServicePerfil servicePerfil;
 
     public BasePage() {
-        if (BaseSession.get().getUser() != null) {
+        Boolean usuarioLogado = verificarSeUsuarioEstaLogado();
+        if (usuarioLogado) {
             add(addContainerPessoas());
             add(addContainerConta());
             add(addContainerEmpresarial());
@@ -34,23 +32,33 @@ public class BasePage extends WebPage {
         }
     }
 
+    public boolean verificarSeUsuarioEstaLogado(){
+        boolean usuarioLogado;
+        if (BaseSession.get().getUser() != null) {
+            usuarioLogado = true;
+        }else{
+            usuarioLogado = false;
+        }
+        return usuarioLogado;
+    }
+
     public Label addNomeUser(){
 
-        Label usernome = new Label("usernome", p.verificaUser());
+        Label usernome = new Label("usernome", servicePerfil.verificaUser());
         return usernome;
     }
 
     public Label addPerfilUser(){
 
-        Label userperfil = new Label("userperfil", p.verificaPerfil());
+        Label userperfil = new Label("userperfil", servicePerfil.verificaPerfil());
         return userperfil;
     }
 
     public MarkupContainer addContainerPessoas() {
         MarkupContainer pessoas = new MarkupContainer("containerpessoas") {
         };
-        if (p.verificaPerfil().equals("Gerente") || p.verificaPerfil().equals("Caixa")) {
-            p.hide(pessoas);
+        if (servicePerfil.verificaPerfil().equals("Gerente") || servicePerfil.verificaPerfil().equals("Caixa")) {
+            servicePerfil.hide(pessoas);
         }
         return pessoas;
     }
@@ -67,8 +75,8 @@ public class BasePage extends WebPage {
     public MarkupContainer addcontali() {
         MarkupContainer contali = new MarkupContainer("conta-conta") {
         };
-        if (p.verificaPerfil().equals("Caixa")) {
-            p.hide(contali);
+        if (servicePerfil.verificaPerfil().equals("Caixa")) {
+            servicePerfil.hide(contali);
         }
         return contali;
     }
@@ -82,8 +90,8 @@ public class BasePage extends WebPage {
     public MarkupContainer addanaliseli() {
         MarkupContainer analiseli = new MarkupContainer("conta-analise") {
         };
-        if (p.verificaPerfil().equals("Caixa")) {
-            p.hide(analiseli);
+        if (servicePerfil.verificaPerfil().equals("Caixa")) {
+            servicePerfil.hide(analiseli);
         }
         return analiseli;
     }
@@ -91,8 +99,8 @@ public class BasePage extends WebPage {
     public MarkupContainer addContainerEmpresarial() {
         MarkupContainer empresarial = new MarkupContainer("containerempresarial") {
         };
-        if (p.verificaPerfil().equals("Gerente") || p.verificaPerfil().equals("Caixa")) {
-            p.hide(empresarial);
+        if (servicePerfil.verificaPerfil().equals("Gerente") || servicePerfil.verificaPerfil().equals("Caixa")) {
+            servicePerfil.hide(empresarial);
         }
         return empresarial;
     }
@@ -104,7 +112,7 @@ public class BasePage extends WebPage {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
-                s.logout();
+                serviceLogin.logout();
             }
 
         };

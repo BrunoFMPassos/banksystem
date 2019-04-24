@@ -51,15 +51,13 @@ public class ServiceLogin {
         }
     }
 
-
-    public void setServiceUser(ServiceUser serviceUser) {
-        this.serviceUser = serviceUser;
-    }
-
-
     public void logout() {
         getSession().invalidate();
         RequestCycle.get().setResponsePage(Login.class);
+    }
+
+    public void setServiceUser(ServiceUser serviceUser) {
+        this.serviceUser = serviceUser;
     }
 }
 

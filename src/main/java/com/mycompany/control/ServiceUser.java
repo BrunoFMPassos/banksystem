@@ -15,24 +15,24 @@ public class ServiceUser {
     private GenericDao<User> genericDao;
 
     public void insert(User user) {
-        genericDao.insert(user);
+        genericDao.inserir(user);
     }
 
     public User searchForName(String username) {
 
-        return userDao.searchForUserName(username);
+        return userDao.pesquisarObjetoUsuarioPorNome(username);
     }
 
     public List<User> listUser(User user) {
-        return genericDao.list(user);
+        return genericDao.pesquisarListaDeObjeto(user);
     }
 
     public void inserUser(User user) {
-        genericDao.insert(user);
+        genericDao.inserir(user);
     }
 
     public void deleteUser(User user) {
-        genericDao.delete(user);
+        genericDao.deletar(user);
     }
 
 

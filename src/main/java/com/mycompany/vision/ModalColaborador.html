@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <title></title>
+</head>
+<body>
+<wicket:panel>
+    <div wicket:id="container">
+        <form wicket:id="formulariocadastrocolaborador">
+            <div wicket:id="feedbackpanel"></div>
+            <label class="titulo" style="color:#696969; text-align:center;">Colaborador</label>
+            <br/>
+            <br/>
+            <div class="container">
+                <div class="col-sm-12 div1">
+                    <input type="text" class="field noLast" wicket:id="nome" placeholder="Nome:">
+                    <input type="text" class="field noLast" wicket:id="cpf" placeholder="CPF:">
+                    <input type="text" class="field noLast" wicket:id="rg" placeholder="RG:">
+                    <input type="text" class="field noLast" wicket:id="dataDeNascimento" placeholder="Data de Nascimento:">
+                </div>
+                <div style="margin-top:100px; text-align: left;">
+                    <input class="btn-confirma" type="button" wicket:id="salvarcolaborador" value="Salvar"/>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>

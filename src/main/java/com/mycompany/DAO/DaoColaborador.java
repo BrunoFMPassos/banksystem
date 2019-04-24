@@ -18,22 +18,17 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     protected SessionFactory sessionFactory;
 
 
-    public void insert(Colaborador colaborador) {
-
-        Colaborador colaboradorVerifica = searchForName(colaborador.getNome());
-
-        if (colaboradorVerifica == null) {
-
+    public void inserir(Colaborador colaborador) {
+        Boolean colaboradorNull = verificaSeColaboradorNull(colaborador);
+        if (colaboradorNull) {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            User user = searchForUser(colaborador);
-            if (user == null) {
+            User user = pesquisarObjetoUserPorColaborador(colaborador);
+            Boolean userNull = verificaSeUserNull(user);
+            if (userNull) {
                 user = new User();
             }
-            user.setUsername(colaborador.getUsername());
-            user.setPassword(colaborador.getPassword());
-            user.setPerfil(colaborador.getPerfil());
-            user.setColaborador(colaborador);
+            preparaUserParaInserir(colaborador, user);
             session.saveOrUpdate(colaborador);
             session.saveOrUpdate(user);
             session.getTransaction().commit();
@@ -43,68 +38,87 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         }
     }
 
-
-    //retorna o objeto Colaborador
-    public Colaborador searchForName(String nome) {
+    public Colaborador pesquisaObjetoColaboradorPorNome(String nome) {
         Colaborador colaborador = new Colaborador();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         String hql = "from " + colaborador.getClass().getCanonicalName()
                 + " as c where c.nome = :nome";
-
         Query query = session.createQuery(hql);
         query.setParameter("nome", nome);
         colaborador = (Colaborador) query.uniqueResult();
         session.close();
-
         return colaborador;
-
     }
 
-    //retorna o objeto Usuário vinculado ao Colaborador
-    public User searchForUser(Colaborador colaborador) {
+    public User pesquisarObjetoUserPorColaborador(Colaborador colaborador) {
         User user = new User();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         String hql = "Select u from " + user.getClass().getCanonicalName()
                 + " as u " + "INNER JOIN u.colaborador c " + "where c.id = :colaborador_id";
-
         Query query = session.createQuery(hql);
         query.setParameter("colaborador_id", colaborador.getId());
         user = (User) query.uniqueResult();
-        ;
         session.close();
-
         return user;
     }
 
-    public List<User> buscarporNomeSearchUser(String nome) {
-        setSessionFactory(sessionFactory);
-        sessionFactory.getCurrentSession().beginTransaction();
 
-        return search(new Search(User.class).addFilterLike("nome", "%" + nome + "%"));
-    }
-
-    public List<Colaborador> buscarporNomeSearch(String nome) {
-
-        setSessionFactory(sessionFactory);
-        sessionFactory.getCurrentSession().beginTransaction();
-
-        return search(new Search(Colaborador.class).addFilterLike("nome", "%" + nome + "%"));
-    }
-
-    public void delete(Colaborador colaborador) {
+    public List<User> pesquisarListaDeUsuariosPorUsername(String username) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.delete(searchForUser(colaborador));
+        List<User> listaDeUsuarios = search(new Search(User.class).addFilterLike("username", "%" + username + "%"));
+        session.close();
+        return listaDeUsuarios;
+    }
+
+    public List<Colaborador> pesquisarListaDeColaboradoresPorNome(String nome) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Colaborador> listaDeColaboradores = search(new Search(Colaborador.class).addFilterLike("nome", "%" + nome + "%"));
+        session.close();
+        return listaDeColaboradores;
+    }
+
+    public void deletar(Colaborador colaborador) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(pesquisarObjetoUserPorColaborador(colaborador));
         session.delete(colaborador);
         session.getTransaction().commit();
         session.close();
-        ;
     }
 
+
+    public boolean verificaSeColaboradorNull(Colaborador colaborador) {
+        Colaborador colaboradorparaVerificar = pesquisaObjetoColaboradorPorNome(colaborador.getNome());
+        Boolean colaboradorNull;
+
+        if (colaboradorparaVerificar == null) {
+            colaboradorNull = true;
+        } else {
+            colaboradorNull = false;
+        }
+        return colaboradorNull;
+    }
+
+    public boolean verificaSeUserNull(User user) {
+        Boolean userNull;
+        if (user == null) {
+            userNull = true;
+        } else {
+            userNull = false;
+        }
+        return userNull;
+    }
+
+    public void preparaUserParaInserir(Colaborador colaborador, User user) {
+        user.setUsername(colaborador.getUsername());
+        user.setPassword(colaborador.getPassword());
+        user.setPerfil(colaborador.getPerfil());
+        user.setColaborador(colaborador);
+    }
 
     @Override
     public SessionFactory getSessionFactory() {

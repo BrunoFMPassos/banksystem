@@ -7,8 +7,8 @@ import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -26,9 +26,9 @@ public class CrudColaborador extends BasePage {
     private static final long serialVersionUID = -2798690654299606509L;
 
     @SpringBean(name = "colaboradorService")
-    ServiceColaborador sc;
+    ServiceColaborador serviceColaborador;
     final Colaborador colaborador = new Colaborador();
-    private List<Colaborador> listadecolaboradores = new ArrayList<Colaborador>();
+    private List<Colaborador> listaDeColaboradores = new ArrayList<Colaborador>();
     Form<Colaborador> form;
     TextField<String> inputNome = new TextField<String>("nome");
     TextField<String> inputAgencia = new TextField<String>("agencia");
@@ -36,14 +36,14 @@ public class CrudColaborador extends BasePage {
     private String agenciaFiltrar = "";
     MarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
 
-    //ModalWindow modalWindow = new ModalWindow("modalinserir");
-    //ModalWindow modalWindoweditar = new ModalWindow("modaleditar");
-    //ModalWindow modalWindowExcluir = new ModalWindow("modalexcluir");
-
+    ModalWindow modalWindowInserirColaborador = new ModalWindow("modalinserircolaborador");
 
     public CrudColaborador() {
-        listadecolaboradores.addAll(sc.listColaborador(colaborador));
+        listaDeColaboradores.addAll(serviceColaborador.pesquisarListaDeColaboradoresPorColabordaor(colaborador));
+        modalWindowInserirColaborador.setAutoSize(false);
+
         CompoundPropertyModel<Colaborador> compoundPropertyModelColaborador = new CompoundPropertyModel<Colaborador>(colaborador);
+
         form = new Form<Colaborador>("formcolaborador", compoundPropertyModelColaborador) {
             @Override
             public void onSubmit() {
@@ -54,9 +54,10 @@ public class CrudColaborador extends BasePage {
         add(form);
         form.add(criarTextFieldNomefiltro());
         form.add(criarTextFieldAgenciafiltro());
-        form.add(criarBtnListar());
+        form.add(criarBtnFiltrar());
         form.add(criarBtnInserir());
         form.add(criarTabela());
+        form.add(cirarModalInserirColaborador());
     }
 
 
@@ -77,7 +78,7 @@ public class CrudColaborador extends BasePage {
 
             @Override
             protected List<Colaborador> getData() {
-                return listadecolaboradores;
+                return listaDeColaboradores;
             }
         };
 
@@ -90,7 +91,7 @@ public class CrudColaborador extends BasePage {
 
                 final Colaborador colaboradorDaLista = (Colaborador) item.getModelObject();
                 Label textnome = new Label("textnome", colaboradorDaLista.getNome());
-                User user =  sc.searchForUser(colaboradorDaLista);
+                User user =  serviceColaborador.pesquisarObjetoUserPorColaborador(colaboradorDaLista);
                 Label textusuario = new Label("textusuario", user.getUsername());
                 Label textperfil = new Label("textperfil", user.getPerfil());
 
@@ -125,22 +126,33 @@ public class CrudColaborador extends BasePage {
         return rowPanel;
     }
 
+    private ModalWindow cirarModalInserirColaborador() {
+        return modalWindowInserirColaborador;
+    }
 
     private AjaxLink<?> criarBtnInserir() {
         AjaxLink<?> inserir = new AjaxLink<Object>("inserir") {
-
             public void onClick(AjaxRequestTarget target) {
-                System.out.println("Clicou no inserir");
+                final ModalColaborador modalColaborador = new ModalColaborador
+                        (modalWindowInserirColaborador.getContentId(), new Colaborador()){
+                    @Override
+                    public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
+                        //serviceColaborador.inserir(colaborador);
+                        serviceColaborador.executarAoClicarEmSalvarNaModal(
+                                listaDeColaboradores,colaborador,target,rowPanel,modalWindowInserirColaborador);
+                    }
+                };
+                modalWindowInserirColaborador.setContent(modalColaborador);
+                modalWindowInserirColaborador.show(target);
             }
         };
-
         return inserir;
     }
 
 
-    private AjaxButton criarBtnListar() {
+    private AjaxButton criarBtnFiltrar() {
 
-        AjaxButton botao = new AjaxButton("btn", form) {
+        AjaxButton filtrar = new AjaxButton("filtrar", form) {
 
             private static final long serialVersionUID = 1L;
 
@@ -153,27 +165,9 @@ public class CrudColaborador extends BasePage {
                 String nome = nomeFiltrar;
                 String agencia = agenciaFiltrar;
 
-                if (!nome.isEmpty() && agencia.isEmpty()){
-                    listadecolaboradores.clear();
-                    listadecolaboradores.addAll(sc.searchForNameList(colaborador,"nome",nome));
-                    target.add(rowPanel);
-
-                }else if(nome.isEmpty() && !agencia.isEmpty()){
-                    listadecolaboradores.clear();
-                    listadecolaboradores.addAll(sc.searchForNameList(colaborador,"agencia",agencia));
-                    target.add(rowPanel);
-
-                }else if(!nome.isEmpty() && !agencia.isEmpty()){
-                    listadecolaboradores.clear();
-                    listadecolaboradores.addAll(sc.searchForNameList2Tables(colaborador,"nome","agencia",nome,agencia));
-                    target.add(rowPanel);
-                } else {
-                    listadecolaboradores.clear();
-                    listadecolaboradores.addAll(sc.listColaborador(colaborador));
-                }
-                target.add(rowPanel);
+                serviceColaborador.filtrarColaboradorNaVisao(nome,agencia,listaDeColaboradores,colaborador,target,rowPanel);
             }
         };
-        return botao;
+        return filtrar;
     }
 }

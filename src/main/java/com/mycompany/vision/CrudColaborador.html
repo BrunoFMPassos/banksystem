@@ -10,7 +10,6 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-
     <title>Colaboradores</title>
 </head>
 <body>
@@ -24,13 +23,14 @@
                        placeholder="Nome:"/>
                 <input class="field Last" id="textfield" wicket:id="agencia" type="text"
                        placeholder="Agência:"/>
-                <button class="btn-confirma" wicket:id="btn" type="submit" name="submit">Filtrar</button>
+                <button class="btn-confirma" wicket:id="filtrar" type="submit" name="submit">Filtrar</button>
             </div>
             <br/>
             <div class="col-sm-1 div1">
                 <input style="margin-top:10px;" class="btn-confirma" type="button" wicket:id="inserir" value="+"/>
             </div>
             <div id="2" class="col-sm-12 div1">
+                <div wicket:id="modalinserircolaborador"></div>
                 <br/>
                 <div wicket:id="rowPanel">
                     <table class="table table-hover">

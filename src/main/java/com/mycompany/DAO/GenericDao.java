@@ -22,8 +22,7 @@ public class GenericDao<T extends Object> implements Serializable {
         this.dao = dao;
     }
 
-    public void insert(T obj) {
-
+    public void inserir(T obj) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.saveOrUpdate(obj);
@@ -31,32 +30,22 @@ public class GenericDao<T extends Object> implements Serializable {
         session.close();
     }
 
-
-    public List<T> list(T obj) {
-
+    public List<T> pesquisarListaDeObjeto(T obj) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         Criteria criterio = session.createCriteria(obj.getClass());
-        @SuppressWarnings("unchecked")
         List<T> resultado = criterio.list();
         session.getTransaction().commit();
         session.close();
         return resultado;
-
     }
 
-    public List<T> searchForString(T obj, String colum, String string ) {
-       // SessionFactory factory = new AnnotationConfiguration().configure().buildSessionFactory();
-
+    public List<T> pesquisaListadeObjetosPorString(T obj, String colum, String string) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + colum + " like :string";
-        System.out.println("HQL: "+hql);
-
         Query query = session.createQuery(hql);
-        query.setParameter("string", "%"+string+"%");
+        query.setParameter("string", "%" + string + "%");
         @SuppressWarnings("unchecked")
         List<T> results = query.list();
         session.close();
@@ -64,26 +53,22 @@ public class GenericDao<T extends Object> implements Serializable {
 
     }
 
-    public List<T> searchForString2Tables(T obj, String colum1,String colum2, String string1, String string2 ) {
-        // SessionFactory factory = new AnnotationConfiguration().configure().buildSessionFactory();
-
+    public List<T> pesquisarListaDeObjetosPorStringEmDuasTabelas(T obj, String colum1, String colum2,
+                                                                 String string1, String string2) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
-        String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + colum1 + " like :string1 AND c." + colum2 + " like :string2";
-        System.out.println("HQL: "+hql);
-
+        String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + colum1 +
+                " like :string1 AND c." + colum2 + " like :string2";
         Query query = session.createQuery(hql);
-        query.setParameter("string1", "%"+string1+"%");
-        query.setParameter("string2", "%"+string2+"%");
+        query.setParameter("string1", "%" + string1 + "%");
+        query.setParameter("string2", "%" + string2 + "%");
         @SuppressWarnings("unchecked")
         List<T> results = query.list();
         session.close();
         return results;
-
     }
 
-    public void delete(T obj) {
+    public void deletar(T obj) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(obj);
