@@ -12,18 +12,24 @@
 </head>
 <body>
 <wicket:panel>
-    <div wicket:id="container">
+    <div wicket:id="container" style="width: 100%;">
         <form wicket:id="formulariocadastrocolaborador">
             <div wicket:id="feedbackpanel"></div>
-            <label class="titulo" style="color:#696969; text-align:center;">Colaborador</label>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Colaborador</label>
             <br/>
             <br/>
             <div class="container">
                 <div class="col-sm-12 div1">
-                    <input type="text" class="field noLast" wicket:id="nome" placeholder="Nome:">
-                    <input type="text" class="field noLast" wicket:id="cpf" placeholder="CPF:">
-                    <input type="text" class="field noLast" wicket:id="rg" placeholder="RG:">
-                    <input type="text" class="field noLast" wicket:id="dataDeNascimento" placeholder="Data de Nascimento:">
+                    <input style="width: 42%;" type="text" class="field noLast" wicket:id="nome" placeholder="Nome:">
+                    <input style="width: 42%;" type="text" class="field Last" wicket:id="cpf" placeholder="CPF:">
+                    <input style="width: 42%;" type="text" class="field noLast" wicket:id="rg" placeholder="RG:">
+                    <input style="width: 42%;" type="text" class="field Last" wicket:id="dataDeNascimento" placeholder="Data de Nascimento:">
+                    <wicket:container wicket:id="group">
+                        <label style="font-size: 12px; color: #3a3f48;">Sexo:</label>
+                        <br/>
+                        <label style="font-size: 12px; color: #464a52; margin-right: 5%;"><input wicket:id="masculino" type="radio" name="masculino"/>Masculino</label>
+                        <label style="font-size: 12px; color: #464a52; margin-right: 5%;"><input wicket:id="feminino" type="radio" name="feminino"/>Feminino</label>
+                    </wicket:container>
                 </div>
                 <div style="margin-top:100px; text-align: left;">
                     <input class="btn-confirma" type="button" wicket:id="salvarcolaborador" value="Salvar"/>

@@ -5,10 +5,14 @@ import com.mycompany.model.Colaborador;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 public class ModalColaborador extends Panel {
 
@@ -37,6 +41,7 @@ public class ModalColaborador extends Panel {
         form.add(criarTextFieldCpf());
         form.add(criarTextFieldRg());
         form.add(criarTextFieldDataDeNascimento());
+        form.add(criarRadioGrupoSexo());
         container.add(form);
         return container;
     }
@@ -78,6 +83,14 @@ public class ModalColaborador extends Panel {
     private TextField<String> criarTextFieldDataDeNascimento(){
         TextField<String> dataDeNascimento = new TextField<String>("dataDeNascimento");
         return dataDeNascimento;
+    }
+
+    private RadioGroup<String> criarRadioGrupoSexo(){
+        IModel<String> selected = new Model<String>();
+        RadioGroup group = new RadioGroup("group", selected);
+        group.add(new Radio("masculino", new Model<String>("Masculino")));
+        group.add(new Radio("feminino", new Model<String>("Feminino")));
+        return group;
     }
 
     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
