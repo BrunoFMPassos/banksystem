@@ -26,7 +26,7 @@ public class Pessoa  implements Serializable {
     @Column(nullable=false, length=200)
     private String UF;
     @Column(nullable=false, length=200)
-    private String enderecoDesc;
+    private String endereco;
     @Column(nullable=false, length=200)
     private Integer numero;
     @Column(nullable=true, length=200)
@@ -97,12 +97,12 @@ public class Pessoa  implements Serializable {
         this.UF = UF;
     }
 
-    public String getEnderecoDesc() {
-        return enderecoDesc;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEnderecoDesc(String enderecoDesc) {
-        this.enderecoDesc = enderecoDesc;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public Integer getNumero() {

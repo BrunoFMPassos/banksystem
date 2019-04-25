@@ -12,26 +12,51 @@
 </head>
 <body>
 <wicket:panel>
-    <div wicket:id="container" style="width: 100%;">
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
         <form wicket:id="formulariocadastrocolaborador">
             <div wicket:id="feedbackpanel"></div>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Colaborador</label>
             <br/>
-            <br/>
             <div class="container">
-                <div class="col-sm-12 div1">
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
                     <input style="width: 42%;" type="text" class="field noLast" wicket:id="nome" placeholder="Nome:">
                     <input style="width: 42%;" type="text" class="field Last" wicket:id="cpf" placeholder="CPF:">
                     <input style="width: 42%;" type="text" class="field noLast" wicket:id="rg" placeholder="RG:">
-                    <input style="width: 42%;" type="text" class="field Last" wicket:id="dataDeNascimento" placeholder="Data de Nascimento:">
-                    <wicket:container wicket:id="group">
-                        <label style="font-size: 12px; color: #3a3f48;">Sexo:</label>
-                        <br/>
-                        <label style="font-size: 12px; color: #464a52; margin-right: 5%;"><input wicket:id="masculino" type="radio" name="masculino"/>Masculino</label>
-                        <label style="font-size: 12px; color: #464a52; margin-right: 5%;"><input wicket:id="feminino" type="radio" name="feminino"/>Feminino</label>
-                    </wicket:container>
+                    <input style="width: 42%;" type="text" class="field Last" wicket:id="dataDeNascimento"
+                           placeholder="Data de Nascimento:">
+                    <div style="margin-top: 5%;">
+                        <span wicket:id="sexo">
+                            <label style="font-size: 12px; color: #3a3f48;">Sexo:</label>
+                            <label style="color: #3a3f48; font-size: 12px; color: #464a52;">Masculino</label>
+                             <input style="margin-right: 5%;" id="radio" wicket:id="masculino" type="radio" value="masculino"/>
+                            <label style="color: #3a3f48; font-size: 12px; color: #464a52;">Feminino</label>
+                             <input style="margin-right: 5%;" id="radio" wicket:id="feminino" type="radio" value="feminino"/>
+                       </span>
+                    </div>
                 </div>
-                <div style="margin-top:100px; text-align: left;">
+                <br/>
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input wicket:id="username" style="width: 30%; margin-right: 7%;" type="text" class="field" placeholder="Usuário:">
+                    <input wicket:id="password" style="width: 30%;" type="password" class="field Last" placeholder="Senha:">
+                    <label style="font-size: 12px; color: #3a3f48;">Agência: </label>
+                    <select style="width: 10%; margin-right: 7%; color: #3a3f48;" type="text" class="field"
+                            wicket:id="agencia">
+                    </select>
+                    <label style="font-size: 12px; color: #3a3f48;">Perfil: </label>
+                    <select style="width: 30%;" type="text" class="field Last" wicket:id="perfil" id="perfil" name="perfil">
+                    </select>
+                </div>
+                <br/>
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input style="width: 60%;" type="text" class="field noLast" wicket:id="cidade" placeholder="Cidade:">
+                    <label style="font-size: 12px; color: #3a3f48;">UF: </label>
+                    <select style="width: 10%;" type="text" class="field Last" wicket:id="UF" id="estado" name="estado">
+                    </select>
+                    <input style="width: 15%;" type="text" class="field noLast" wicket:id="numero" placeholder="Numero:">
+                    <input style="width: 60%;" type="text" class="field Last" wicket:id="endereco" placeholder="Endereco:">
+                    <input style="width: 100%;" type="text" class="field Last" wicket:id="complemento" placeholder="Complemento:">
+                </div>
+                <div style="margin-top:5%; text-align: left;">
                     <input class="btn-confirma" type="button" wicket:id="salvarcolaborador" value="Salvar"/>
                 </div>
             </div>

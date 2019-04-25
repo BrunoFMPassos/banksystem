@@ -10,7 +10,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.lang.annotation.Target;
 import java.util.List;
 
 public class ServiceColaborador {
@@ -73,16 +72,35 @@ public class ServiceColaborador {
     public void executarAoClicarEmSalvarNaModal(
             List<Colaborador> listaDeColaboradores, Colaborador colaborador,
             AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow) {
-            System.out.println("Clicou no Salvar!");
-            listaDeColaboradores.clear();
-            listaDeColaboradores.addAll(pesquisarListaDeColaboradoresPorColabordaor(colaborador));
-            modalWindow.close(target);
-            target.add(rowPanel);
+        System.out.println("Clicou no Salvar!");
+
+        System.out.println(colaborador.getNome());
+        System.out.println(colaborador.getCpf());
+        System.out.println(colaborador.getRg());
+        System.out.println(colaborador.getDataDeNascimento());
+        System.out.println(colaborador.getSexo());
+        System.out.println(colaborador.getAgencia());
+        System.out.println(colaborador.getUsername());
+        System.out.println(colaborador.getPassword());
+        System.out.println(colaborador.getPerfil());
+        System.out.println(colaborador.getCidade());
+        System.out.println(colaborador.getUF());
+        System.out.println(colaborador.getEndereco());
+        System.out.println(colaborador.getNumero());
+        System.out.println(colaborador.getComplemento());
+
+        inserir(colaborador);
+
+        listaDeColaboradores.clear();
+        listaDeColaboradores.addAll(pesquisarListaDeColaboradoresPorColabordaor(colaborador));
+        modalWindow.close(target);
+        target.add(rowPanel);
     }
 
     public void setColaboradorDao(DaoColaborador colaboradorDao) {
         this.colaboradorDao = colaboradorDao;
     }
+
     public void setGenericDao(GenericDao<Colaborador> genericDao) {
         this.genericDao = genericDao;
     }

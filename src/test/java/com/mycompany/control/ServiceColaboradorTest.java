@@ -38,7 +38,7 @@ public class ServiceColaboradorTest {
         colaborador.setPerfil("Diretor");
         colaborador.setCidade("Anápolis");
         colaborador.setUF("GO");
-        colaborador.setEnderecoDesc("Rua teste");
+        colaborador.setEndereco("Rua teste");
         colaborador.setNumero(102);
         colaborador.setComplemento("testedecomplemento");
         colaborador.setAgencia("1234");
@@ -53,7 +53,7 @@ public class ServiceColaboradorTest {
         colaborador2.setPerfil("Caixa");
         colaborador2.setCidade("Anápolis");
         colaborador2.setUF("GO");
-        colaborador2.setEnderecoDesc("Rua teste");
+        colaborador2.setEndereco("Rua teste");
         colaborador2.setNumero(102);
         colaborador2.setComplemento("testedecomplemento");
         colaborador2.setAgencia("1234");
@@ -68,7 +68,7 @@ public class ServiceColaboradorTest {
         colaborador3.setPerfil("Gerente");
         colaborador3.setCidade("Anápolis");
         colaborador3.setUF("GO");
-        colaborador3.setEnderecoDesc("Rua teste");
+        colaborador3.setEndereco("Rua teste");
         colaborador3.setNumero(102);
         colaborador3.setComplemento("testedecomplemento");
         colaborador3.setAgencia("1234");
@@ -83,7 +83,7 @@ public class ServiceColaboradorTest {
         colaborador4.setPerfil("Diretor");
         colaborador4.setCidade("Anápolis");
         colaborador4.setUF("GO");
-        colaborador4.setEnderecoDesc("Rua teste");
+        colaborador4.setEndereco("Rua teste");
         colaborador4.setNumero(102);
         colaborador4.setComplemento("testedecomplemento");
         colaborador4.setAgencia("1234");

@@ -61,6 +61,10 @@
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
+    <bean id="agenciaService" class="com.mycompany.control.ServiceAgencia">
+        <property name="genericDao" ref="genericDao"/>
+    </bean>
+
     <bean id="colaboradorService" class="com.mycompany.control.ServiceColaborador">
         <property name="colaboradorDao" ref="colaboradorDao"/>
         <property name="genericDao" ref="genericDao"/>
