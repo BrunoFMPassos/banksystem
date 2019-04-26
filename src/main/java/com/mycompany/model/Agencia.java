@@ -2,10 +2,15 @@ package com.mycompany.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "agencia")
 public class Agencia implements Serializable {
+
+    @OneToMany(mappedBy = "agencia", targetEntity = Colaborador.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Colaborador> colaboradores;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,5 +53,13 @@ public class Agencia implements Serializable {
 
     public void setNumero(Integer numero) {
         this.numero = numero;
+    }
+
+    public List<Colaborador> getColaboradores() {
+        return colaboradores;
+    }
+
+    public void setColaboradores(List<Colaborador> colaboradores) {
+        this.colaboradores = colaboradores;
     }
 }

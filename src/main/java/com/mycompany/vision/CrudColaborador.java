@@ -18,6 +18,7 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +38,12 @@ public class CrudColaborador extends BasePage {
     MarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
 
     ModalWindow modalWindowInserirColaborador = new ModalWindow("modalinserircolaborador");
+    ModalWindow modalWindowEditarColaborador = new ModalWindow("modaleditarcolaborador");
 
     public CrudColaborador() {
         listaDeColaboradores.addAll(serviceColaborador.pesquisarListaDeColaboradoresPorColabordaor(colaborador));
         modalWindowInserirColaborador.setAutoSize(false);
+        modalWindowEditarColaborador.setAutoSize(false);
 
         CompoundPropertyModel<Colaborador> compoundPropertyModelColaborador = new CompoundPropertyModel<Colaborador>(colaborador);
 
@@ -58,6 +61,7 @@ public class CrudColaborador extends BasePage {
         form.add(criarBtnInserir());
         form.add(criarTabela());
         form.add(cirarModalInserirColaborador());
+        form.add(cirarModalEditarColaborador());
     }
 
 
@@ -84,14 +88,13 @@ public class CrudColaborador extends BasePage {
 
         DataView<Colaborador> lv = new DataView<Colaborador>("rows", listDataProvider) {
 
-            private static final long serialVersionUID = -527963121947516657L;
 
             @Override
             protected void populateItem(Item<Colaborador> item) {
 
                 final Colaborador colaboradorDaLista = (Colaborador) item.getModelObject();
                 Label textnome = new Label("textnome", colaboradorDaLista.getNome());
-                User user =  serviceColaborador.pesquisarObjetoUserPorColaborador(colaboradorDaLista);
+                User user = serviceColaborador.pesquisarObjetoUserPorColaborador(colaboradorDaLista);
                 Label textusuario = new Label("textusuario", user.getUsername());
                 Label textperfil = new Label("textperfil", user.getPerfil());
 
@@ -100,6 +103,20 @@ public class CrudColaborador extends BasePage {
 
                     public void onClick(AjaxRequestTarget target) {
                         System.out.println("Clicou no editar");
+                        System.out.println(colaboradorDaLista.getNome());
+                        ModalColaborador modalEditarColaborador = new
+                                 ModalColaborador(modalWindowEditarColaborador.getContentId(), colaboradorDaLista){
+                                    @Override
+                                    public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
+                                        super.executaAoClicarEmSalvar(target,colaborador);
+                                        serviceColaborador.executarAoClicarEmSalvarNaModal(listaDeColaboradores,colaborador,target,
+                                                rowPanel,modalWindowEditarColaborador,"update");
+                                    }
+                                };
+
+                        modalWindowEditarColaborador.setContent(modalEditarColaborador);
+                        modalWindowEditarColaborador.show(target);
+
                     }
                 };
 
@@ -130,16 +147,19 @@ public class CrudColaborador extends BasePage {
         return modalWindowInserirColaborador;
     }
 
+    private ModalWindow cirarModalEditarColaborador() {
+        return modalWindowEditarColaborador;
+    }
+
     private AjaxLink<?> criarBtnInserir() {
         AjaxLink<?> inserir = new AjaxLink<Object>("inserir") {
             public void onClick(AjaxRequestTarget target) {
                 final ModalColaborador modalColaborador = new ModalColaborador
-                        (modalWindowInserirColaborador.getContentId(), new Colaborador()){
+                        (modalWindowInserirColaborador.getContentId(), new Colaborador()) {
                     @Override
                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
-                        //serviceColaborador.inserir(colaborador);
                         serviceColaborador.executarAoClicarEmSalvarNaModal(
-                                listaDeColaboradores,colaborador,target,rowPanel,modalWindowInserirColaborador);
+                                listaDeColaboradores, colaborador, target, rowPanel, modalWindowInserirColaborador,"inserir");
                     }
                 };
                 modalWindowInserirColaborador.setContent(modalColaborador);
@@ -165,7 +185,7 @@ public class CrudColaborador extends BasePage {
                 String nome = nomeFiltrar;
                 String agencia = agenciaFiltrar;
 
-                serviceColaborador.filtrarColaboradorNaVisao(nome,agencia,listaDeColaboradores,colaborador,target,rowPanel);
+                serviceColaborador.filtrarColaboradorNaVisao(nome, agencia, listaDeColaboradores, colaborador, target, rowPanel);
             }
         };
         return filtrar;

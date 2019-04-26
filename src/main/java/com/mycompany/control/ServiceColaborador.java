@@ -19,12 +19,16 @@ public class ServiceColaborador {
     @SpringBean(name = "genericDao")
     private GenericDao<Colaborador> genericDao;
 
-    public void inserir(Colaborador colaborador) {
-        colaboradorDao.inserir(colaborador);
+    public void inserir(Colaborador colaborador, String operacao) {
+        colaboradorDao.inserir(colaborador, operacao);
     }
 
     public Colaborador pesquisarObjetoColaboradorPorNome(String nome) {
         return colaboradorDao.pesquisaObjetoColaboradorPorNome(nome);
+    }
+
+    public Colaborador pesquisarObjetoColaboradorPorId(Long id) {
+        return colaboradorDao.pesquisaObjetoColaboradorPorId(id);
     }
 
     public User pesquisarObjetoUserPorColaborador(Colaborador colaborador) {
@@ -32,7 +36,16 @@ public class ServiceColaborador {
     }
 
     public List<Colaborador> pesquisarListaDeColaboradoresPorColabordaor(Colaborador colaborador) {
-        return genericDao.pesquisarListaDeObjeto(colaborador);
+        List<Colaborador> listaDeColaboradores = genericDao.pesquisarListaDeObjeto(colaborador);
+        trazerDadosDoUserParaOColaborador(listaDeColaboradores);
+        return listaDeColaboradores;
+    }
+
+    public void trazerDadosDoUserParaOColaborador(List<Colaborador> listaDeColaboradores){
+        for (Colaborador colaborador: listaDeColaboradores){
+            colaborador.setUsername(colaborador.getUser().getUsername());
+            colaborador.setPerfil(colaborador.getUser().getPerfil());
+        }
     }
 
     public List<Colaborador> pesquisarListaDeColaboradoresPorNome(Colaborador colaborador, String colum, String string) {
@@ -71,7 +84,7 @@ public class ServiceColaborador {
 
     public void executarAoClicarEmSalvarNaModal(
             List<Colaborador> listaDeColaboradores, Colaborador colaborador,
-            AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow) {
+            AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, String operacao) {
         System.out.println("Clicou no Salvar!");
 
         System.out.println(colaborador.getNome());
@@ -89,7 +102,7 @@ public class ServiceColaborador {
         System.out.println(colaborador.getNumero());
         System.out.println(colaborador.getComplemento());
 
-        inserir(colaborador);
+        inserir(colaborador,operacao);
 
         listaDeColaboradores.clear();
         listaDeColaboradores.addAll(pesquisarListaDeColaboradoresPorColabordaor(colaborador));

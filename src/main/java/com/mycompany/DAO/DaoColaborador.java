@@ -18,22 +18,33 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     protected SessionFactory sessionFactory;
 
 
-    public void inserir(Colaborador colaborador) {
+    public void inserir(Colaborador colaborador, String Operacao) {
         Boolean colaboradorNull = verificaSeColaboradorNull(colaborador);
-        if (colaboradorNull) {
+        if (colaboradorNull && Operacao == "inserir") {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             User user = pesquisarObjetoUserPorColaborador(colaborador);
             Boolean userNull = verificaSeUserNull(user);
             if (userNull) {
                 user = new User();
+                colaborador.setUser(user);
             }
             preparaUserParaInserir(colaborador, user);
-            session.saveOrUpdate(colaborador);
             session.saveOrUpdate(user);
+            session.saveOrUpdate(colaborador);
             session.getTransaction().commit();
             session.close();
-        } else {
+        }else if(!colaboradorNull && Operacao == "update") {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            User user = pesquisarObjetoUserPorColaborador(colaborador);
+            preparaUserParaInserir(colaborador,user);
+            session.saveOrUpdate(user);
+            session.saveOrUpdate(colaborador);
+            session.getTransaction().commit();
+            session.close();
+        }else
+        {
             System.out.println("Colaborador já existente!");
         }
     }
@@ -51,16 +62,21 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         return colaborador;
     }
 
-    public User pesquisarObjetoUserPorColaborador(Colaborador colaborador) {
-        User user = new User();
+    public Colaborador pesquisaObjetoColaboradorPorId(Long id) {
+        Colaborador colaborador = new Colaborador();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        String hql = "Select u from " + user.getClass().getCanonicalName()
-                + " as u " + "INNER JOIN u.colaborador c " + "where c.id = :colaborador_id";
+        String hql = "from " + colaborador.getClass().getCanonicalName()
+                + " as c where c.id = :id";
         Query query = session.createQuery(hql);
-        query.setParameter("colaborador_id", colaborador.getId());
-        user = (User) query.uniqueResult();
+        query.setParameter("id", id);
+        colaborador = (Colaborador) query.uniqueResult();
         session.close();
+        return colaborador;
+    }
+
+    public User pesquisarObjetoUserPorColaborador(Colaborador colaborador) {
+        User user = colaborador.getUser();
         return user;
     }
 
@@ -92,7 +108,7 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
 
 
     public boolean verificaSeColaboradorNull(Colaborador colaborador) {
-        Colaborador colaboradorparaVerificar = pesquisaObjetoColaboradorPorNome(colaborador.getNome());
+        Colaborador colaboradorparaVerificar = pesquisaObjetoColaboradorPorId(colaborador.getId());
         Boolean colaboradorNull;
 
         if (colaboradorparaVerificar == null) {
@@ -117,7 +133,6 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         user.setUsername(colaborador.getUsername());
         user.setPassword(colaborador.getPassword());
         user.setPerfil(colaborador.getPerfil());
-        user.setColaborador(colaborador);
     }
 
     @Override

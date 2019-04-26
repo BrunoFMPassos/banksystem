@@ -1,6 +1,7 @@
 package com.mycompany.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -11,10 +12,9 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = 7966191167704263868L;
 
-	@ManyToOne
-	@JoinColumn(name="colaborador_id")
-	private Colaborador colaborador;
-
+	@OneToMany(mappedBy = "user", targetEntity = Colaborador.class,
+			fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Colaborador> colaboradores;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,11 +62,11 @@ public class User implements Serializable{
 		this.perfil = perfil;
 	}
 
-	public Colaborador getColaborador() {
-		return colaborador;
+	public List<Colaborador> getColaboradores() {
+		return colaboradores;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
+	public void setColaboradores(List<Colaborador> colaboradores) {
+		this.colaboradores = colaboradores;
 	}
 }

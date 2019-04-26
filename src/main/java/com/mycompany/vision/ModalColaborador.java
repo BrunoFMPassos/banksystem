@@ -111,7 +111,12 @@ public class ModalColaborador extends Panel {
     }
 
     private DropDownChoice<Agencia> criarSelectAgencia() {
-        Agencia agencia = new Agencia();
+        Agencia agencia = colaborador.getAgencia();
+
+        if(agencia == null){
+            agencia = new Agencia();
+        }
+
         final List<Agencia> listaDeAgenciasPesquisa = serviceAgencia.pesquisarListaDeAgenciasPorAgencia(agencia);
         List<String> listaDeAgencias = new ArrayList<String>();
         for (Agencia agenciaLoop : listaDeAgenciasPesquisa) {
@@ -119,9 +124,9 @@ public class ModalColaborador extends Panel {
         }
         ChoiceRenderer<Agencia> choiceRenderer = new ChoiceRenderer<Agencia>("numero", "id") {
             @Override
-            public Object getDisplayValue(Agencia empresa) {
+            public Object getDisplayValue(Agencia agencia) {
                 // TODO Auto-generated method stub
-                return empresa.getNumero().intValue();
+                return agencia.getNumero();
             }
         };
         IModel<List<Agencia>> IModellist = new LoadableDetachableModel<List<Agencia>>() {

@@ -14,7 +14,7 @@ public class Pessoa  implements Serializable {
     @Column(nullable=false, length=200)
     private String nome;
     @Column(nullable=false, length=200)
-    private Long dataDeNascimento;
+    private Long data_de_nascimento;
     @Column(nullable=false, length=200)
     private Long cpf;
     @Column(nullable=false, length=200)
@@ -50,11 +50,11 @@ public class Pessoa  implements Serializable {
     }
 
     public Long getDataDeNascimento() {
-        return dataDeNascimento;
+        return data_de_nascimento;
     }
 
     public void setDataDeNascimento(Long dataDeNascimento) {
-        this.dataDeNascimento = dataDeNascimento;
+        this.data_de_nascimento = dataDeNascimento;
     }
 
     public Long getCpf() {

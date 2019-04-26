@@ -11,7 +11,7 @@ public class ServicePerfil {
     }
 
     public  String verificaUser(){
-        String user = BaseSession.get().getUser().getColaborador().getNome();
+        String user = BaseSession.get().getUser().getUsername();
         return user;
     }
 

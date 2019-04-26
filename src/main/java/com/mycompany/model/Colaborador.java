@@ -8,11 +8,13 @@ import java.util.List;
 @Table(name = "Colaborador")
 public class Colaborador extends Pessoa implements Serializable {
 
-    @OneToMany(mappedBy = "colaborador", targetEntity = User.class,
-            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
-
-    private List<User> users;
+    @ManyToOne
+    @JoinColumn(name="agencia_id")
+    private Agencia agencia;
 
     @Transient
     private String perfil;
@@ -23,8 +25,6 @@ public class Colaborador extends Pessoa implements Serializable {
     @Transient
     private String password;
 
-    @Column(nullable=false, length=200)
-    private String agencia;
 
 
     public String getPerfil() {
@@ -51,19 +51,19 @@ public class Colaborador extends Pessoa implements Serializable {
         this.password = password;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getAgencia() {
+    public Agencia getAgencia() {
         return agencia;
     }
 
-    public void setAgencia(String agencia) {
+    public void setAgencia(Agencia agencia) {
         this.agencia = agencia;
     }
 }

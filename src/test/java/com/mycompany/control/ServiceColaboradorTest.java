@@ -1,5 +1,6 @@
 package com.mycompany.control;
 
+import com.mycompany.model.Agencia;
 import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
 import org.junit.Before;
@@ -28,6 +29,18 @@ public class ServiceColaboradorTest {
     @Before
     public void setUp() throws Exception {
 
+        Agencia agencia = new Agencia();
+        agencia.setId(1L);
+        agencia.setCidade("Anápolis");
+        agencia.setUF("GO");
+        agencia.setNumero(1);
+
+        Agencia agencia2 = new Agencia();
+        agencia2.setId(2L);
+        agencia2.setCidade("Anápolis");
+        agencia2.setUF("GO");
+        agencia2.setNumero(2);
+
         colaborador.setNome("Bruno");
         colaborador.setCpf(11111111111L);
         colaborador.setDataDeNascimento(27081996L);
@@ -41,7 +54,7 @@ public class ServiceColaboradorTest {
         colaborador.setEndereco("Rua teste");
         colaborador.setNumero(102);
         colaborador.setComplemento("testedecomplemento");
-        colaborador.setAgencia("1234");
+        colaborador4.setAgencia(agencia2);
 
         colaborador2.setNome("João");
         colaborador2.setCpf(22222222222L);
@@ -56,7 +69,7 @@ public class ServiceColaboradorTest {
         colaborador2.setEndereco("Rua teste");
         colaborador2.setNumero(102);
         colaborador2.setComplemento("testedecomplemento");
-        colaborador2.setAgencia("1234");
+        colaborador4.setAgencia(agencia);
 
         colaborador3.setNome("Maria");
         colaborador3.setCpf(88888888888L);
@@ -71,7 +84,7 @@ public class ServiceColaboradorTest {
         colaborador3.setEndereco("Rua teste");
         colaborador3.setNumero(102);
         colaborador3.setComplemento("testedecomplemento");
-        colaborador3.setAgencia("1234");
+        colaborador4.setAgencia(agencia);
 
         colaborador4.setNome("Teste");
         colaborador4.setCpf(00000000000L);
@@ -86,7 +99,7 @@ public class ServiceColaboradorTest {
         colaborador4.setEndereco("Rua teste");
         colaborador4.setNumero(102);
         colaborador4.setComplemento("testedecomplemento");
-        colaborador4.setAgencia("1234");
+        colaborador4.setAgencia(agencia2);
 
 
 
@@ -95,7 +108,7 @@ public class ServiceColaboradorTest {
     public void insert() {
 
         try {
-            serviceColaborador.inserir(colaborador4);
+            serviceColaborador.inserir(colaborador4,"inserir");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
@@ -108,12 +121,12 @@ public class ServiceColaboradorTest {
     public void update() {
 
         try {
-            Colaborador  colaborador = serviceColaborador.pesquisarObjetoColaboradorPorNome("João");
+            Colaborador  colaborador = serviceColaborador.pesquisarObjetoColaboradorPorNome("Teste");
             colaborador.setCpf(22222222222L);
-            colaborador.setPassword("123456");
-            colaborador.setUsername("joao");
-            colaborador.setPerfil("Caixa");
-            serviceColaborador.inserir(colaborador);
+            colaborador.setPassword("testes123");
+            colaborador.setUsername("teste");
+            colaborador.setPerfil("Diretor");
+            serviceColaborador.inserir(colaborador,"update");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
