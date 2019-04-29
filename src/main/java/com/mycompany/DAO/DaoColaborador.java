@@ -100,8 +100,9 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     public void deletar(Colaborador colaborador) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.delete(pesquisarObjetoUserPorColaborador(colaborador));
+        User user = (pesquisarObjetoUserPorColaborador(colaborador));
         session.delete(colaborador);
+        session.delete(user);
         session.getTransaction().commit();
         session.close();
     }

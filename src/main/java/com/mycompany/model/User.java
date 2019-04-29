@@ -13,7 +13,7 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 7966191167704263868L;
 
 	@OneToMany(mappedBy = "user", targetEntity = Colaborador.class,
-			fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+			fetch = FetchType.LAZY)
 	private List<Colaborador> colaboradores;
 
 	@Id

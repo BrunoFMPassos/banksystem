@@ -21,11 +21,11 @@ public class PessoaJuridica  implements Serializable {
     @Column(nullable=false, length=200)
     private String nomeFantasia;
     @Column(nullable=false, length=200)
-    private Long cnpj;
+    private String cnpj;
     @Column(nullable=false, length=200)
-    private Long inscricaoEstadual;
+    private String inscricaoEstadual;
     @Column(nullable=false, length=200)
-    private Long Telefone;
+    private String Telefone;
     @Column(nullable=false, length=200)
     private String cidade;
     @Column(nullable=false, length=200)
@@ -62,27 +62,27 @@ public class PessoaJuridica  implements Serializable {
         this.nomeFantasia = nomeFantasia;
     }
 
-    public Long getCnpj() {
+    public String getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(Long cnpj) {
+    public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
 
-    public Long getInscricaoEstadual() {
+    public String getInscricaoEstadual() {
         return inscricaoEstadual;
     }
 
-    public void setInscricaoEstadual(Long inscricaoEstadual) {
+    public void setInscricaoEstadual(String inscricaoEstadual) {
         this.inscricaoEstadual = inscricaoEstadual;
     }
 
-    public Long getTelefone() {
+    public String getTelefone() {
         return Telefone;
     }
 
-    public void setTelefone(Long telefone) {
+    public void setTelefone(String telefone) {
         Telefone = telefone;
     }
 

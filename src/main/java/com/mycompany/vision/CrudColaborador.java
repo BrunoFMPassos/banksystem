@@ -24,7 +24,6 @@ import java.util.List;
 
 
 public class CrudColaborador extends BasePage {
-    private static final long serialVersionUID = -2798690654299606509L;
 
     @SpringBean(name = "colaboradorService")
     ServiceColaborador serviceColaborador;
@@ -39,11 +38,13 @@ public class CrudColaborador extends BasePage {
 
     ModalWindow modalWindowInserirColaborador = new ModalWindow("modalinserircolaborador");
     ModalWindow modalWindowEditarColaborador = new ModalWindow("modaleditarcolaborador");
+    ModalWindow modalWindowExcluirColaborador = new ModalWindow("modalexcluircolaborador");
 
     public CrudColaborador() {
         listaDeColaboradores.addAll(serviceColaborador.pesquisarListaDeColaboradoresPorColabordaor(colaborador));
         modalWindowInserirColaborador.setAutoSize(false);
         modalWindowEditarColaborador.setAutoSize(false);
+        modalWindowExcluirColaborador.setAutoSize(true);
 
         CompoundPropertyModel<Colaborador> compoundPropertyModelColaborador = new CompoundPropertyModel<Colaborador>(colaborador);
 
@@ -62,6 +63,7 @@ public class CrudColaborador extends BasePage {
         form.add(criarTabela());
         form.add(cirarModalInserirColaborador());
         form.add(cirarModalEditarColaborador());
+        form.add(cirarModalExluirColaborador());
     }
 
 
@@ -120,10 +122,35 @@ public class CrudColaborador extends BasePage {
                     }
                 };
 
-                AjaxLink<?> excluir = new AjaxLink<Object>("excluir") {
+                final AjaxLink<?> excluir = new AjaxLink<Object>("excluir") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        System.out.println("Clicou no excluir");
+                        final ModalExcluir modalExcluirColaborador = new ModalExcluir(modalWindowExcluirColaborador.getContentId()){
+                            @Override
+                            public void excluir(AjaxRequestTarget target, Colaborador colaborador) {
+                                super.excluir(target, colaborador);
+                                serviceColaborador.deletarColaborador(colaboradorDaLista);
+                                listaDeColaboradores.clear();
+                                listaDeColaboradores.addAll(serviceColaborador.pesquisarListaDeColaboradoresPorColabordaor(colaboradorDaLista));
+                                modalWindowExcluirColaborador.close(target);
+                                target.add(rowPanel);
+                            }
+
+                            @Override
+                            public void fecharSemExcluir(AjaxRequestTarget target, Colaborador colaborador) {
+                                super.fecharSemExcluir(target, colaborador);
+                                modalWindowExcluirColaborador.close(target);
+                            }
+
+                            @Override
+                            public Label mostrarValorASerExcluido(Colaborador colaborador) {
+                                return super.mostrarValorASerExcluido(colaboradorDaLista);
+                            }
+                        };
+
+                        modalWindowExcluirColaborador.setContent(modalExcluirColaborador);
+                        modalWindowExcluirColaborador.show(target);
+
                     }
                 };
 
@@ -149,6 +176,10 @@ public class CrudColaborador extends BasePage {
 
     private ModalWindow cirarModalEditarColaborador() {
         return modalWindowEditarColaborador;
+    }
+
+    private ModalWindow cirarModalExluirColaborador() {
+        return modalWindowExcluirColaborador;
     }
 
     private AjaxLink<?> criarBtnInserir() {

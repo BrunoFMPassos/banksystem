@@ -2,6 +2,7 @@ package com.mycompany.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 
 @Entity
@@ -14,11 +15,11 @@ public class Pessoa  implements Serializable {
     @Column(nullable=false, length=200)
     private String nome;
     @Column(nullable=false, length=200)
-    private Long data_de_nascimento;
+    private String data_de_nascimento;
     @Column(nullable=false, length=200)
-    private Long cpf;
+    private String cpf;
     @Column(nullable=false, length=200)
-    private Long rg;
+    private String rg;
     @Column(nullable=false, length=200)
     private String sexo;
     @Column(nullable=false, length=200)
@@ -49,27 +50,27 @@ public class Pessoa  implements Serializable {
         this.nome = nome;
     }
 
-    public Long getDataDeNascimento() {
+    public String getDataDeNascimento() {
         return data_de_nascimento;
     }
 
-    public void setDataDeNascimento(Long dataDeNascimento) {
+    public void setDataDeNascimento(String dataDeNascimento) {
         this.data_de_nascimento = dataDeNascimento;
     }
 
-    public Long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(Long cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
-    public Long getRg() {
+    public String getRg() {
         return rg;
     }
 
-    public void setRg(Long rg) {
+    public void setRg(String rg) {
         this.rg = rg;
     }
 

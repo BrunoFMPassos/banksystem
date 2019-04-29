@@ -42,9 +42,9 @@ public class ServiceColaboradorTest {
         agencia2.setNumero(2);
 
         colaborador.setNome("Bruno");
-        colaborador.setCpf(11111111111L);
-        colaborador.setDataDeNascimento(27081996L);
-        colaborador.setRg(5810483L);
+        colaborador.setCpf("111.111.111-11");
+        colaborador.setDataDeNascimento("27/08/1996");
+        colaborador.setRg("5810483");
         colaborador.setSexo("Masculino");
         colaborador.setUsername("admin");
         colaborador.setPassword("123456");
@@ -57,9 +57,9 @@ public class ServiceColaboradorTest {
         colaborador4.setAgencia(agencia2);
 
         colaborador2.setNome("João");
-        colaborador2.setCpf(22222222222L);
-        colaborador2.setDataDeNascimento(26061998L);
-        colaborador2.setRg(444444L);
+        colaborador2.setCpf("111.111.111-11");
+        colaborador2.setDataDeNascimento("27/08/1996");
+        colaborador2.setRg("5810483");
         colaborador2.setSexo("Masculino");
         colaborador2.setUsername("joao");
         colaborador2.setPassword("123456");
@@ -72,9 +72,9 @@ public class ServiceColaboradorTest {
         colaborador4.setAgencia(agencia);
 
         colaborador3.setNome("Maria");
-        colaborador3.setCpf(88888888888L);
-        colaborador3.setDataDeNascimento(19071997L);
-        colaborador3.setRg(222222L);
+        colaborador3.setCpf("111.111.111-11");
+        colaborador3.setDataDeNascimento("27/08/1996");
+        colaborador3.setRg("5810483");
         colaborador3.setSexo("Feminino");
         colaborador3.setUsername("maria");
         colaborador3.setPassword("123456");
@@ -87,9 +87,9 @@ public class ServiceColaboradorTest {
         colaborador4.setAgencia(agencia);
 
         colaborador4.setNome("Teste");
-        colaborador4.setCpf(00000000000L);
-        colaborador4.setDataDeNascimento(10101999L);
-        colaborador4.setRg(111111L);
+        colaborador4.setCpf("111.111.111-11");
+        colaborador4.setDataDeNascimento("27/08/1996");
+        colaborador4.setRg("5810483");
         colaborador4.setSexo("Masculino");
         colaborador4.setUsername("teste");
         colaborador4.setPassword("testes123");
@@ -108,12 +108,11 @@ public class ServiceColaboradorTest {
     public void insert() {
 
         try {
-            serviceColaborador.inserir(colaborador4,"inserir");
+            serviceColaborador.inserir(colaborador3,"inserir");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
         }
-
 
     }
 
@@ -122,7 +121,7 @@ public class ServiceColaboradorTest {
 
         try {
             Colaborador  colaborador = serviceColaborador.pesquisarObjetoColaboradorPorNome("Teste");
-            colaborador.setCpf(22222222222L);
+            colaborador.setCpf("222.222.222-22");
             colaborador.setPassword("testes123");
             colaborador.setUsername("teste");
             colaborador.setPerfil("Diretor");

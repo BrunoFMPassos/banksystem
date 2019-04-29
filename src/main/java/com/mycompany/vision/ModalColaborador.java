@@ -4,6 +4,7 @@ import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.mycompany.control.ServiceAgencia;
 import com.mycompany.model.Agencia;
 import com.mycompany.model.Colaborador;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
@@ -90,6 +91,7 @@ public class ModalColaborador extends Panel {
 
     private TextField<String> criarTextFieldCpf() {
         TextField<String> cpf = new TextField<String>("cpf");
+        cpf.add(new AttributeModifier("onfocus", "$(this).mask('999.999.999-99');"));
         return cpf;
     }
 
@@ -100,6 +102,7 @@ public class ModalColaborador extends Panel {
 
     private TextField<String> criarTextFieldDataDeNascimento() {
         TextField<String> dataDeNascimento = new TextField<String>("dataDeNascimento");
+        dataDeNascimento.add(new AttributeModifier("onfocus", "$(this).mask('99/99/9999');"));
         return dataDeNascimento;
     }
 

@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
     <title></title>
 </head>
 <body>
 <wicket:panel>
+
     <div wicket:id="container" style="width: 100%; border-radius: 3px;">
         <form wicket:id="formulariocadastrocolaborador">
             <div wicket:id="feedbackpanel"></div>
@@ -20,9 +22,9 @@
             <div class="container">
                 <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
                     <input style="width: 42%;" type="text" class="field noLast" wicket:id="nome" placeholder="Nome:">
-                    <input style="width: 42%;" type="text" class="field Last" wicket:id="cpf" placeholder="CPF:">
+                    <input id="cpf" style="width: 42%;" type="text" class="field Last" wicket:id="cpf" placeholder="CPF:">
                     <input style="width: 42%;" type="text" class="field noLast" wicket:id="rg" placeholder="RG:">
-                    <input style="width: 42%;" type="text" class="field Last" wicket:id="dataDeNascimento"
+                    <input id="data" style="width: 42%;" type="text" class="field Last" wicket:id="dataDeNascimento"
                            placeholder="Data de Nascimento:">
                     <div style="margin-top: 5%;">
                         <span wicket:id="sexo">
@@ -66,3 +68,6 @@
 </wicket:panel>
 </body>
 </html>
+
+
+

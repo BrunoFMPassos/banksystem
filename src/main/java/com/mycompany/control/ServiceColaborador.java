@@ -85,22 +85,7 @@ public class ServiceColaborador {
     public void executarAoClicarEmSalvarNaModal(
             List<Colaborador> listaDeColaboradores, Colaborador colaborador,
             AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, String operacao) {
-        System.out.println("Clicou no Salvar!");
 
-        System.out.println(colaborador.getNome());
-        System.out.println(colaborador.getCpf());
-        System.out.println(colaborador.getRg());
-        System.out.println(colaborador.getDataDeNascimento());
-        System.out.println(colaborador.getSexo());
-        System.out.println(colaborador.getAgencia());
-        System.out.println(colaborador.getUsername());
-        System.out.println(colaborador.getPassword());
-        System.out.println(colaborador.getPerfil());
-        System.out.println(colaborador.getCidade());
-        System.out.println(colaborador.getUF());
-        System.out.println(colaborador.getEndereco());
-        System.out.println(colaborador.getNumero());
-        System.out.println(colaborador.getComplemento());
 
         inserir(colaborador,operacao);
 
