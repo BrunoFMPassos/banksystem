@@ -83,4 +83,6 @@ public class GenericDao<T extends Object> implements Serializable {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
+
 }

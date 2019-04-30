@@ -37,6 +37,7 @@ public class DaoUser extends GenericDAOImpl<User, Long> implements Serializable 
         return user;
     }
 
+
     @Override
     public SessionFactory getSessionFactory() {
         return sessionFactory;
@@ -46,4 +47,6 @@ public class DaoUser extends GenericDAOImpl<User, Long> implements Serializable 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
+
 }

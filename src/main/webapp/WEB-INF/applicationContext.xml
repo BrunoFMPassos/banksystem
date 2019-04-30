@@ -68,6 +68,7 @@
     <bean id="colaboradorService" class="com.mycompany.control.ServiceColaborador">
         <property name="colaboradorDao" ref="colaboradorDao"/>
         <property name="genericDao" ref="genericDao"/>
+        <property name="validador" ref="validador"/>
     </bean>
 
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">
@@ -75,6 +76,11 @@
     </bean>
 
     <bean id="perfilService" class="com.mycompany.control.ServicePerfil">
+    </bean>
+
+    <bean id="validador" class="com.mycompany.control.Validador">
+        <property name="colaboradorDao" ref="colaboradorDao"/>
+        <property name="genericDao" ref="genericDao"/>
     </bean>
 
 

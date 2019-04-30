@@ -18,9 +18,52 @@ public class ServiceColaborador {
     private DaoColaborador colaboradorDao;
     @SpringBean(name = "genericDao")
     private GenericDao<Colaborador> genericDao;
+    @SpringBean(name = "validador")
+    private Validador validador;
 
-    public void inserir(Colaborador colaborador, String operacao) {
-        colaboradorDao.inserir(colaborador, operacao);
+    public Mensagem inserir(Colaborador colaborador, String Operacao) {
+
+        Mensagem mensagem = new Mensagem();
+        Boolean colaboradorNull = verificaSeColaboradorNullParaInserir(colaborador);
+        if (colaboradorNull) {
+            if (verificaSeUsuarioUnicoParaInserir(colaborador)
+                    && validador.verificaSeCPFUnicoParaInserir(colaborador)
+                    && validador.verificaSeRGUnicoParaInserir(colaborador)) {
+
+                User user = pesquisarObjetoUserPorColaborador(colaborador);
+                Boolean userNull = verificaSeUserNull(user);
+                if (userNull) {
+                    user = new User();
+                    colaborador.setUser(user);
+                }
+                if(validador.validaTamanhoCpf(colaborador.getCpf())){
+                    preparaUserParaInserir(colaborador, user);
+                    colaboradorDao.inserir(colaborador, user);
+                }
+            } else {
+                System.out.println("Colaborador já existente!");
+            }
+        } else {
+            System.out.println("Colaborador Já existente!");
+        }
+        return mensagem;
+    }
+
+    public Mensagem update(Colaborador colaborador) {
+        Mensagem mensagem = new Mensagem();
+        Boolean colaboradorNull = verificaSeColaboradorNullParaUpdate(colaborador);
+        if (!colaboradorNull) {
+            if (verificaSeUsuarioUnicoParaUpdate(colaborador)
+                    && validador.verificaSeCPFUnicoParaUpdate(colaborador)
+                    && validador.verificaSeRGUnicoParaUpdate(colaborador)) {
+                User user = pesquisarObjetoUserPorColaborador(colaborador);
+                preparaUserParaInserir(colaborador, user);
+                colaboradorDao.inserir(colaborador, user);
+            } else {
+                System.out.println("Colaborador já existente!");
+            }
+        }
+        return mensagem;
     }
 
     public Colaborador pesquisarObjetoColaboradorPorNome(String nome) {
@@ -41,8 +84,8 @@ public class ServiceColaborador {
         return listaDeColaboradores;
     }
 
-    public void trazerDadosDoUserParaOColaborador(List<Colaborador> listaDeColaboradores){
-        for (Colaborador colaborador: listaDeColaboradores){
+    public void trazerDadosDoUserParaOColaborador(List<Colaborador> listaDeColaboradores) {
+        for (Colaborador colaborador : listaDeColaboradores) {
             colaborador.setUsername(colaborador.getUser().getUsername());
             colaborador.setPerfil(colaborador.getUser().getPerfil());
         }
@@ -87,7 +130,7 @@ public class ServiceColaborador {
             AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, String operacao) {
 
 
-        inserir(colaborador,operacao);
+        inserir(colaborador, operacao);
 
         listaDeColaboradores.clear();
         listaDeColaboradores.addAll(pesquisarListaDeColaboradoresPorColabordaor(colaborador));
@@ -95,11 +138,91 @@ public class ServiceColaborador {
         target.add(rowPanel);
     }
 
+    public boolean verificaSeColaboradorNullParaInserir(Colaborador colaborador) {
+        Boolean colaboradorNull = true;
+            Colaborador colaboradorparaVerificar = colaboradorDao.pesquisaObjetoColaboradorPorNome(colaborador.getNome());
+
+            if (colaboradorparaVerificar == null) {
+                colaboradorNull = true;
+            } else {
+                colaboradorNull = false;
+            }
+        return colaboradorNull;
+    }
+
+
+    public boolean verificaSeColaboradorNullParaUpdate(Colaborador colaborador) {
+        Boolean colaboradorNull = true;
+        Colaborador colaboradorparaVerificar = colaboradorDao.pesquisaObjetoColaboradorPorId(colaborador.getId());
+
+            if (colaboradorparaVerificar == null) {
+                colaboradorNull = true;
+            } else {
+                colaboradorNull = false;
+            }
+        return colaboradorNull;
+    }
+
+    public boolean verificaSeUsuarioUnicoParaInserir(Colaborador colaborador) {
+        Boolean usuarioUnico = true;
+        User user = new User();
+        int verificador = 0;
+            for (User usuarioDaLista : colaboradorDao.pesquisarListaDeUsuariosExistentes()) {
+                if (usuarioDaLista.getUsername().equals(colaborador.getUsername())) {
+                    verificador++;
+                }
+            }
+        if (verificador > 0) {
+            usuarioUnico = false;
+        }
+        return usuarioUnico;
+    }
+
+    public boolean verificaSeUsuarioUnicoParaUpdate(Colaborador colaborador) {
+        Boolean usuarioUnico = true;
+        User user = new User();
+        int verificador = 0;
+        for (User usuarioDaLista : colaboradorDao.pesquisarListaDeUsuariosExistentes()) {
+            if (usuarioDaLista.getUsername().equals(colaborador.getUsername())&&usuarioDaLista.getId()!=colaborador.getUser().getId()) {
+                verificador++;
+            }
+        }
+        if (verificador > 0) {
+            usuarioUnico = false;
+        }
+        return usuarioUnico;
+    }
+
+
+
+
+
+    public void preparaUserParaInserir(Colaborador colaborador, User user) {
+        user.setUsername(colaborador.getUsername());
+        user.setPassword(colaborador.getPassword());
+        user.setPerfil(colaborador.getPerfil());
+    }
+
+    public boolean verificaSeUserNull(User user) {
+        Boolean userNull;
+        if (user == null) {
+            userNull = true;
+        } else {
+            userNull = false;
+        }
+        return userNull;
+    }
+
+
     public void setColaboradorDao(DaoColaborador colaboradorDao) {
         this.colaboradorDao = colaboradorDao;
     }
 
     public void setGenericDao(GenericDao<Colaborador> genericDao) {
         this.genericDao = genericDao;
+    }
+
+    public void setValidador(Validador validador) {
+        this.validador = validador;
     }
 }

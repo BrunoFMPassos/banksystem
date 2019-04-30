@@ -3,6 +3,7 @@ package com.mycompany.control;
 import com.mycompany.model.Agencia;
 import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ public class ServiceColaboradorTest {
 
     @Autowired
     private ServiceColaborador serviceColaborador;
+    private FeedbackPanel feedbackPanel;
 
     Colaborador colaborador = new Colaborador();
     Colaborador colaborador2 = new Colaborador();
@@ -54,12 +56,12 @@ public class ServiceColaboradorTest {
         colaborador.setEndereco("Rua teste");
         colaborador.setNumero(102);
         colaborador.setComplemento("testedecomplemento");
-        colaborador4.setAgencia(agencia2);
+        colaborador.setAgencia(agencia2);
 
         colaborador2.setNome("João");
-        colaborador2.setCpf("111.111.111-11");
+        colaborador2.setCpf("111.111.111-12");
         colaborador2.setDataDeNascimento("27/08/1996");
-        colaborador2.setRg("5810483");
+        colaborador2.setRg("5810487");
         colaborador2.setSexo("Masculino");
         colaborador2.setUsername("joao");
         colaborador2.setPassword("123456");
@@ -69,14 +71,14 @@ public class ServiceColaboradorTest {
         colaborador2.setEndereco("Rua teste");
         colaborador2.setNumero(102);
         colaborador2.setComplemento("testedecomplemento");
-        colaborador4.setAgencia(agencia);
+        colaborador2.setAgencia(agencia);
 
-        colaborador3.setNome("Maria");
-        colaborador3.setCpf("111.111.111-11");
-        colaborador3.setDataDeNascimento("27/08/1996");
-        colaborador3.setRg("5810483");
+        colaborador3.setNome("Mariana");
+        colaborador3.setCpf("555.111.111-10");
+        colaborador3.setDataDeNascimento("26/08/1996");
+        colaborador3.setRg("5813486");
         colaborador3.setSexo("Feminino");
-        colaborador3.setUsername("maria");
+        colaborador3.setUsername("mariana");
         colaborador3.setPassword("123456");
         colaborador3.setPerfil("Gerente");
         colaborador3.setCidade("Anápolis");
@@ -84,12 +86,12 @@ public class ServiceColaboradorTest {
         colaborador3.setEndereco("Rua teste");
         colaborador3.setNumero(102);
         colaborador3.setComplemento("testedecomplemento");
-        colaborador4.setAgencia(agencia);
+        colaborador3.setAgencia(agencia);
 
         colaborador4.setNome("Teste");
-        colaborador4.setCpf("111.111.111-11");
+        colaborador4.setCpf("111.111.111-35");
         colaborador4.setDataDeNascimento("27/08/1996");
-        colaborador4.setRg("5810483");
+        colaborador4.setRg("5814483");
         colaborador4.setSexo("Masculino");
         colaborador4.setUsername("teste");
         colaborador4.setPassword("testes123");
@@ -108,7 +110,7 @@ public class ServiceColaboradorTest {
     public void insert() {
 
         try {
-            serviceColaborador.inserir(colaborador3,"inserir");
+            serviceColaborador.inserir(colaborador4,"inserir");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
@@ -118,12 +120,11 @@ public class ServiceColaboradorTest {
 
     @Test
     public void update() {
-
         try {
-            Colaborador  colaborador = serviceColaborador.pesquisarObjetoColaboradorPorNome("Teste");
+            Colaborador  colaborador = serviceColaborador.pesquisarObjetoColaboradorPorNome("Mariana");
             colaborador.setCpf("222.222.222-22");
             colaborador.setPassword("testes123");
-            colaborador.setUsername("teste");
+            colaborador.setUsername("marianateste");
             colaborador.setPerfil("Diretor");
             serviceColaborador.inserir(colaborador,"update");
             System.out.println("Teste realizado com sucesso!");

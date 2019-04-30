@@ -5,6 +5,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,36 +19,15 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     protected SessionFactory sessionFactory;
 
 
-    public void inserir(Colaborador colaborador, String Operacao) {
-        Boolean colaboradorNull = verificaSeColaboradorNull(colaborador);
-        if (colaboradorNull && Operacao == "inserir") {
+    public void inserir(Colaborador colaborador, User user) {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            User user = pesquisarObjetoUserPorColaborador(colaborador);
-            Boolean userNull = verificaSeUserNull(user);
-            if (userNull) {
-                user = new User();
-                colaborador.setUser(user);
-            }
-            preparaUserParaInserir(colaborador, user);
             session.saveOrUpdate(user);
             session.saveOrUpdate(colaborador);
             session.getTransaction().commit();
             session.close();
-        }else if(!colaboradorNull && Operacao == "update") {
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
-            User user = pesquisarObjetoUserPorColaborador(colaborador);
-            preparaUserParaInserir(colaborador,user);
-            session.saveOrUpdate(user);
-            session.saveOrUpdate(colaborador);
-            session.getTransaction().commit();
-            session.close();
-        }else
-        {
-            System.out.println("Colaborador já existente!");
-        }
     }
+
 
     public Colaborador pesquisaObjetoColaboradorPorNome(String nome) {
         Colaborador colaborador = new Colaborador();
@@ -97,6 +77,26 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         return listaDeColaboradores;
     }
 
+    public List<User> pesquisarListaDeUsuariosExistentes() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Criteria criterio = session.createCriteria(User.class);
+        List<User> listaDeUsers = criterio.list();
+        session.getTransaction().commit();
+        session.close();
+        return listaDeUsers;
+    }
+
+    public List<Colaborador> pesquisarListaDeColaboradoresExistentes() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Criteria criterio = session.createCriteria(Colaborador.class);
+        List<Colaborador> listaDeColaboradores = criterio.list();
+        session.getTransaction().commit();
+        session.close();
+        return listaDeColaboradores;
+    }
+
     public void deletar(Colaborador colaborador) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -107,34 +107,6 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         session.close();
     }
 
-
-    public boolean verificaSeColaboradorNull(Colaborador colaborador) {
-        Colaborador colaboradorparaVerificar = pesquisaObjetoColaboradorPorId(colaborador.getId());
-        Boolean colaboradorNull;
-
-        if (colaboradorparaVerificar == null) {
-            colaboradorNull = true;
-        } else {
-            colaboradorNull = false;
-        }
-        return colaboradorNull;
-    }
-
-    public boolean verificaSeUserNull(User user) {
-        Boolean userNull;
-        if (user == null) {
-            userNull = true;
-        } else {
-            userNull = false;
-        }
-        return userNull;
-    }
-
-    public void preparaUserParaInserir(Colaborador colaborador, User user) {
-        user.setUsername(colaborador.getUsername());
-        user.setPassword(colaborador.getPassword());
-        user.setPerfil(colaborador.getPerfil());
-    }
 
     @Override
     public SessionFactory getSessionFactory() {

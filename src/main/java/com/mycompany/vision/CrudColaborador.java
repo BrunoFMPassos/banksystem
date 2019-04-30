@@ -111,8 +111,9 @@ public class CrudColaborador extends BasePage {
                                     @Override
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
                                         super.executaAoClicarEmSalvar(target,colaborador);
-                                        serviceColaborador.executarAoClicarEmSalvarNaModal(listaDeColaboradores,colaborador,target,
-                                                rowPanel,modalWindowEditarColaborador,"update");
+                                            serviceColaborador.executarAoClicarEmSalvarNaModal(listaDeColaboradores, colaborador, target,
+                                                    rowPanel, modalWindowEditarColaborador, "update");
+                                        target.add(modalWindowEditarColaborador);
                                     }
                                 };
 
@@ -191,6 +192,7 @@ public class CrudColaborador extends BasePage {
                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
                         serviceColaborador.executarAoClicarEmSalvarNaModal(
                                 listaDeColaboradores, colaborador, target, rowPanel, modalWindowInserirColaborador,"inserir");
+                        target.add(modalWindowInserirColaborador);
                     }
                 };
                 modalWindowInserirColaborador.setContent(modalColaborador);
