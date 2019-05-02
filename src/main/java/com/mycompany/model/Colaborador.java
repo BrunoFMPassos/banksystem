@@ -2,7 +2,6 @@ package com.mycompany.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "Colaborador")
@@ -63,7 +62,8 @@ public class Colaborador extends Pessoa implements Serializable {
         return agencia;
     }
 
-    public void setAgencia(Agencia agencia) {
-        this.agencia = agencia;
+    public void setAgencia(Agencia agencia_colaborador) {
+        this.agencia = agencia_colaborador;
     }
+
 }

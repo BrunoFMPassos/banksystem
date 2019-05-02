@@ -110,7 +110,7 @@ public class ServiceColaboradorTest {
     public void insert() {
 
         try {
-            serviceColaborador.inserir(colaborador4,"inserir");
+            serviceColaborador.inserir(colaborador4);
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
@@ -126,7 +126,7 @@ public class ServiceColaboradorTest {
             colaborador.setPassword("testes123");
             colaborador.setUsername("marianateste");
             colaborador.setPerfil("Diretor");
-            serviceColaborador.inserir(colaborador,"update");
+            serviceColaborador.update(colaborador);
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);

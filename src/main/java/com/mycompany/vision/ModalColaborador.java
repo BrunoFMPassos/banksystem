@@ -62,6 +62,7 @@ public class ModalColaborador extends Panel {
         form.add(criarTextFieldComplemento());
         container.add(form);
         return container;
+
     }
 
     private AjaxButton criarBtnSalvar() {
@@ -69,7 +70,6 @@ public class ModalColaborador extends Panel {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                System.out.println("Clicou no save");
                 executaAoClicarEmSalvar(target, colaborador);
             }
 

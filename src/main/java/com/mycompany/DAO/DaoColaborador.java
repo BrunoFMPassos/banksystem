@@ -28,7 +28,6 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
             session.close();
     }
 
-
     public Colaborador pesquisaObjetoColaboradorPorNome(String nome) {
         Colaborador colaborador = new Colaborador();
         Session session = sessionFactory.openSession();

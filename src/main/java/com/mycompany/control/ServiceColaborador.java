@@ -8,6 +8,7 @@ import com.mycompany.model.User;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -18,33 +19,31 @@ public class ServiceColaborador {
     private DaoColaborador colaboradorDao;
     @SpringBean(name = "genericDao")
     private GenericDao<Colaborador> genericDao;
-    @SpringBean(name = "validador")
-    private Validador validador;
 
-    public Mensagem inserir(Colaborador colaborador, String Operacao) {
+    public Mensagem inserir(Colaborador colaborador) {
 
         Mensagem mensagem = new Mensagem();
         Boolean colaboradorNull = verificaSeColaboradorNullParaInserir(colaborador);
-        if (colaboradorNull) {
-            if (verificaSeUsuarioUnicoParaInserir(colaborador)
-                    && validador.verificaSeCPFUnicoParaInserir(colaborador)
-                    && validador.verificaSeRGUnicoParaInserir(colaborador)) {
-
-                User user = pesquisarObjetoUserPorColaborador(colaborador);
-                Boolean userNull = verificaSeUserNull(user);
-                if (userNull) {
-                    user = new User();
-                    colaborador.setUser(user);
-                }
-                if(validador.validaTamanhoCpf(colaborador.getCpf())){
-                    preparaUserParaInserir(colaborador, user);
-                    colaboradorDao.inserir(colaborador, user);
-                }
-            } else {
-                System.out.println("Colaborador já existente!");
+        Boolean informacoesObrigatoriasPreenchidas = VerificaSeInformacoesObrigatoriasPreenchidas(colaborador,mensagem);
+        if (colaboradorNull && informacoesObrigatoriasPreenchidas) {
+                if (verificaSeUsuarioUnicoParaInserir(colaborador)) {
+                     if (verificaSeCPFUnicoParaInserir(colaborador)){
+                                    User user = pesquisarObjetoUserPorColaborador(colaborador);
+                                    Boolean userNull = verificaSeUserNull(user);
+                                    if (userNull) {
+                                        user = new User();
+                                        colaborador.setUser(user);
+                                    }
+                                     preparaUserParaInserir(colaborador, user);
+                                     colaboradorDao.inserir(colaborador, user);
+                     }else{
+                        mensagem.adcionarMensagemNaLista("Cpf já existente!");
+                    }
+            }else {
+                mensagem.adcionarMensagemNaLista("Username já existente!");
             }
         } else {
-            System.out.println("Colaborador Já existente!");
+            mensagem.adcionarMensagemNaLista("Colaborador já existente!");
         }
         return mensagem;
     }
@@ -53,15 +52,19 @@ public class ServiceColaborador {
         Mensagem mensagem = new Mensagem();
         Boolean colaboradorNull = verificaSeColaboradorNullParaUpdate(colaborador);
         if (!colaboradorNull) {
-            if (verificaSeUsuarioUnicoParaUpdate(colaborador)
-                    && validador.verificaSeCPFUnicoParaUpdate(colaborador)
-                    && validador.verificaSeRGUnicoParaUpdate(colaborador)) {
-                User user = pesquisarObjetoUserPorColaborador(colaborador);
-                preparaUserParaInserir(colaborador, user);
-                colaboradorDao.inserir(colaborador, user);
-            } else {
-                System.out.println("Colaborador já existente!");
-            }
+                if (verificaSeUsuarioUnicoParaUpdate(colaborador)){
+                        if(verificaSeCPFUnicoParaUpdate(colaborador)) {
+                            User user = pesquisarObjetoUserPorColaborador(colaborador);
+                            preparaUserParaInserir(colaborador, user);
+                            colaboradorDao.inserir(colaborador, user);
+                        }else {
+                            mensagem.adcionarMensagemNaLista("Cpf já existente!");
+                        }
+                }else {
+                    mensagem.adcionarMensagemNaLista("Usuário já existente!");;
+                }
+        }else{
+            mensagem.adcionarMensagemNaLista("Colaborador já existente!");
         }
         return mensagem;
     }
@@ -73,6 +76,8 @@ public class ServiceColaborador {
     public Colaborador pesquisarObjetoColaboradorPorId(Long id) {
         return colaboradorDao.pesquisaObjetoColaboradorPorId(id);
     }
+
+
 
     public User pesquisarObjetoUserPorColaborador(Colaborador colaborador) {
         return colaboradorDao.pesquisarObjetoUserPorColaborador(colaborador);
@@ -125,23 +130,56 @@ public class ServiceColaborador {
         target.add(rowPanel);
     }
 
-    public void executarAoClicarEmSalvarNaModal(
+    public void executarAoClicarEmSalvarNaModalSalvar(
             List<Colaborador> listaDeColaboradores, Colaborador colaborador,
-            AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, String operacao) {
+            AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, FeedbackPanel feedbackPanel) {
 
+        Mensagem mensagem = inserir(colaborador);
+        if(mensagem.getListaVazia()) {
+            listaDeColaboradores.clear();
+            listaDeColaboradores.addAll(pesquisarListaDeColaboradoresPorColabordaor(colaborador));
+            modalWindow.close(target);
+            target.add(rowPanel);
+        }else{
+            int  index = 0;
+            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+                feedbackPanel.error(mensagem.getListaDeMensagens().get(index));
+                index++;
+            }
+            target.add(feedbackPanel);
+        }
 
-        inserir(colaborador, operacao);
+    }
 
-        listaDeColaboradores.clear();
-        listaDeColaboradores.addAll(pesquisarListaDeColaboradoresPorColabordaor(colaborador));
-        modalWindow.close(target);
-        target.add(rowPanel);
+    public void executarAoClicarEmSalvarNaModalEditar(
+            List<Colaborador> listaDeColaboradores, Colaborador colaborador,
+            AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, FeedbackPanel feedbackPanel) {
+
+        Colaborador colaboradorExistente = pesquisarObjetoColaboradorPorId(colaborador.getId());
+        if (colaborador.getPassword().isEmpty()){
+            colaborador.setPassword(colaboradorExistente.getPassword());
+        }
+        Mensagem mensagem = update(colaborador);
+
+        if(mensagem.getListaVazia()) {
+            listaDeColaboradores.clear();
+            listaDeColaboradores.addAll(pesquisarListaDeColaboradoresPorColabordaor(colaborador));
+            modalWindow.close(target);
+            target.add(rowPanel);
+        }else{
+            int  index = 0;
+            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+                feedbackPanel.error(mensagem.getListaDeMensagens().get(index));
+                index++;
+            }
+            target.add(feedbackPanel);
+        }
+
     }
 
     public boolean verificaSeColaboradorNullParaInserir(Colaborador colaborador) {
         Boolean colaboradorNull = true;
             Colaborador colaboradorparaVerificar = colaboradorDao.pesquisaObjetoColaboradorPorNome(colaborador.getNome());
-
             if (colaboradorparaVerificar == null) {
                 colaboradorNull = true;
             } else {
@@ -154,7 +192,6 @@ public class ServiceColaborador {
     public boolean verificaSeColaboradorNullParaUpdate(Colaborador colaborador) {
         Boolean colaboradorNull = true;
         Colaborador colaboradorparaVerificar = colaboradorDao.pesquisaObjetoColaboradorPorId(colaborador.getId());
-
             if (colaboradorparaVerificar == null) {
                 colaboradorNull = true;
             } else {
@@ -194,9 +231,6 @@ public class ServiceColaborador {
     }
 
 
-
-
-
     public void preparaUserParaInserir(Colaborador colaborador, User user) {
         user.setUsername(colaborador.getUsername());
         user.setPassword(colaborador.getPassword());
@@ -213,6 +247,63 @@ public class ServiceColaborador {
         return userNull;
     }
 
+    public boolean verificaSeCPFUnicoParaInserir(Colaborador colaborador) {
+        Boolean cpfUnico = true;
+        int verificador = 0;
+        for (Colaborador colaboradorDaLista : colaboradorDao.pesquisarListaDeColaboradoresExistentes()) {
+            if (colaboradorDaLista.getCpf().equals(colaborador.getCpf())) {
+                verificador++;
+            }
+        }
+        if (verificador > 0) {
+            cpfUnico = false;
+        }
+        return cpfUnico;
+    }
+
+    public boolean verificaSeCPFUnicoParaUpdate(Colaborador colaborador) {
+        Boolean cpfUnico = true;
+        int verificador = 0;
+        for (Colaborador colaboradorDaLista : colaboradorDao.pesquisarListaDeColaboradoresExistentes()) {
+            System.out.println(colaboradorDaLista.getId());
+            if (colaborador.getId().toString().equals(colaboradorDaLista.getId().toString())){
+            }else{
+                if (colaboradorDaLista.getCpf().equals(colaborador.getCpf())) {
+                        verificador++;
+                    }
+                }
+        }
+        if (verificador > 0) {
+            cpfUnico = false;
+        }
+        return cpfUnico;
+    }
+
+
+    public boolean VerificaSeInformacoesObrigatoriasPreenchidas(Colaborador colaborador, Mensagem mensagem){
+
+        Boolean informacoesObrigatoriasPreenchidas = true;
+
+        if (colaborador.getNome().isEmpty()){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo nome é obrigatório!");
+        }
+        if (colaborador.getCpf().isEmpty()){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo cpf é obrigatório!");
+        }
+        if (colaborador.getUsername().isEmpty()){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo username é obrigatório!");
+        }
+       if (colaborador.getAgencia() == null){
+           informacoesObrigatoriasPreenchidas = false;
+           mensagem.adcionarMensagemNaLista("O campo agência é obrigatório!");
+       }
+
+       return informacoesObrigatoriasPreenchidas;
+    }
+
 
     public void setColaboradorDao(DaoColaborador colaboradorDao) {
         this.colaboradorDao = colaboradorDao;
@@ -220,9 +311,5 @@ public class ServiceColaborador {
 
     public void setGenericDao(GenericDao<Colaborador> genericDao) {
         this.genericDao = genericDao;
-    }
-
-    public void setValidador(Validador validador) {
-        this.validador = validador;
     }
 }

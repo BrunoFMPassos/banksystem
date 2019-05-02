@@ -52,6 +52,10 @@
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
+    <bean id="agenciaDao" class="com.mycompany.DAO.DaoAgencia">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+
     <bean id="genericDao" class="com.mycompany.DAO.GenericDao">
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
@@ -63,12 +67,12 @@
 
     <bean id="agenciaService" class="com.mycompany.control.ServiceAgencia">
         <property name="genericDao" ref="genericDao"/>
+        <property name="agenciaDao" ref="agenciaDao"/>
     </bean>
 
     <bean id="colaboradorService" class="com.mycompany.control.ServiceColaborador">
         <property name="colaboradorDao" ref="colaboradorDao"/>
         <property name="genericDao" ref="genericDao"/>
-        <property name="validador" ref="validador"/>
     </bean>
 
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">
@@ -76,11 +80,6 @@
     </bean>
 
     <bean id="perfilService" class="com.mycompany.control.ServicePerfil">
-    </bean>
-
-    <bean id="validador" class="com.mycompany.control.Validador">
-        <property name="colaboradorDao" ref="colaboradorDao"/>
-        <property name="genericDao" ref="genericDao"/>
     </bean>
 
 

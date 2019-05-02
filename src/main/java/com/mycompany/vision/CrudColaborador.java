@@ -90,7 +90,6 @@ public class CrudColaborador extends BasePage {
 
         DataView<Colaborador> lv = new DataView<Colaborador>("rows", listDataProvider) {
 
-
             @Override
             protected void populateItem(Item<Colaborador> item) {
 
@@ -100,20 +99,17 @@ public class CrudColaborador extends BasePage {
                 Label textusuario = new Label("textusuario", user.getUsername());
                 Label textperfil = new Label("textperfil", user.getPerfil());
 
-
                 AjaxLink<?> editar = new AjaxLink<Object>("editar") {
 
                     public void onClick(AjaxRequestTarget target) {
-                        System.out.println("Clicou no editar");
-                        System.out.println(colaboradorDaLista.getNome());
-                        ModalColaborador modalEditarColaborador = new
+                        final ModalColaborador modalEditarColaborador = new
                                  ModalColaborador(modalWindowEditarColaborador.getContentId(), colaboradorDaLista){
                                     @Override
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
                                         super.executaAoClicarEmSalvar(target,colaborador);
-                                            serviceColaborador.executarAoClicarEmSalvarNaModal(listaDeColaboradores, colaborador, target,
-                                                    rowPanel, modalWindowEditarColaborador, "update");
-                                        target.add(modalWindowEditarColaborador);
+                                            serviceColaborador.executarAoClicarEmSalvarNaModalEditar(listaDeColaboradores, colaborador, target,
+                                                    rowPanel, modalWindowEditarColaborador,feedbackPanel);
+                                        target.add(feedbackPanel);
                                     }
                                 };
 
@@ -190,9 +186,9 @@ public class CrudColaborador extends BasePage {
                         (modalWindowInserirColaborador.getContentId(), new Colaborador()) {
                     @Override
                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
-                        serviceColaborador.executarAoClicarEmSalvarNaModal(
-                                listaDeColaboradores, colaborador, target, rowPanel, modalWindowInserirColaborador,"inserir");
-                        target.add(modalWindowInserirColaborador);
+                        serviceColaborador.executarAoClicarEmSalvarNaModalSalvar(
+                                listaDeColaboradores, colaborador, target, rowPanel, modalWindowInserirColaborador,feedbackPanel);
+                        target.add(feedbackPanel);
                     }
                 };
                 modalWindowInserirColaborador.setContent(modalColaborador);
