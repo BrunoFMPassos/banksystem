@@ -52,6 +52,7 @@ public class GenericDao<T extends Object> implements Serializable {
 
     }
 
+
     public List<T> pesquisarListaDeObjetosPorStringEmDuasTabelas(T obj, String colum1, String colum2,
                                                                  String string1, String string2) {
         Session session = sessionFactory.openSession();
@@ -61,6 +62,21 @@ public class GenericDao<T extends Object> implements Serializable {
         Query query = session.createQuery(hql);
         query.setParameter("string1", "%" + string1 + "%");
         query.setParameter("string2", "%" + string2 + "%");
+        @SuppressWarnings("unchecked")
+        List<T> results = query.list();
+        session.close();
+        return results;
+    }
+
+    public List<T> pesquisarListaDeObjetosPorStringELongEmDuasTabelas(T obj, String colum1, String colum2,
+                                                                 String string, Long numero) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + colum1 +
+                " like :string AND c." + colum2 + " like :numero";
+        Query query = session.createQuery(hql);
+        query.setParameter("string", "%" + string + "%");
+        query.setParameter("numero", "%" + numero + "%");
         @SuppressWarnings("unchecked")
         List<T> results = query.list();
         session.close();

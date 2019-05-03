@@ -31,7 +31,7 @@ public class CrudColaborador extends BasePage {
     private List<Colaborador> listaDeColaboradores = new ArrayList<Colaborador>();
     Form<Colaborador> form;
     TextField<String> inputNome = new TextField<String>("nome");
-    TextField<String> inputAgencia = new TextField<String>("agencia");
+    TextField<String> inputAgencia = new TextField<String>("agenciapesquisa");
     private String nomeFiltrar = "";
     private String agenciaFiltrar = "";
     MarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
@@ -43,8 +43,26 @@ public class CrudColaborador extends BasePage {
     public CrudColaborador() {
         listaDeColaboradores.addAll(serviceColaborador.pesquisarListaDeColaboradoresPorColabordaor(colaborador));
         modalWindowInserirColaborador.setAutoSize(false);
+        modalWindowInserirColaborador.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
         modalWindowEditarColaborador.setAutoSize(false);
+        modalWindowEditarColaborador.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
         modalWindowExcluirColaborador.setAutoSize(true);
+        modalWindowExcluirColaborador.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
 
         CompoundPropertyModel<Colaborador> compoundPropertyModelColaborador = new CompoundPropertyModel<Colaborador>(colaborador);
 
@@ -54,6 +72,7 @@ public class CrudColaborador extends BasePage {
 
             }
         };
+
 
         add(form);
         form.add(criarTextFieldNomefiltro());
@@ -102,8 +121,8 @@ public class CrudColaborador extends BasePage {
                 AjaxLink<?> editar = new AjaxLink<Object>("editar") {
 
                     public void onClick(AjaxRequestTarget target) {
-                        final ModalColaborador modalEditarColaborador = new
-                                 ModalColaborador(modalWindowEditarColaborador.getContentId(), colaboradorDaLista){
+                        final ColaboradorPanel modalEditarColaborador = new
+                                 ColaboradorPanel(modalWindowEditarColaborador.getContentId(), colaboradorDaLista){
                                     @Override
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
                                         super.executaAoClicarEmSalvar(target,colaborador);
@@ -161,7 +180,7 @@ public class CrudColaborador extends BasePage {
 
         };
 
-        lv.setItemsPerPage(10);
+        lv.setItemsPerPage(5);
         rowPanel.add(lv);
         rowPanel.add(new PagingNavigator("navigator", lv));
         return rowPanel;
@@ -182,7 +201,7 @@ public class CrudColaborador extends BasePage {
     private AjaxLink<?> criarBtnInserir() {
         AjaxLink<?> inserir = new AjaxLink<Object>("inserir") {
             public void onClick(AjaxRequestTarget target) {
-                final ModalColaborador modalColaborador = new ModalColaborador
+                final ColaboradorPanel colaboradorPanel = new ColaboradorPanel
                         (modalWindowInserirColaborador.getContentId(), new Colaborador()) {
                     @Override
                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
@@ -190,8 +209,9 @@ public class CrudColaborador extends BasePage {
                                 listaDeColaboradores, colaborador, target, rowPanel, modalWindowInserirColaborador,feedbackPanel);
                         target.add(feedbackPanel);
                     }
+
                 };
-                modalWindowInserirColaborador.setContent(modalColaborador);
+                modalWindowInserirColaborador.setContent(colaboradorPanel);
                 modalWindowInserirColaborador.show(target);
             }
         };
@@ -210,10 +230,8 @@ public class CrudColaborador extends BasePage {
                 super.onSubmit(target, form);
                 nomeFiltrar = inputNome.getInput();
                 agenciaFiltrar = inputAgencia.getInput();
-
                 String nome = nomeFiltrar;
                 String agencia = agenciaFiltrar;
-
                 serviceColaborador.filtrarColaboradorNaVisao(nome, agencia, listaDeColaboradores, colaborador, target, rowPanel);
             }
         };

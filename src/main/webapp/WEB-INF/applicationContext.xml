@@ -73,6 +73,7 @@
     <bean id="colaboradorService" class="com.mycompany.control.ServiceColaborador">
         <property name="colaboradorDao" ref="colaboradorDao"/>
         <property name="genericDao" ref="genericDao"/>
+        <property name="agenciaService" ref="agenciaService"/>
     </bean>
 
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">

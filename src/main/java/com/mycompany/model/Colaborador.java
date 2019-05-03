@@ -24,6 +24,9 @@ public class Colaborador extends Pessoa implements Serializable {
     @Transient
     private String password;
 
+    @Transient
+    private String agenciapesquisa;
+
 
 
     public String getPerfil() {
@@ -66,4 +69,11 @@ public class Colaborador extends Pessoa implements Serializable {
         this.agencia = agencia_colaborador;
     }
 
+    public String getAgenciapesquisa() {
+        return agenciapesquisa;
+    }
+
+    public void setAgenciapesquisa(String agenciapesquisa) {
+        this.agenciapesquisa = agenciapesquisa;
+    }
 }

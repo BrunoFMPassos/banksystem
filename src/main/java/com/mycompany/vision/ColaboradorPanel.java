@@ -19,7 +19,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModalColaborador extends Panel {
+public class ColaboradorPanel extends Panel {
 
     @SpringBean(name = "agenciaService")
     ServiceAgencia serviceAgencia;
@@ -30,7 +30,7 @@ public class ModalColaborador extends Panel {
     FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackpanel");
 
 
-    public ModalColaborador(String id, Colaborador colaborador) {
+    public ColaboradorPanel(String id, Colaborador colaborador) {
         super(id);
         feedbackPanel.setOutputMarkupId(true);
         this.colaborador = colaborador;
@@ -42,9 +42,9 @@ public class ModalColaborador extends Panel {
         WebMarkupContainer container = new WebMarkupContainer("container");
 
         form = new Form<Colaborador>("formulariocadastrocolaborador", new CompoundPropertyModel<Colaborador>(colaborador));
+
         form.setOutputMarkupId(true);
         form.add(criarBtnSalvar());
-        form.setMultiPart(true);
         form.add(feedbackPanel);
         form.add(criarTextFieldNome());
         form.add(criarTextFieldCpf());
@@ -58,8 +58,9 @@ public class ModalColaborador extends Panel {
         form.add(criarTextFieldCidade());
         form.add(criarSelectUF());
         form.add(criarTextFieldEndereco());
-        form.add(criarTextFieldNumero());
+        form.add(criarTextFieldBairro());
         form.add(criarTextFieldComplemento());
+        form.add(criarTextFieldCep());
         container.add(form);
         return container;
 
@@ -224,7 +225,6 @@ public class ModalColaborador extends Panel {
         listaDeEstados.add("SP");
         listaDeEstados.add("SE");
         listaDeEstados.add("TO");
-        listaDeEstados.add("ES");
 
         ChoiceRenderer<String> choiceRenderer = new ChoiceRenderer<String>("UF") {
             @Override
@@ -253,9 +253,9 @@ public class ModalColaborador extends Panel {
         return endereco;
     }
 
-    private TextField<String> criarTextFieldNumero() {
-        TextField<String> numero = new TextField<String>("numero");
-        return numero;
+    private TextField<String> criarTextFieldBairro() {
+        TextField<String> bairro = new TextField<String>("bairro");
+        return bairro;
     }
 
     private TextField<String> criarTextFieldComplemento() {
@@ -263,9 +263,17 @@ public class ModalColaborador extends Panel {
         return complemento;
     }
 
+    private TextField<String> criarTextFieldCep() {
+        TextField<String> cep = new TextField<String>("cep");
+        //cep.add(new AttributeModifier("onfocus", "$(this).mask('99999-999');"));
+        return cep;
+    }
+
 
     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
 
     }
+
+
 
 }

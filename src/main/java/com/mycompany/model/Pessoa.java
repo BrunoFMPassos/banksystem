@@ -2,7 +2,6 @@ package com.mycompany.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 
 @Entity
@@ -15,21 +14,23 @@ public class Pessoa  implements Serializable {
     @Column(nullable=false, length=200)
     private String nome;
     @Column(nullable=false, length=200)
-    private String data_de_nascimento;
+    private String dataDeNascimento;
     @Column(nullable=false, length=200)
     private String cpf;
-    @Column(nullable=false, length=200)
+    @Column(nullable=true, length=200)
     private String rg;
     @Column(nullable=false, length=200)
     private String sexo;
     @Column(nullable=false, length=200)
     private String cidade;
     @Column(nullable=false, length=200)
+    private String cep;
+    @Column(nullable=false, length=200)
     private String UF;
     @Column(nullable=false, length=200)
     private String endereco;
     @Column(nullable=false, length=200)
-    private Integer numero;
+    private String bairro;
     @Column(nullable=true, length=200)
     private String complemento;
 
@@ -51,11 +52,11 @@ public class Pessoa  implements Serializable {
     }
 
     public String getDataDeNascimento() {
-        return data_de_nascimento;
+        return dataDeNascimento;
     }
 
     public void setDataDeNascimento(String dataDeNascimento) {
-        this.data_de_nascimento = dataDeNascimento;
+        this.dataDeNascimento = dataDeNascimento;
     }
 
     public String getCpf() {
@@ -106,12 +107,12 @@ public class Pessoa  implements Serializable {
         this.endereco = endereco;
     }
 
-    public Integer getNumero() {
-        return numero;
+    public String getBairro() {
+        return bairro;
     }
 
-    public void setNumero(Integer numero) {
-        this.numero = numero;
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
     }
 
     public String getComplemento() {
@@ -120,5 +121,13 @@ public class Pessoa  implements Serializable {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 }

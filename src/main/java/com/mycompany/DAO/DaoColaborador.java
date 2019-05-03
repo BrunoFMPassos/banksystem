@@ -2,6 +2,7 @@ package com.mycompany.DAO;
 
 import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.model.Agencia;
 import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -57,6 +58,20 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     public User pesquisarObjetoUserPorColaborador(Colaborador colaborador) {
         User user = colaborador.getUser();
         return user;
+    }
+
+    public List<Colaborador> pesquisaListadeObjetoColaboradorPorAgencia(Colaborador colaborador, String colum, Agencia agencia) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Long id = agencia.getId();
+        //List<Colaborador> results = agencia.getColaboradores();
+        String hql = "select nome from " + colaborador.getClass().getCanonicalName() + " as c where c.agencia = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", id);
+        @SuppressWarnings("unchecked")
+        List<Colaborador> results = query.list();
+        session.close();
+        return results;
     }
 
 

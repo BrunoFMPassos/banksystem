@@ -2,14 +2,6 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
     <meta charset="UTF-8">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-
-    <title></title>
 </head>
 <body>
 <wicket:panel>
@@ -50,13 +42,15 @@
                 </div>
                 <br/>
                 <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
-                    <input style="width: 60%;" type="text" class="field noLast" wicket:id="cidade" placeholder="Cidade:">
+                    <input style="width: 15%;" id="cep" type="text" class="field noLast" wicket:id="cep" maxlength="9" placeholder="Cep:"
+                           onblur="pesquisacep(this.value);">
+                    <input style="width: 40%;" id="cidade" type="text" class="field noLast" wicket:id="cidade" placeholder="Cidade:">
                     <label style="font-size: 12px; color: #3a3f48;">UF: </label>
-                    <select style="width: 10%;" type="text" class="field Last" wicket:id="UF" id="estado" name="estado">
+                    <select style="width: 10%;" type="text"  class="field Last" wicket:id="UF"  id="estado" name="estado">
                     </select>
-                    <input style="width: 15%;" type="text" class="field noLast" wicket:id="numero" placeholder="Numero:">
-                    <input style="width: 60%;" type="text" class="field Last" wicket:id="endereco" placeholder="Endereco:">
-                    <input style="width: 100%;" type="text" class="field Last" wicket:id="complemento" placeholder="Complemento:">
+                    <input style="width: 25%;" id="bairro" type="text" class="field noLast" wicket:id="bairro" placeholder="Bairro:">
+                    <input style="width: 40%;" id="endereco" type="text" class="field Last" wicket:id="endereco" placeholder="Endereco:">
+                    <input style="width: 100%;" id="complemento" type="text" class="field Last" wicket:id="complemento" placeholder="Complemento:">
                 </div>
                 <div style="margin-top:5%; text-align: left;">
                     <input class="btn-confirma" type="button" wicket:id="salvarcolaborador" value="Salvar"/>

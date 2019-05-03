@@ -103,9 +103,6 @@
                                     <li>
                                         <a href="CrudColaborador.html">Colaboradores</a>
                                     </li>
-                                    <li>
-                                        <a href="#">Usuários</a>
-                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -137,7 +134,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script>
-
     jQuery(function ($) {
 
         $(".sidebar-dropdown > a").click(function () {
@@ -171,6 +167,151 @@
 
 
     });
+</script>
+<script type="text/javascript" >
+
+    function limpa_formulário_cep() {
+        //Limpa valores do formulário de cep.
+        document.getElementById('cidade').value=("");
+        document.getElementById('estado').value=("");
+        document.getElementById('endereco').value=("");
+        document.getElementById('bairro').value=("");
+    }
+
+    function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+            //Atualiza os campos com os valores.
+            document.getElementById('endereco').value=(conteudo.logradouro);
+            document.getElementById('bairro').value=(conteudo.bairro);
+            document.getElementById('cidade').value=(conteudo.localidade);
+            if(conteudo.uf == 'AL') {
+                document.getElementById('estado').value = (0);
+            }
+            if(conteudo.uf == 'AP') {
+                document.getElementById('estado').value = (1);
+            }
+            if(conteudo.uf == 'AM') {
+                document.getElementById('estado').value = (2);
+            }
+            if(conteudo.uf == 'BA') {
+                document.getElementById('estado').value = (3);
+            }
+            if(conteudo.uf == 'CE') {
+                document.getElementById('estado').value = (4);
+            }
+            if(conteudo.uf == 'DF') {
+                document.getElementById('estado').value = (5);
+            }
+            if(conteudo.uf == 'ES') {
+                document.getElementById('estado').value = (6);
+            }
+            if(conteudo.uf == 'GO') {
+                document.getElementById('estado').value = (7);
+            }
+            if(conteudo.uf == 'MA') {
+                document.getElementById('estado').value = (8);
+            }
+            if(conteudo.uf == 'MT') {
+                document.getElementById('estado').value = (9);
+            }
+            if(conteudo.uf == 'MS') {
+                document.getElementById('estado').value = (10);
+            }
+            if(conteudo.uf == 'MG') {
+                document.getElementById('estado').value = (11);
+            }
+            if(conteudo.uf == 'PA') {
+                document.getElementById('estado').value = (12);
+            }
+            if(conteudo.uf == 'PB') {
+                document.getElementById('estado').value = (13);
+            }
+            if(conteudo.uf == 'PR') {
+                document.getElementById('estado').value = (14);
+            }
+            if(conteudo.uf == 'PE') {
+                document.getElementById('estado').value = (15);
+            }
+            if(conteudo.uf == 'PI') {
+                document.getElementById('estado').value = (16);
+            }
+            if(conteudo.uf == 'RJ') {
+                document.getElementById('estado').value = (17);
+            }
+            if(conteudo.uf == 'RN') {
+                document.getElementById('estado').value = (18);
+            }
+            if(conteudo.uf == 'RS') {
+                document.getElementById('estado').value = (19);
+            }
+            if(conteudo.uf == 'RO') {
+                document.getElementById('estado').value = (20);
+            }
+            if(conteudo.uf == 'RR') {
+                document.getElementById('estado').value = (21);
+            }
+            if(conteudo.uf == 'SC') {
+                document.getElementById('estado').value = (22);
+            }
+            if(conteudo.uf == 'SP') {
+                document.getElementById('estado').value = (23);
+            }
+            if(conteudo.uf == 'SE') {
+                document.getElementById('estado').value = (24);
+            }
+            if(conteudo.uf == 'TO') {
+                document.getElementById('estado').value = (25);
+            }
+
+        } //end if.
+        else {
+            //CEP não Encontrado.
+            limpa_formulário_cep();
+            alert("CEP não encontrado.");
+        }
+    }
+
+    function pesquisacep(valor) {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if(validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('endereco').value="...";
+                document.getElementById('bairro').value="...";
+                document.getElementById('cidade').value="...";
+                document.getElementById('estado').value="...";
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    };
 
 </script>
 </body>
