@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<wicket:panel>
+
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
+        <form wicket:id="formulariocadastroagencia">
+            <div wicket:id="feedbackpanel"></div>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Agência</label>
+            <br/>
+            <div class="container">
+                <div class="col-sm-12" style="padding: 2%; min-width: 300px; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input style="width: 42%;" type="text" class="field noLast" wicket:id="numero" placeholder="Numero:">
+                    <label style="font-size: 12px; color: #3a3f48;">UF: </label>
+                    <select style="width: 15%;" type="text"  class="field noLast" wicket:id="UF"  id="estado" name="estado">
+                    </select>
+                    <input style="width: 42%;" type="text" class="field noLast" wicket:id="cidade" placeholder="Cidade:">
+                </div>
+                <br/>
+                <div style="margin-top:5%; text-align: left;">
+                    <input class="btn-confirma" type="button" wicket:id="salvaragencia" value="Salvar"/>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>
+
+
+

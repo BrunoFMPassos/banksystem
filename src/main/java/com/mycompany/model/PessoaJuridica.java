@@ -27,6 +27,8 @@ public class PessoaJuridica  implements Serializable {
     @Column(nullable=false, length=200)
     private String Telefone;
     @Column(nullable=false, length=200)
+    private Long rendaMensal;
+    @Column(nullable=false, length=200)
     private String cidade;
     @Column(nullable=false, length=200)
     private String UF;
@@ -132,5 +134,13 @@ public class PessoaJuridica  implements Serializable {
 
     public void setConta(List<Conta> conta) {
         this.conta = conta;
+    }
+
+    public Long getRendaMensal() {
+        return rendaMensal;
+    }
+
+    public void setRendaMensal(Long rendaMensal) {
+        this.rendaMensal = rendaMensal;
     }
 }

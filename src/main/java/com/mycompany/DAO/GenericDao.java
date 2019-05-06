@@ -49,7 +49,6 @@ public class GenericDao<T extends Object> implements Serializable {
         List<T> results = query.list();
         session.close();
         return results;
-
     }
 
 

@@ -23,7 +23,7 @@ public class Agencia implements Serializable {
     @Column(nullable=false, length=200)
     private String UF;
     @Column(nullable=false, length=200)
-    private Integer numero;
+    private String numero;
 
 
     public Long getId() {
@@ -50,11 +50,11 @@ public class Agencia implements Serializable {
         this.UF = UF;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

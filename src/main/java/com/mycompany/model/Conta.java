@@ -29,13 +29,21 @@ public class Conta implements Serializable {
     @Column(nullable=false, length=200)
     private Long numero;
     @Column(nullable=false, length=200)
+    private Integer digito;
+    @Column(nullable=false, length=200)
     private Integer senha;
     @Column(nullable=false, length=200)
     private String tipo;
+    @Column(nullable = false, length = 200)
+    private Long saldo;
+    @Column(nullable = false, length = 200)
+    private Long tarifa;
     @Column(nullable=false, length=200)
     private String status;
     @Column(nullable=false, length=200)
-    private Long limite_conta;
+    private String dataAbertura;
+    @Column(nullable=false, length=200)
+    private Long limiteConta;
 
 
 
@@ -95,11 +103,59 @@ public class Conta implements Serializable {
         this.tipo = tipo;
     }
 
-    public Long getLimite_conta() {
-        return limite_conta;
+    public Long getLimiteConta() {
+        return limiteConta;
     }
 
-    public void setLimite_conta(Long limite_conta) {
-        this.limite_conta = limite_conta;
+    public void setLimiteConta(Long limiteConta) {
+        this.limiteConta = limiteConta;
+    }
+
+    public Integer getSenha() {
+        return senha;
+    }
+
+    public void setSenha(Integer senha) {
+        this.senha = senha;
+    }
+
+    public Long getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Long saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(Long tarifa) {
+        this.tarifa = tarifa;
+    }
+
+    public String getDataAbertura() {
+        return dataAbertura;
+    }
+
+    public void setDataAbertura(String dataAbertura) {
+        this.dataAbertura = dataAbertura;
+    }
+
+    public Integer getDigito() {
+        return digito;
+    }
+
+    public void setDigito(Integer digito) {
+        this.digito = digito;
     }
 }

@@ -2,6 +2,7 @@ package com.mycompany.vision;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
+import com.googlecode.wicket.jquery.ui.markup.html.link.Link;
 import com.mycompany.control.ServiceColaborador;
 import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
@@ -83,6 +84,8 @@ public class CrudColaborador extends BasePage {
         form.add(cirarModalInserirColaborador());
         form.add(cirarModalEditarColaborador());
         form.add(cirarModalExluirColaborador());
+        form.add(criarRelatorioJasper());
+        form.add(criarRelatorioExcel());
     }
 
 
@@ -141,7 +144,7 @@ public class CrudColaborador extends BasePage {
                 final AjaxLink<?> excluir = new AjaxLink<Object>("excluir") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        final ModalExcluir modalExcluirColaborador = new ModalExcluir(modalWindowExcluirColaborador.getContentId()){
+                        final PanelExcluir<Colaborador> panelExcluirColaborador = new PanelExcluir<Colaborador>(modalWindowExcluirColaborador.getContentId()){
                             @Override
                             public void excluir(AjaxRequestTarget target, Colaborador colaborador) {
                                 super.excluir(target, colaborador);
@@ -159,12 +162,12 @@ public class CrudColaborador extends BasePage {
                             }
 
                             @Override
-                            public Label mostrarValorASerExcluido(Colaborador colaborador) {
-                                return super.mostrarValorASerExcluido(colaboradorDaLista);
+                            public Label mostrarValorASerExcluido(String string) {
+                                return super.mostrarValorASerExcluido(colaboradorDaLista.getNome());
                             }
                         };
 
-                        modalWindowExcluirColaborador.setContent(modalExcluirColaborador);
+                        modalWindowExcluirColaborador.setContent(panelExcluirColaborador);
                         modalWindowExcluirColaborador.show(target);
 
                     }
@@ -223,7 +226,6 @@ public class CrudColaborador extends BasePage {
 
         AjaxButton filtrar = new AjaxButton("filtrar", form) {
 
-            private static final long serialVersionUID = 1L;
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -237,4 +239,32 @@ public class CrudColaborador extends BasePage {
         };
         return filtrar;
     }
+
+
+    Link<?> criarRelatorioJasper() {
+
+        Link<?> btnRelatorio = new Link<Object>("relatorio"){
+
+            @Override
+            public void onClick() {
+                // TODO Auto-generated method stub
+                System.out.println("Clicou no relatório!");
+            }
+        };
+        return btnRelatorio;
+    }
+
+    Link<?> criarRelatorioExcel() {
+
+        Link<?> btnExcel = new Link<Object>("excel") {
+
+            @Override
+            public void onClick() {
+                System.out.println("Clicou no excel!");
+            }
+        };
+        return btnExcel;
+        }
+
+
 }

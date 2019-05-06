@@ -63,11 +63,11 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     public List<Colaborador> pesquisaListadeObjetoColaboradorPorAgencia(Colaborador colaborador, String colum, Agencia agencia) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Long id = agencia.getId();
+        //Long id = agencia.getId();
         //List<Colaborador> results = agencia.getColaboradores();
-        String hql = "select nome from " + colaborador.getClass().getCanonicalName() + " as c where c.agencia = :id";
+        String hql = "from " + colaborador.getClass().getCanonicalName() + " as c where c.agencia = :agencia";
         Query query = session.createQuery(hql);
-        query.setParameter("id", id);
+        query.setParameter("agencia", agencia);
         @SuppressWarnings("unchecked")
         List<Colaborador> results = query.list();
         session.close();

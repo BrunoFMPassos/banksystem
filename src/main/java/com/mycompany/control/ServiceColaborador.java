@@ -117,7 +117,6 @@ public class ServiceColaborador {
         return genericDao.pesquisarListaDeObjetosPorStringELongEmDuasTabelas(colaborador, colum1, colum2, string1, numero);
     }
 
-
     public List<Colaborador> pesquisaListaDeColaboradorPorAgencia(Colaborador colaborador, Agencia agencia){
         return colaboradorDao.pesquisaListadeObjetoColaboradorPorAgencia(colaborador,"agencia",agencia);
     }

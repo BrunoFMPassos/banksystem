@@ -35,13 +35,13 @@ public class ServiceColaboradorTest {
         agencia.setId(1L);
         agencia.setCidade("Anápolis");
         agencia.setUF("GO");
-        agencia.setNumero(1);
+        agencia.setNumero("1");
 
         Agencia agencia2 = new Agencia();
         agencia2.setId(2L);
         agencia2.setCidade("Anápolis");
         agencia2.setUF("GO");
-        agencia2.setNumero(2);
+        agencia2.setNumero("2");
 
         colaborador.setNome("Bruno");
         colaborador.setCpf("111.111.111-11");
