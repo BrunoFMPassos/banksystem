@@ -68,7 +68,6 @@ public class BasePage extends WebPage {
         };
         conta.add(addcontali());
         conta.add(addoperacoesli());
-        conta.add(addanaliseli());
         return conta;
     }
 
@@ -87,14 +86,6 @@ public class BasePage extends WebPage {
         return operacoesli;
     }
 
-    public MarkupContainer addanaliseli() {
-        MarkupContainer analiseli = new MarkupContainer("conta-analise") {
-        };
-        if (servicePerfil.verificaPerfil().equals("Caixa")) {
-            servicePerfil.hide(analiseli);
-        }
-        return analiseli;
-    }
 
     public MarkupContainer addContainerEmpresarial() {
         MarkupContainer empresarial = new MarkupContainer("containerempresarial") {
