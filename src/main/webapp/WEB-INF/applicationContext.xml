@@ -40,6 +40,8 @@
                 <value>com.mycompany.model.Agencia</value>
                 <value>com.mycompany.model.Conta</value>
                 <value>com.mycompany.model.Cartao</value>
+                <value>com.mycompany.model.TipoDeConta</value>
+                <value>com.mycompany.model.TipoDeCartao</value>
             </list>
         </property>
     </bean>
@@ -60,6 +62,18 @@
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
+    <bean id="pfDao" class="com.mycompany.DAO.DaoPF">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+
+    <bean id="pjDao" class="com.mycompany.DAO.DaoPJ">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+
+    <bean id="tipoDeContaDao" class="com.mycompany.DAO.DaoTipoDeConta">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+
     <bean id="userService" class="com.mycompany.control.ServiceUser">
         <property name="userDao" ref="userDao"/>
         <property name="genericDao" ref="genericDao"/>
@@ -74,6 +88,21 @@
         <property name="colaboradorDao" ref="colaboradorDao"/>
         <property name="genericDao" ref="genericDao"/>
         <property name="agenciaService" ref="agenciaService"/>
+    </bean>
+
+    <bean id="pfService" class="com.mycompany.control.ServicePF">
+        <property name="pfDao" ref="pfDao"/>
+        <property name="genericDao" ref="genericDao"/>
+    </bean>
+
+    <bean id="pjService" class="com.mycompany.control.ServicePJ">
+        <property name="pjDao" ref="pjDao"/>
+        <property name="genericDao" ref="genericDao"/>
+    </bean>
+
+    <bean id="tipoDeContaService" class="com.mycompany.control.ServiceTipoDeConta">
+        <property name="daoTipoDeConta" ref="tipoDeContaDao"/>
+        <property name="genericDao" ref="genericDao"/>
     </bean>
 
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">

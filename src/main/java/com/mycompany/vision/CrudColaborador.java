@@ -110,7 +110,7 @@ public class CrudColaborador extends BasePage {
             }
         };
 
-        DataView<Colaborador> lv = new DataView<Colaborador>("rows", listDataProvider) {
+        DataView<Colaborador> dataView = new DataView<Colaborador>("rows", listDataProvider) {
 
             @Override
             protected void populateItem(Item<Colaborador> item) {
@@ -125,12 +125,12 @@ public class CrudColaborador extends BasePage {
 
                     public void onClick(AjaxRequestTarget target) {
                         final ColaboradorPanel modalEditarColaborador = new
-                                 ColaboradorPanel(modalWindowEditarColaborador.getContentId(), colaboradorDaLista){
+                                ColaboradorPanel(modalWindowEditarColaborador.getContentId(), colaboradorDaLista) {
                                     @Override
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
-                                        super.executaAoClicarEmSalvar(target,colaborador);
-                                            serviceColaborador.executarAoClicarEmSalvarNaModalEditar(listaDeColaboradores, colaborador, target,
-                                                    rowPanel, modalWindowEditarColaborador,feedbackPanel);
+                                        super.executaAoClicarEmSalvar(target, colaborador);
+                                        serviceColaborador.executarAoClicarEmSalvarNaModalEditar(listaDeColaboradores, colaborador, target,
+                                                rowPanel, modalWindowEditarColaborador, feedbackPanel);
                                         target.add(feedbackPanel);
                                     }
                                 };
@@ -144,7 +144,7 @@ public class CrudColaborador extends BasePage {
                 final AjaxLink<?> excluir = new AjaxLink<Object>("excluir") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        final PanelExcluir<Colaborador> panelExcluirColaborador = new PanelExcluir<Colaborador>(modalWindowExcluirColaborador.getContentId()){
+                        final PanelExcluir<Colaborador> panelExcluirColaborador = new PanelExcluir<Colaborador>(modalWindowExcluirColaborador.getContentId()) {
                             @Override
                             public void excluir(AjaxRequestTarget target, Colaborador colaborador) {
                                 super.excluir(target, colaborador);
@@ -183,9 +183,9 @@ public class CrudColaborador extends BasePage {
 
         };
 
-        lv.setItemsPerPage(5);
-        rowPanel.add(lv);
-        rowPanel.add(new PagingNavigator("navigator", lv));
+        dataView.setItemsPerPage(5);
+        rowPanel.add(dataView);
+        rowPanel.add(new PagingNavigator("navigator", dataView));
         return rowPanel;
     }
 
@@ -209,7 +209,7 @@ public class CrudColaborador extends BasePage {
                     @Override
                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Colaborador colaborador) {
                         serviceColaborador.executarAoClicarEmSalvarNaModalSalvar(
-                                listaDeColaboradores, colaborador, target, rowPanel, modalWindowInserirColaborador,feedbackPanel);
+                                listaDeColaboradores, colaborador, target, rowPanel, modalWindowInserirColaborador, feedbackPanel);
                         target.add(feedbackPanel);
                     }
 
@@ -243,7 +243,7 @@ public class CrudColaborador extends BasePage {
 
     Link<?> criarRelatorioJasper() {
 
-        Link<?> btnRelatorio = new Link<Object>("relatorio"){
+        Link<?> btnRelatorio = new Link<Object>("relatorio") {
 
             @Override
             public void onClick() {
@@ -264,7 +264,7 @@ public class CrudColaborador extends BasePage {
             }
         };
         return btnExcel;
-        }
+    }
 
 
 }

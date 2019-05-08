@@ -42,6 +42,7 @@ public class CrudPessoaFisica extends BasePage {
 
     public CrudPessoaFisica() {
         listaDePessoasFisicas.addAll(servicePF.listarPessoasFisicas(pessoaFisica));
+
         modalWindowInserirPf.setAutoSize(false);
         modalWindowInserirPf.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             @Override
@@ -64,10 +65,10 @@ public class CrudPessoaFisica extends BasePage {
             }
         });
 
-        CompoundPropertyModel<PessoaFisica> compoundPropertyModelColaborador =
+        CompoundPropertyModel<PessoaFisica> compoundPropertyModelPessoaFisica =
                 new CompoundPropertyModel<PessoaFisica>(pessoaFisica);
 
-        form = new Form<PessoaFisica>("formpf", compoundPropertyModelColaborador) {
+        form = new Form<PessoaFisica>("formpf", compoundPropertyModelPessoaFisica) {
             @Override
             public void onSubmit() {
 
@@ -139,7 +140,7 @@ public class CrudPessoaFisica extends BasePage {
                 final AjaxLink<?> excluir = new AjaxLink<Object>("excluir") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        final PanelExcluir<PessoaFisica> panelExcluirColaborador = new PanelExcluir<PessoaFisica>(modalWindowExcluirPf.getContentId()) {
+                        final PanelExcluir<PessoaFisica> panelExcluirPessoaFisica = new PanelExcluir<PessoaFisica>(modalWindowExcluirPf.getContentId()) {
                             @Override
                             public void excluir(AjaxRequestTarget target, PessoaFisica pessoaFisica) {
                                 super.excluir(target, pessoaFisica);
@@ -162,7 +163,7 @@ public class CrudPessoaFisica extends BasePage {
                             }
                         };
 
-                        modalWindowExcluirPf.setContent(panelExcluirColaborador);
+                        modalWindowExcluirPf.setContent(panelExcluirPessoaFisica);
                         modalWindowExcluirPf.show(target);
                     }
                 };

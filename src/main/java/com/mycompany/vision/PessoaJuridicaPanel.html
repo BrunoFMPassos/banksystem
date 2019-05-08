@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<wicket:panel>
+
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
+        <form wicket:id="formulariocadastropj">
+            <div wicket:id="feedbackpanel"></div>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Pessoa Jurídica</label>
+            <br/>
+            <div class="container">
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input style="width: 42%;" type="text" class="field noLast" wicket:id="razaoSocial" placeholder="Razão Social:">
+                    <input id="data" style="width: 42%;" type="text" class="field Last" wicket:id="nomeFantasia"
+                           placeholder="Nome Fantasia:">
+                    <input id="cpf" style="width: 42%;" type="text" class="field noLast" wicket:id="cnpj" placeholder="CNPJ:">
+                    <input style="width: 42%;" type="text" class="field Last" wicket:id="inscricaoEstadual" placeholder="Inscrição Estadual:">
+                    <input id="telefone" style="width: 42%;" type="text" class="field noLast" wicket:id="telefone" placeholder="Telefone:">
+                    <input id="rendamensal" style="width: 42%;" type="text" class="field Last" wicket:id="rendaMensal"
+                           placeholder="Renda Mensal:">
+                </div>
+                <br/>
+                <br/>
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input style="width: 15%;" id="cep" type="text" class="field noLast" wicket:id="cep" maxlength="9" placeholder="Cep:"
+                           onblur="pesquisacep(this.value);">
+                    <input style="width: 40%;" id="cidade" type="text" class="field noLast" wicket:id="cidade" placeholder="Cidade:">
+                    <label style="font-size: 12px; color: #3a3f48;">UF: </label>
+                    <select style="width: 10%;" type="text"  class="field Last" wicket:id="UF"  id="estado" name="estado">
+                    </select>
+                    <input style="width: 25%;" id="bairro" type="text" class="field noLast" wicket:id="bairro" placeholder="Bairro:">
+                    <input style="width: 40%;" id="endereco" type="text" class="field Last" wicket:id="enderecoDesc" placeholder="Endereco:">
+                    <input style="width: 100%;" id="complemento" type="text" class="field Last" wicket:id="complemento" placeholder="Complemento:">
+                </div>
+                <div style="margin-top:5%; text-align: left;">
+                    <input class="btn-confirma" type="button" wicket:id="salvarpj" value="Salvar"/>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>
+
+
+

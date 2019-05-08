@@ -63,8 +63,6 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     public List<Colaborador> pesquisaListadeObjetoColaboradorPorAgencia(Colaborador colaborador, String colum, Agencia agencia) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        //Long id = agencia.getId();
-        //List<Colaborador> results = agencia.getColaboradores();
         String hql = "from " + colaborador.getClass().getCanonicalName() + " as c where c.agencia = :agencia";
         Query query = session.createQuery(hql);
         query.setParameter("agencia", agencia);
@@ -75,21 +73,6 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     }
 
 
-    public List<User> pesquisarListaDeUsuariosPorUsername(String username) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        List<User> listaDeUsuarios = search(new Search(User.class).addFilterLike("username", "%" + username + "%"));
-        session.close();
-        return listaDeUsuarios;
-    }
-
-    public List<Colaborador> pesquisarListaDeColaboradoresPorNome(String nome) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        List<Colaborador> listaDeColaboradores = search(new Search(Colaborador.class).addFilterLike("nome", "%" + nome + "%"));
-        session.close();
-        return listaDeColaboradores;
-    }
 
     public List<User> pesquisarListaDeUsuariosExistentes() {
         Session session = sessionFactory.openSession();

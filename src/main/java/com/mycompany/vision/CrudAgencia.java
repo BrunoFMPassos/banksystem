@@ -111,7 +111,7 @@ public class CrudAgencia extends BasePage {
             }
         };
 
-        DataView<Agencia> lv = new DataView<Agencia>("rows", listDataProvider) {
+        DataView<Agencia> dataView = new DataView<Agencia>("rows", listDataProvider) {
 
             @Override
             protected void populateItem(Item<Agencia> item) {
@@ -182,9 +182,9 @@ public class CrudAgencia extends BasePage {
 
         };
 
-        lv.setItemsPerPage(5);
-        rowPanel.add(lv);
-        rowPanel.add(new PagingNavigator("navigator", lv));
+        dataView.setItemsPerPage(5);
+        rowPanel.add(dataView);
+        rowPanel.add(new PagingNavigator("navigator", dataView));
         return rowPanel;
     }
 

@@ -1,6 +1,5 @@
 package com.mycompany.control;
 
-
 import com.mycompany.DAO.DaoColaborador;
 import com.mycompany.DAO.GenericDao;
 import com.mycompany.model.Agencia;
@@ -86,8 +85,6 @@ public class ServiceColaborador {
         return colaboradorDao.pesquisaObjetoColaboradorPorId(id);
     }
 
-
-
     public User pesquisarObjetoUserPorColaborador(Colaborador colaborador) {
         return colaboradorDao.pesquisarObjetoUserPorColaborador(colaborador);
     }
@@ -109,13 +106,6 @@ public class ServiceColaborador {
         return genericDao.pesquisaListadeObjetosPorString(colaborador, colum, string);
     }
 
-    public List<Colaborador> pesquisarListaDeColaboradoresPorNomeEmDuasTabelas(Colaborador colaborador, String colum1, String colum2, String string1, String string2) {
-        return genericDao.pesquisarListaDeObjetosPorStringEmDuasTabelas(colaborador, colum1, colum2, string1, string2);
-    }
-
-    public List<Colaborador> pesquisarListaDeColaboradoresPorNomeEmDuasTabelascomStringeLong(Colaborador colaborador, String colum1, String colum2, String string1, Long numero) {
-        return genericDao.pesquisarListaDeObjetosPorStringELongEmDuasTabelas(colaborador, colum1, colum2, string1, numero);
-    }
 
     public List<Colaborador> pesquisaListaDeColaboradorPorAgencia(Colaborador colaborador, Agencia agencia){
         return colaboradorDao.pesquisaListadeObjetoColaboradorPorAgencia(colaborador,"agencia",agencia);

@@ -23,6 +23,10 @@ public class Conta implements Serializable {
     @JoinColumn(name="cartao_id")
     private Cartao cartao;
 
+    @ManyToOne
+    @JoinColumn(name="tipoDeConta_id")
+    private TipoDeConta tipoDeConta;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,8 +36,6 @@ public class Conta implements Serializable {
     private Integer digito;
     @Column(nullable=false, length=200)
     private Integer senha;
-    @Column(nullable=false, length=200)
-    private String tipo;
     @Column(nullable = false, length = 200)
     private Long saldo;
     @Column(nullable = false, length = 200)
@@ -95,12 +97,12 @@ public class Conta implements Serializable {
         this.cartao = cartao;
     }
 
-    public String getTipo() {
-        return tipo;
+    public TipoDeConta getTipoDeConta() {
+        return tipoDeConta;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoDeConta(TipoDeConta tipoDeConta) {
+        this.tipoDeConta = tipoDeConta;
     }
 
     public Long getLimiteConta() {
@@ -158,4 +160,6 @@ public class Conta implements Serializable {
     public void setDigito(Integer digito) {
         this.digito = digito;
     }
+
+
 }

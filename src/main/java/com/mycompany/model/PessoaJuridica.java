@@ -18,11 +18,11 @@ public class PessoaJuridica  implements Serializable {
     private Long id;
     @Column(nullable=false, length=200)
     private String razaoSocial;
-    @Column(nullable=false, length=200)
+    @Column(nullable=true, length=200)
     private String nomeFantasia;
     @Column(nullable=false, length=200)
     private String cnpj;
-    @Column(nullable=false, length=200)
+    @Column(nullable=true, length=200)
     private String inscricaoEstadual;
     @Column(nullable=false, length=200)
     private String Telefone;
@@ -35,9 +35,11 @@ public class PessoaJuridica  implements Serializable {
     @Column(nullable=false, length=200)
     private String enderecoDesc;
     @Column(nullable=false, length=200)
-    private Integer numero;
+    private String bairro;
     @Column(nullable=true, length=200)
     private String complemento;
+    @Column(nullable=false, length=200)
+    private String cep;
 
 
     public Long getId() {
@@ -112,12 +114,12 @@ public class PessoaJuridica  implements Serializable {
         this.enderecoDesc = enderecoDesc;
     }
 
-    public Integer getNumero() {
-        return numero;
+    public String getBairro() {
+        return bairro;
     }
 
-    public void setNumero(Integer numero) {
-        this.numero = numero;
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
     }
 
     public String getComplemento() {
@@ -142,5 +144,13 @@ public class PessoaJuridica  implements Serializable {
 
     public void setRendaMensal(Long rendaMensal) {
         this.rendaMensal = rendaMensal;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 }

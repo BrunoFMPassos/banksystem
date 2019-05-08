@@ -107,7 +107,6 @@ public class ServiceAgencia {
     }
 
 
-
     public boolean verificaSeAgenciaNullParaInserir(Agencia agencia) {
         Boolean agenciaNull = true;
         Agencia agenciaParaVerificar = agenciaDao.pesquisaObjetoAgenciaPorNumero(agencia.getNumero());

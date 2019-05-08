@@ -29,6 +29,7 @@ public class GenericDao<T extends Object> implements Serializable {
         session.close();
     }
 
+
     public List<T> pesquisarListaDeObjeto(T obj) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -52,7 +53,7 @@ public class GenericDao<T extends Object> implements Serializable {
     }
 
 
-    public List<T> pesquisarListaDeObjetosPorStringEmDuasTabelas(T obj, String colum1, String colum2,
+    public List<T> pesquisarListaDeObjetosPorStringEmDuasColunas(T obj, String colum1, String colum2,
                                                                  String string1, String string2) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -67,8 +68,8 @@ public class GenericDao<T extends Object> implements Serializable {
         return results;
     }
 
-    public List<T> pesquisarListaDeObjetosPorStringELongEmDuasTabelas(T obj, String colum1, String colum2,
-                                                                 String string, Long numero) {
+    public List<T> pesquisarListaDeObjetosPorStringELongEmDuasColunas(T obj, String colum1, String colum2,
+                                                                      String string, Long numero) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         String hql = "from " + obj.getClass().getCanonicalName() + " as c where c." + colum1 +

@@ -13,6 +13,10 @@ public class Cartao implements Serializable {
 
     private List<Conta> conta;
 
+    @ManyToOne
+    @JoinColumn(name="tipoDeCartao_id")
+    private TipoDeCartao tipoDeCartao;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

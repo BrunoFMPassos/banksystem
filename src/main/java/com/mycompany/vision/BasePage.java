@@ -57,7 +57,7 @@ public class BasePage extends WebPage {
     public MarkupContainer addContainerPessoas() {
         MarkupContainer pessoas = new MarkupContainer("containerpessoas") {
         };
-        if (servicePerfil.verificaPerfil().equals("Gerente") || servicePerfil.verificaPerfil().equals("Caixa")) {
+        if ( servicePerfil.verificaPerfil().equals("Caixa")) {
             servicePerfil.hide(pessoas);
         }
         return pessoas;

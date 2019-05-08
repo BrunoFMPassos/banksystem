@@ -7,17 +7,20 @@
 <wicket:panel>
 
     <div wicket:id="container" style="width: 100%; border-radius: 3px;">
-        <form wicket:id="formulariocadastrocolaborador">
+        <form wicket:id="formulariocadastropf">
             <div wicket:id="feedbackpanel"></div>
-            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Colaborador</label>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Pessoa Fisica</label>
             <br/>
             <div class="container">
                 <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
-                    <input style="width: 42%;" type="text" class="field noLast notNull" wicket:id="nome"  placeholder="Nome:">
-                    <input id="cpf" style="width: 42%;" type="text" class="field Last" wicket:id="cpf"  placeholder="CPF:">
+                    <input style="width: 42%;" type="text" class="field noLast" wicket:id="nome" placeholder="Nome:">
+                    <input id="cpf" style="width: 42%;" type="text" class="field Last" wicket:id="cpf" placeholder="CPF:">
                     <input style="width: 42%;" type="text" class="field noLast" wicket:id="rg" placeholder="RG:">
                     <input id="data" style="width: 42%;" type="text" class="field Last" wicket:id="dataDeNascimento"
                            placeholder="Data de Nascimento:">
+                    <input id="telefone" style="width: 42%;" type="text" class="field noLast" wicket:id="telefone" placeholder="Telefone:">
+                    <input id="rendamensal" style="width: 42%;" type="text" class="field Last" wicket:id="rendaMensal"
+                           placeholder="Renda Mensal:">
                     <div style="margin-top: 5%;">
                         <span wicket:id="sexo">
                             <label style="font-size: 12px; color: #3a3f48;">Sexo:</label>
@@ -29,17 +32,6 @@
                     </div>
                 </div>
                 <br/>
-                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
-                    <input wicket:id="username" style="width: 30%; margin-right: 7%;" type="text" class="field" placeholder="Usuário:">
-                    <input wicket:id="password" style="width: 30%;" type="password" class="field Last" placeholder="Senha:">
-                    <label style="font-size: 12px; color: #3a3f48;">Agência: </label>
-                    <select style="width: 10%; margin-right: 7%; color: #3a3f48;" type="text" class="field"
-                            wicket:id="agencia">
-                    </select>
-                    <label style="font-size: 12px; color: #3a3f48;">Perfil: </label>
-                    <select style="width: 30%;" type="text" class="field Last" wicket:id="perfil" id="perfil" name="perfil">
-                    </select>
-                </div>
                 <br/>
                 <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
                     <input style="width: 15%;" id="cep" type="text" class="field noLast" wicket:id="cep" maxlength="9" placeholder="Cep:"
@@ -53,7 +45,7 @@
                     <input style="width: 100%;" id="complemento" type="text" class="field Last" wicket:id="complemento" placeholder="Complemento:">
                 </div>
                 <div style="margin-top:5%; text-align: left;">
-                    <input class="btn-confirma" type="button" wicket:id="salvarcolaborador" value="Salvar"/>
+                    <input class="btn-confirma" type="button" wicket:id="salvarpf" value="Salvar"/>
                 </div>
             </div>
             <br/>
