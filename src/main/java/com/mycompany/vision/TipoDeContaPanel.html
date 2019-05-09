@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<wicket:panel>
+
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
+        <form wicket:id="formulariocadastrotipodeconta">
+            <div wicket:id="feedbackpanel"></div>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Tipo de Conta</label>
+            <br/>
+            <div class="container">
+                <div class="col-sm-12" style="padding: 2%; min-width: 300px; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input style="width: 42%;" type="text" class="field noLast" wicket:id="descricao" placeholder="Descrição:">
+                    <label style="font-size: 12px; color: #3a3f48;">Pessoa: </label>
+                    <select style="width: 30%;" type="text"  class="field Last" wicket:id="pessoa"  id="pessoa" name="pessoa">
+                    </select>
+                    <input style="width: 42%;" type="number" class="field noLast" wicket:id="tarifa" placeholder="Tarifa:">
+                    <input style="width: 42%;" type="number" class="field Last" wicket:id="baselimite" placeholder="BaseLimite:">
+                </div>
+                <br/>
+                <div style="margin-top:5%; text-align: left;">
+                    <input class="btn-confirma" type="button" wicket:id="salvartipodeconta" value="Salvar"/>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>
+
+
+

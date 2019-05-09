@@ -18,13 +18,23 @@ public class TipoDeConta implements Serializable {
     @Column(nullable=false, length=200)
     private String descricao;
     @Column(nullable=false, length=200)
-    private Double BaseLimite;
+    private Double baselimite;
     @Column(nullable=false, length=200)
-    private Double Tarifa;
+    private Double tarifa;
+    @Column(nullable=false, length=200)
+    private String pessoa;
 
 
     public List<Conta> getContas() {
         return contas;
+    }
+
+    public String getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(String pessoa) {
+        this.pessoa = pessoa;
     }
 
     public void setContas(List<Conta> contas) {
@@ -47,19 +57,19 @@ public class TipoDeConta implements Serializable {
         this.descricao = descricao;
     }
 
-    public Double getBaseLimite() {
-        return BaseLimite;
+    public Double getBaselimite() {
+        return baselimite;
     }
 
-    public void setBaseLimite(Double baseLimite) {
-        BaseLimite = baseLimite;
+    public void setBaselimite(Double baselimite) {
+        this.baselimite = baselimite;
     }
 
     public Double getTarifa() {
-        return Tarifa;
+        return tarifa;
     }
 
     public void setTarifa(Double tarifa) {
-        Tarifa = tarifa;
+        this.tarifa = tarifa;
     }
 }

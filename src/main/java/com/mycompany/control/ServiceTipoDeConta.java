@@ -102,16 +102,24 @@ public class ServiceTipoDeConta {
         return daoTipoDeConta.pesquisaObjetoTipoDeContaPorId(id);
     }
 
-    public void filtrarTipoDeContaNaVisao(String descricao, List<TipoDeConta> listaDePessoasFisicas, TipoDeConta tipoDeConta,
+    public List<TipoDeConta> listarTiposDeConta(TipoDeConta tipoDeConta){
+        return genericDao.pesquisarListaDeObjeto(tipoDeConta);
+    }
+
+    public void deletarTipoDeConta(TipoDeConta tipoDeConta){
+        genericDao.deletar(tipoDeConta);
+    }
+
+    public void filtrarTipoDeContaNaVisao(String descricao, List<TipoDeConta> listaDeTiposDeConta, TipoDeConta tipoDeConta,
                                            AjaxRequestTarget target, MarkupContainer rowPanel) {
         if (!descricao.isEmpty()) {
-            listaDePessoasFisicas.clear();
-            listaDePessoasFisicas.addAll(genericDao.pesquisaListadeObjetosPorString(tipoDeConta,"descricao", descricao));
+            listaDeTiposDeConta.clear();
+            listaDeTiposDeConta.addAll(genericDao.pesquisaListadeObjetosPorString(tipoDeConta,"descricao", descricao));
             target.add(rowPanel);
 
         } else {
-            listaDePessoasFisicas.clear();
-            listaDePessoasFisicas.addAll(genericDao.pesquisarListaDeObjeto(tipoDeConta));
+            listaDeTiposDeConta.clear();
+            listaDeTiposDeConta.addAll(genericDao.pesquisarListaDeObjeto(tipoDeConta));
         }
         target.add(rowPanel);
     }
@@ -151,9 +159,13 @@ public class ServiceTipoDeConta {
             informacoesObrigatoriasPreenchidasValidas = false;
             mensagem.adcionarMensagemNaLista("O campo tarifa é obrigatório");
         }
-        if (tipoDeConta.getBaseLimite() == null){
+        if (tipoDeConta.getBaselimite() == null){
             informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo base limite é");
+            mensagem.adcionarMensagemNaLista("O campo base limite é obrigatório");
+        }
+        if (tipoDeConta.getPessoa() == null){
+            informacoesObrigatoriasPreenchidasValidas = false;
+            mensagem.adcionarMensagemNaLista("O campo tipo de pessoa é obrigatório");
         }
 
         return informacoesObrigatoriasPreenchidasValidas;

@@ -74,6 +74,10 @@
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
+    <bean id="tipoDeCartaoDao" class="com.mycompany.DAO.DaoTipoDeCartao">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+
     <bean id="userService" class="com.mycompany.control.ServiceUser">
         <property name="userDao" ref="userDao"/>
         <property name="genericDao" ref="genericDao"/>
@@ -104,6 +108,12 @@
         <property name="daoTipoDeConta" ref="tipoDeContaDao"/>
         <property name="genericDao" ref="genericDao"/>
     </bean>
+
+    <bean id="tipoDeCartaoService" class="com.mycompany.control.ServiceTipoDeCartao">
+        <property name="daoTipoDeCartao" ref="tipoDeCartaoDao"/>
+        <property name="genericDao" ref="genericDao"/>
+    </bean>
+
 
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">
         <property name="serviceUser" ref="userService"/>
