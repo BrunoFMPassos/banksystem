@@ -25,11 +25,11 @@ public class Cartao implements Serializable {
     @Column(nullable=false, length=200)
     private Integer cvv;
     @Column(nullable=false, length=200)
-    private Long dataValidade;
+    private String dataValidade;
     @Column(nullable=false, length=200)
-    private String tipo; //credito,debito,credito/debito
+    private String status;
     @Column(nullable=false, length=200)
-    private Long limite;
+    private Double limite;
     @Column(nullable=false, length=200)
     private Integer senha;
 
@@ -65,29 +65,44 @@ public class Cartao implements Serializable {
         this.cvv = cvv;
     }
 
-    public Long getDataValidade() {
+    public String getDataValidade() {
         return dataValidade;
     }
 
-    public void setDataValidade(Long dataValidade) {
+    public void setDataValidade(String dataValidade) {
         this.dataValidade = dataValidade;
     }
 
-    public String getTipo() {
-        return tipo;
+    public TipoDeCartao getTipoDeCartao() {
+        return tipoDeCartao;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+
+    public void setTipoDeCartao(TipoDeCartao tipoDeCartao) {
+        this.tipoDeCartao = tipoDeCartao;
     }
 
-    public Long getLimite() {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Double getLimite() {
         return limite;
     }
 
-    public void setLimite(Long limite) {
+    public void setLimite(Double limite) {
         this.limite = limite;
     }
 
+    public Integer getSenha() {
+        return senha;
+    }
 
+    public void setSenha(Integer senha) {
+        this.senha = senha;
+    }
 }

@@ -37,15 +37,19 @@ public class Conta implements Serializable {
     @Column(nullable=false, length=200)
     private Integer senha;
     @Column(nullable = false, length = 200)
-    private Long saldo;
+    private Double saldo;
     @Column(nullable = false, length = 200)
-    private Long tarifa;
+    private Long verificador;
     @Column(nullable=false, length=200)
     private String status;
     @Column(nullable=false, length=200)
     private String dataAbertura;
     @Column(nullable=false, length=200)
-    private Long limiteConta;
+    private Double limiteConta;
+    @Transient
+    private int senhaCartao;
+    @Transient
+    private String tipoDeCartao;
 
 
 
@@ -105,11 +109,11 @@ public class Conta implements Serializable {
         this.tipoDeConta = tipoDeConta;
     }
 
-    public Long getLimiteConta() {
+    public Double getLimiteConta() {
         return limiteConta;
     }
 
-    public void setLimiteConta(Long limiteConta) {
+    public void setLimiteConta(Double limiteConta) {
         this.limiteConta = limiteConta;
     }
 
@@ -121,11 +125,11 @@ public class Conta implements Serializable {
         this.senha = senha;
     }
 
-    public Long getSaldo() {
+    public Double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(Long saldo) {
+    public void setSaldo(Double saldo) {
         this.saldo = saldo;
     }
 
@@ -135,14 +139,6 @@ public class Conta implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Long getTarifa() {
-        return tarifa;
-    }
-
-    public void setTarifa(Long tarifa) {
-        this.tarifa = tarifa;
     }
 
     public String getDataAbertura() {
@@ -161,5 +157,27 @@ public class Conta implements Serializable {
         this.digito = digito;
     }
 
+    public int getSenhaCartao() {
+        return senhaCartao;
+    }
 
+    public void setSenhaCartao(int senhaCartao) {
+        this.senhaCartao = senhaCartao;
+    }
+
+    public String getTipoDeCartao() {
+        return tipoDeCartao;
+    }
+
+    public void setTipoDeCartao(String tipoDeCartao) {
+        this.tipoDeCartao = tipoDeCartao;
+    }
+
+    public Long getVerificador() {
+        return verificador;
+    }
+
+    public void setVerificador(Long verificador) {
+        this.verificador = verificador;
+    }
 }

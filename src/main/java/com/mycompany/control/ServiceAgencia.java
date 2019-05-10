@@ -159,7 +159,7 @@ public class ServiceAgencia {
 
     public Mensagem deletarAgencia(Agencia agencia) {
         Mensagem mensagem = new Mensagem();
-        Boolean agenciaEmUso = agenciaDao.verificarSeAgenciaEstaemUso(agencia);
+        Boolean agenciaEmUso = agenciaDao.verificarSeAgenciaEstaEmUsoEmColaboradores(agencia);
         if(!agenciaEmUso) {
             genericDao.deletar(agencia);
         }else{

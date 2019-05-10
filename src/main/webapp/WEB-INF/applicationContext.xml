@@ -78,6 +78,14 @@
         <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
+    <bean id="contaDao" class="com.mycompany.DAO.DaoConta">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+
+    <bean id="cartaoDao" class="com.mycompany.DAO.DaoCartao">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+
     <bean id="userService" class="com.mycompany.control.ServiceUser">
         <property name="userDao" ref="userDao"/>
         <property name="genericDao" ref="genericDao"/>
@@ -114,6 +122,21 @@
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
+    <bean id="cartaoService" class="com.mycompany.control.ServiceCartao">
+        <property name="daoCartao" ref="cartaoDao"/>
+        <property name="genericDao" ref="genericDao"/>
+    </bean>
+
+    <bean id="contaService" class="com.mycompany.control.ServiceConta">
+        <property name="daoConta" ref="contaDao"/>
+        <property name="serviceCartao" ref="cartaoService"/>
+        <property name="genericDao" ref="genericDao"/>
+        <property name="serviceAgencia" ref="agenciaService"/>
+        <property name="servicePF" ref="pfService"/>
+        <property name="servicePJ" ref="pjService"/>
+        <property name="serviceTipoDeCartao" ref="tipoDeCartaoService"/>
+        <property name="serviceTipoDeConta" ref="tipoDeContaService"/>
+    </bean>
 
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">
         <property name="serviceUser" ref="userService"/>

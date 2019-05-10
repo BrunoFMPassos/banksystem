@@ -6,6 +6,8 @@ import com.mycompany.model.Agencia;
 import com.mycompany.model.Colaborador;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -101,11 +103,34 @@ public class ColaboradorPanel extends Panel {
         return rg;
     }
 
-    private TextField<String> criarTextFieldDataDeNascimento() {
+
+    private DateTextField criarTextFieldDataDeNascimento(){
+        DatePicker datePicker = new DatePicker(){
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected boolean alignWithIcon() {
+                return true;
+            }
+            @Override
+            protected boolean enableMonthYearSelection() {
+                return true;
+            }
+        };
+
+        DateTextField data = new DateTextField("dataDeNascimento");
+        data.add(datePicker);
+        data.add(new AttributeModifier("onfocus", "$(this).mask('99/99/99');"));
+        return data;
+    }
+
+
+
+    /*private TextField<String> criarTextFieldDataDeNascimento() {
         TextField<String> dataDeNascimento = new TextField<String>("dataDeNascimento");
         dataDeNascimento.add(new AttributeModifier("onfocus", "$(this).mask('99/99/9999');"));
         return dataDeNascimento;
-    }
+    }*/
 
     private RadioGroup<?> criarRadioGrupoSexo() {
         RadioGroup<?> sexo = new RadioGroup<Object>("sexo");

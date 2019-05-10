@@ -42,7 +42,7 @@ public class DaoAgencia extends GenericDAOImpl<Agencia, Long> implements Seriali
         return agencia;
     }
 
-    public Boolean verificarSeAgenciaEstaemUso(Agencia agencia){
+    public Boolean verificarSeAgenciaEstaEmUsoEmColaboradores(Agencia agencia){
         Boolean agenciaEmUso = false;
         Colaborador colaborador = new Colaborador();
         Session session = sessionFactory.openSession();
