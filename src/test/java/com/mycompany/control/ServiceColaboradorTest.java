@@ -48,11 +48,12 @@ public class ServiceColaboradorTest {
         colaborador.setDataDeNascimento("27/08/1996");
         colaborador.setRg("5810483");
         colaborador.setSexo("Masculino");
-        colaborador.setUsername("admin");
-        colaborador.setPassword("123456");
+        colaborador.setUsername("teste");
+        colaborador.setPassword("testes123");
         colaborador.setPerfil("Diretor");
         colaborador.setCidade("Anápolis");
         colaborador.setUF("GO");
+        colaborador.setCep("75060040");
         colaborador.setEndereco("Rua teste");
         colaborador.setBairro("102");
         colaborador.setComplemento("testedecomplemento");
@@ -72,6 +73,7 @@ public class ServiceColaboradorTest {
         colaborador2.setBairro("102");
         colaborador2.setComplemento("testedecomplemento");
         colaborador2.setAgencia(agencia);
+        colaborador2.setCep("75060040");
 
         colaborador3.setNome("Mariana");
         colaborador3.setCpf("555.111.111-10");
@@ -87,6 +89,7 @@ public class ServiceColaboradorTest {
         colaborador3.setBairro("102");
         colaborador3.setComplemento("testedecomplemento");
         colaborador3.setAgencia(agencia);
+        colaborador3.setCep("75060040");
 
         colaborador4.setNome("Teste");
         colaborador4.setCpf("111.111.111-35");
@@ -102,6 +105,7 @@ public class ServiceColaboradorTest {
         colaborador4.setBairro("102");
         colaborador4.setComplemento("testedecomplemento");
         colaborador4.setAgencia(agencia2);
+        colaborador4.setCep("75060040");
 
 
 

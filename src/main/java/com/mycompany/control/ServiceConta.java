@@ -249,34 +249,39 @@ public class ServiceConta {
         return true;
     }
 
-    public List<Conta> pesquisaListadeContasPorTitular(Conta conta, List<Long> listaIdsPF, List<Long> listaIdsPJ) {
+    public List<Conta> pesquisaListadeContasPorTitular(Conta conta, List<PessoaFisica> listaPF, List<PessoaJuridica> listaPJ) {
         List<Conta> listaDeTodasAsContas = daoConta.pesquisarListaDeContas(conta);
-        List<Conta> contasFiltradas = new ArrayList<>();
+        List<Conta> contasFiltradas = new ArrayList<Conta>();
         for(Conta contaDaLista:listaDeTodasAsContas){
-            for(Long idPFDaLista:listaIdsPF){
-                if(idPFDaLista.equals(contaDaLista.getPessoaFisica().getId())){
-                    contasFiltradas.add(contaDaLista);
+            for(PessoaFisica PFDaLista:listaPF){
+                if(contaDaLista.getPessoaFisica()!= null) {
+                    String idPFdaListaString = PFDaLista.getId().toString();
+                    String idPFdaContaString = contaDaLista.getPessoaFisica().getId().toString();
+                    if (idPFdaContaString.equals(idPFdaListaString)) {
+                        contasFiltradas.add(contaDaLista);
+                    }
                 }
             }
-            for(Long idPJDaLista:listaIdsPJ){
-                if(idPJDaLista.equals(contaDaLista.getPessoaJuridica().getId())){
-                    contasFiltradas.add(contaDaLista);
+            for(PessoaJuridica PJDaLista:listaPJ){
+                if(contaDaLista.getPessoaJuridica()!= null) {
+                    String idPJdaListaString = PJDaLista.getId().toString();
+                    String idPJdaContaString = contaDaLista.getPessoaJuridica().getId().toString();
+                    if (idPJdaContaString.equals(idPJdaListaString)) {
+                        contasFiltradas.add(contaDaLista);
+                    }
                 }
             }
         }
         return contasFiltradas;
     }
-
     public void filtrarContaNaVisao(String titular, String agencia, String tipo, List<Conta> listaDeContas, Conta conta, AjaxRequestTarget target, MarkupContainer rowPanel) {
         if (!titular.isEmpty() && agencia.isEmpty() && tipo.isEmpty()) {
-            listaDeContas.clear();
             PessoaFisica pf = new PessoaFisica();
             PessoaJuridica pj = new PessoaJuridica();
             List<PessoaFisica> listaPF =  servicePF.pesquisarListaDePessoasFisicasPorString(pf,"nome",titular);
             List<PessoaJuridica> listaPJ = servicePJ.pesquisarListaDePessoasJuridicasPorString(pj,"razaoSocial",titular);
-            List<Long> listaDeIdsPF = new ArrayList<Long>();
-            List<Long> listaDeIdsPJ = new ArrayList<Long>();
-            listaDeContas.addAll(pesquisaListadeContasPorTitular(conta,listaDeIdsPF,listaDeIdsPJ));
+            listaDeContas.clear();
+            listaDeContas.addAll(pesquisaListadeContasPorTitular(conta,listaPF,listaPJ));
             target.add(rowPanel);
 
         } else if (titular.isEmpty() && !agencia.isEmpty() && tipo.isEmpty()) {
@@ -299,9 +304,7 @@ public class ServiceConta {
             PessoaJuridica pj = new PessoaJuridica();
             List<PessoaFisica> listaPF =  servicePF.pesquisarListaDePessoasFisicasPorString(pf,"nome",titular);
             List<PessoaJuridica> listaPJ = servicePJ.pesquisarListaDePessoasJuridicasPorString(pj,"razaoSocial",titular);
-            List<Long> listaDeIdsPF = new ArrayList<Long>();
-            List<Long> listaDeIdsPJ = new ArrayList<Long>();
-            listaAuxiliarContasPorTitular.addAll(pesquisaListadeContasPorTitular(conta,listaDeIdsPF,listaDeIdsPJ));
+            listaAuxiliarContasPorTitular.addAll(pesquisaListadeContasPorTitular(conta,listaPF,listaPJ));
 
             Agencia agenciaObj = serviceAgencia.pesquisaObjetoAgenciaPorNumero(agencia);
             listaAuxiliarContasporAgencia.addAll(pesquisarListaDeContasPorAgencia(conta,agenciaObj));
@@ -322,9 +325,7 @@ public class ServiceConta {
             PessoaJuridica pj = new PessoaJuridica();
             List<PessoaFisica> listaPF =  servicePF.pesquisarListaDePessoasFisicasPorString(pf,"nome",titular);
             List<PessoaJuridica> listaPJ = servicePJ.pesquisarListaDePessoasJuridicasPorString(pj,"razaoSocial",titular);
-            List<Long> listaDeIdsPF = new ArrayList<Long>();
-            List<Long> listaDeIdsPJ = new ArrayList<Long>();
-            listaAuxiliarContasPorTitular.addAll(pesquisaListadeContasPorTitular(conta,listaDeIdsPF,listaDeIdsPJ));
+            listaAuxiliarContasPorTitular.addAll(pesquisaListadeContasPorTitular(conta,listaPF,listaPJ));
 
             TipoDeConta tipoObj = serviceTipoDeConta.pesquisarObjetoTipoDeContaPorDescricao(tipo);
             listaAuxiliarContasporTipo.addAll(pesquisarListaDeContasPorTipo(conta,tipoObj));
@@ -352,6 +353,31 @@ public class ServiceConta {
                 for(Conta contaloop2: listaAuxiliarContasporTipo){
                     if(contaloop.getNumero().equals(contaloop2.getNumero())){
                         listaDeContas.add(contaloop);
+                    }
+                }
+            }
+            target.add(rowPanel);
+        }else if(!titular.isEmpty() && !agencia.isEmpty() && !tipo.isEmpty()) {
+            listaDeContas.clear();
+            List<Conta> listaAuxiliarContasPorTitular = new ArrayList<Conta>();
+            List<Conta> listaAuxiliarContasporAgencia = new ArrayList<Conta>();
+            List<Conta> listaAuxiliarContasporTipo = new ArrayList<Conta>();
+            PessoaFisica pf = new PessoaFisica();
+            PessoaJuridica pj = new PessoaJuridica();
+            List<PessoaFisica> listaPF =  servicePF.pesquisarListaDePessoasFisicasPorString(pf,"nome",titular);
+            List<PessoaJuridica> listaPJ = servicePJ.pesquisarListaDePessoasJuridicasPorString(pj,"razaoSocial",titular);
+            listaAuxiliarContasPorTitular.addAll(pesquisaListadeContasPorTitular(conta,listaPF,listaPJ));
+
+            Agencia agenciaObj = serviceAgencia.pesquisaObjetoAgenciaPorNumero(agencia);
+            listaAuxiliarContasporAgencia.addAll(pesquisarListaDeContasPorAgencia(conta,agenciaObj));
+            TipoDeConta tipoObj = serviceTipoDeConta.pesquisarObjetoTipoDeContaPorDescricao(tipo);
+            listaAuxiliarContasporTipo.addAll(pesquisarListaDeContasPorTipo(conta,tipoObj));;
+            for(Conta contaloop: listaAuxiliarContasPorTitular){
+                for(Conta contaloop2: listaAuxiliarContasporAgencia){
+                        for(Conta contaloop3: listaAuxiliarContasporTipo){
+                            if(contaloop.getNumero().equals(contaloop2.getNumero())&&contaloop.getNumero().equals(contaloop3.getNumero())){
+                            listaDeContas.add(contaloop);
+                        }
                     }
                 }
             }

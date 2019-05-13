@@ -41,32 +41,32 @@ public class ServiceContaTest {
         conta.setStatus("Ativa");
         conta.setAgencia(serviceAgencia.pesquisaObjetoAgenciaPorNumero("1"));
         conta.setDataAbertura("13/05/2019");
-        conta.setPessoaFisica(servicePF.pesquisaObjetoPessoaFisicaPorId(786432L));
+        conta.setPessoaFisica(servicePF.pesquisaObjetoPessoaFisicaPorId(98304L));
         conta.setSaldo("1000");
         conta.setSenha(1234);
         conta.setSenhaCartao(1234);
-        conta.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(65536L).getDescricao());
-        conta.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(131072L));
+        conta.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(1L).getDescricao());
+        conta.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(1L));
 
         conta2.setStatus("Ativa");
         conta2.setAgencia(serviceAgencia.pesquisaObjetoAgenciaPorNumero("1"));
         conta2.setDataAbertura("13/05/2019");
-        conta2.setPessoaFisica(servicePF.pesquisaObjetoPessoaFisicaPorId(786433L));
+        conta2.setPessoaFisica(servicePF.pesquisaObjetoPessoaFisicaPorId(98305L));
         conta2.setSaldo("3000");
         conta2.setSenha(1234);
         conta2.setSenhaCartao(1234);
-        conta2.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(65536L).getDescricao());
-        conta2.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(98304L));
+        conta2.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(2L).getDescricao());
+        conta2.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(3L));
 
         conta3.setStatus("Ativa");
         conta3.setAgencia(serviceAgencia.pesquisaObjetoAgenciaPorNumero("2"));
         conta3.setDataAbertura("13/05/2019");
-        conta3.setPessoaJuridica(servicePJ.pesquisarObjetoPessoaJutidicaPorId(2L));
+        conta3.setPessoaJuridica(servicePJ.pesquisarObjetoPessoaJutidicaPorId(65536L));
         conta3.setSaldo("2000");
         conta3.setSenha(1234);
         conta3.setSenhaCartao(1234);
-        conta3.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(65537L).getDescricao());
-        conta3.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(131073L));
+        conta3.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(3L).getDescricao());
+        conta3.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(4L));
     }
 
     @Test

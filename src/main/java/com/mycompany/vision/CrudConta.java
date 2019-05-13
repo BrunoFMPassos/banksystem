@@ -3,16 +3,17 @@ package com.mycompany.vision;
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
 import com.googlecode.wicket.jquery.ui.markup.html.link.Link;
+import com.mycompany.control.ServiceAgencia;
 import com.mycompany.control.ServiceConta;
-import com.mycompany.model.Conta;
-import com.mycompany.model.PessoaFisica;
-import com.mycompany.model.PessoaJuridica;
-import com.mycompany.model.User;
+import com.mycompany.control.ServiceTipoDeConta;
+import com.mycompany.model.*;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -21,6 +22,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -29,12 +32,59 @@ import java.util.List;
 public class CrudConta extends BasePage{
     @SpringBean(name = "contaService")
     ServiceConta serviceConta;
+    @SpringBean(name = "agenciaService")
+    ServiceAgencia serviceAgencia;
+    @SpringBean(name = "tipoDeContaService")
+    ServiceTipoDeConta serviceTipoDeConta;
     final Conta conta = new Conta();
     private List<Conta> listaDeContas = new ArrayList<Conta>();
     Form<Conta> form;
     TextField<String> inputTitular = new TextField<String>("titular");
-    TextField<String> inputAgencia = new TextField<String>("agenciaFiltrar");
-    TextField<String> inputTipo = new TextField<String>("tipoDeContaFiltrar");
+
+    Agencia agencia = new Agencia();
+    final List<Agencia> listaDeAgenciasPesquisa = serviceAgencia.pesquisarListaDeAgenciasPorAgencia(agencia);
+    ChoiceRenderer<Agencia> choiceRenderer = new ChoiceRenderer<Agencia>("numero", "id") {
+        @Override
+        public Object getDisplayValue(Agencia agencia) {
+            // TODO Auto-generated method stub
+            return agencia.getNumero();
+        }
+    };
+    IModel<List<Agencia>> IModellist = new LoadableDetachableModel<List<Agencia>>() {
+        @Override
+        protected List<Agencia> load() {
+            // TODO Auto-generated method stub
+            return listaDeAgenciasPesquisa;
+        }
+    };
+    DropDownChoice<Agencia> selectAgencia = new DropDownChoice<Agencia>(
+            "agenciaFiltrar",
+            IModellist, choiceRenderer
+    );
+
+
+    TipoDeConta tipoDeConta = new TipoDeConta();
+    final List<TipoDeConta> listaDeTiposPesquisa = serviceTipoDeConta.listarTiposDeConta(tipoDeConta);
+    ChoiceRenderer<TipoDeConta> choiceRendererT = new ChoiceRenderer<TipoDeConta>("descricao",
+            "descricao") {
+        @Override
+        public Object getDisplayValue(TipoDeConta  tipoDeConta) {
+            // TODO Auto-generated method stub
+            return tipoDeConta.getDescricao();
+        }
+    };
+    IModel<List<TipoDeConta>> IModellistT = new LoadableDetachableModel<List<TipoDeConta>>() {
+        @Override
+        protected List<TipoDeConta> load() {
+            // TODO Auto-generated method stub
+            return listaDeTiposPesquisa;
+        }
+    };
+    DropDownChoice<TipoDeConta> selectTipo = new DropDownChoice<TipoDeConta>(
+            "tipoDeContaFiltrar",
+            IModellistT, choiceRendererT
+    );
+
     private String titularFiltrar = "";
     private String agenciaFiltrar = "";
     private String tipoFiltrar = "";
@@ -57,8 +107,8 @@ public class CrudConta extends BasePage{
         add(form);
         form.add(feedbackPanel);
         form.add(criarTextFieldTitularfiltro());
-        form.add(criarTextFieldAgenciafiltro());
-        form.add(criarTextFieldTipofiltro());
+        form.add(criarSelectAgencia());
+        form.add(criarSelectTipo());
         form.add(criarBtnFiltrar());
         form.add(criarBtnInserir());
         form.add(criarTabela());
@@ -72,15 +122,28 @@ public class CrudConta extends BasePage{
         return inputTitular;
     }
 
-    private TextField<String> criarTextFieldAgenciafiltro() {
-        //TextField<String> inputAgencia = new TextField<String>("agencia");
-        return inputAgencia;
+    private DropDownChoice<Agencia> criarSelectAgencia() {
+
+        List<String> listaDeAgencias = new ArrayList<String>();
+        for (Agencia agenciaLoop : listaDeAgenciasPesquisa) {
+            listaDeAgencias.add(agenciaLoop.getNumero().toString());
+        }
+        selectAgencia.setOutputMarkupId(true);
+        return selectAgencia;
+
     }
 
-    private TextField<String> criarTextFieldTipofiltro() {
-        //TextField<String> inputAgencia = new TextField<String>("agencia");
-        return inputTipo;
+    private DropDownChoice<TipoDeConta> criarSelectTipo() {
+
+        List<String> listaDeTipos = new ArrayList<String>();
+        for (TipoDeConta tipoLoop : listaDeTiposPesquisa) {
+            listaDeTipos.add(tipoLoop.getDescricao());
+        }
+        selectTipo.setOutputMarkupId(true);
+        return selectTipo;
+
     }
+
 
     private MarkupContainer criarTabela() {
         rowPanel.setOutputMarkupId(true);
@@ -153,8 +216,8 @@ public class CrudConta extends BasePage{
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
                 titularFiltrar = inputTitular.getInput();
-                agenciaFiltrar = inputAgencia.getInput();
-                tipoFiltrar = inputTipo.getInput();
+                agenciaFiltrar = selectAgencia.getInput();
+                tipoFiltrar = selectTipo.getInput();
                 String titular = titularFiltrar;
                 String agencia = agenciaFiltrar;
                 String tipo = tipoFiltrar;
