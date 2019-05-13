@@ -60,7 +60,7 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
         return user;
     }
 
-    public List<Colaborador> pesquisaListadeObjetoColaboradorPorAgencia(Colaborador colaborador, String colum, Agencia agencia) {
+    public List<Colaborador> pesquisaListadeObjetoColaboradorPorAgencia(Colaborador colaborador, Agencia agencia) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         String hql = "from " + colaborador.getClass().getCanonicalName() + " as c where c.agencia = :agencia";

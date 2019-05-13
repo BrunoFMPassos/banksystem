@@ -27,6 +27,8 @@ public class Conta implements Serializable {
     @JoinColumn(name="tipoDeConta_id")
     private TipoDeConta tipoDeConta;
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -37,7 +39,7 @@ public class Conta implements Serializable {
     @Column(nullable=false, length=200)
     private Integer senha;
     @Column(nullable = false, length = 200)
-    private Double saldo;
+    private String saldo;
     @Column(nullable = false, length = 200)
     private Long verificador;
     @Column(nullable=false, length=200)
@@ -45,11 +47,17 @@ public class Conta implements Serializable {
     @Column(nullable=false, length=200)
     private String dataAbertura;
     @Column(nullable=false, length=200)
-    private Double limiteConta;
+    private String limiteConta;
     @Transient
     private int senhaCartao;
     @Transient
     private String tipoDeCartao;
+    @Transient
+    private String titular;
+    @Transient
+    private String agenciaFiltrar;
+    @Transient
+    private String tipoDeContaFiltrar;
 
 
 
@@ -109,11 +117,19 @@ public class Conta implements Serializable {
         this.tipoDeConta = tipoDeConta;
     }
 
-    public Double getLimiteConta() {
+    public String getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(String saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getLimiteConta() {
         return limiteConta;
     }
 
-    public void setLimiteConta(Double limiteConta) {
+    public void setLimiteConta(String limiteConta) {
         this.limiteConta = limiteConta;
     }
 
@@ -125,13 +141,7 @@ public class Conta implements Serializable {
         this.senha = senha;
     }
 
-    public Double getSaldo() {
-        return saldo;
-    }
 
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
-    }
 
     public String getStatus() {
         return status;
@@ -179,5 +189,13 @@ public class Conta implements Serializable {
 
     public void setVerificador(Long verificador) {
         this.verificador = verificador;
+    }
+
+    public String getTitular() {
+        return titular;
+    }
+
+    public void setTitular(String titular) {
+        this.titular = titular;
     }
 }

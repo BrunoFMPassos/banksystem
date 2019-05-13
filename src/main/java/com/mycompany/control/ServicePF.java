@@ -125,6 +125,10 @@ public class ServicePF {
         return genericDao.pesquisarListaDeObjeto(pessoaFisica);
     }
 
+    public Long pesquisarIdPessoaFisicaPorNome(String nome){
+        return pfDao.pesquisaIdDaPessoaFisicaPorNome(nome);
+    }
+
     public void deletarPessoaFisica(PessoaFisica pessoaFisica) {
         genericDao.deletar(pessoaFisica);
     }

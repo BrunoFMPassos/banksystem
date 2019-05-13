@@ -114,6 +114,10 @@ public class ServicePJ {
         return pjDao.pesquisaObjetoPessoaJuridicaPorCnpj(cnpj);
     }
 
+    public Long pesquisarIdDaPessoaJuridicaPorRazaoSocial(String razaoSocial){
+        return pjDao.pesquisaIdDaPessoaJuridicaPorRazaoSocial(razaoSocial);
+    }
+
     public List<PessoaJuridica> pesquisarListaDePessoasJuridicasPorString(PessoaJuridica pessoaJuridica, String colum, String string) {
         return genericDao.pesquisaListadeObjetosPorString(pessoaJuridica, colum, string);
     }

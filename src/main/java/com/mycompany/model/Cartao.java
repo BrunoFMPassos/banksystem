@@ -29,7 +29,7 @@ public class Cartao implements Serializable {
     @Column(nullable=false, length=200)
     private String status;
     @Column(nullable=false, length=200)
-    private Double limite;
+    private String limite;
     @Column(nullable=false, length=200)
     private Integer senha;
 
@@ -90,11 +90,11 @@ public class Cartao implements Serializable {
         this.status = status;
     }
 
-    public Double getLimite() {
+    public String getLimite() {
         return limite;
     }
 
-    public void setLimite(Double limite) {
+    public void setLimite(String limite) {
         this.limite = limite;
     }
 

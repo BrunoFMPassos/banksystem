@@ -14,7 +14,7 @@ public class PessoaFisica extends Pessoa implements Serializable {
     private List<Conta> conta;
 
     @Column(nullable=false, length=200)
-    private Double rendaMensal;
+    private String rendaMensal;
 
     @Column(nullable=false, length=200)
     private String telefone;
@@ -27,11 +27,11 @@ public class PessoaFisica extends Pessoa implements Serializable {
         this.conta = conta;
     }
 
-    public Double getRendaMensal() {
+    public String getRendaMensal() {
         return rendaMensal;
     }
 
-    public void setRendaMensal(Double rendaMensal) {
+    public void setRendaMensal(String rendaMensal) {
         this.rendaMensal = rendaMensal;
     }
 

@@ -108,7 +108,7 @@ public class ServiceColaborador {
 
 
     public List<Colaborador> pesquisaListaDeColaboradorPorAgencia(Colaborador colaborador, Agencia agencia){
-        return colaboradorDao.pesquisaListadeObjetoColaboradorPorAgencia(colaborador,"agencia",agencia);
+        return colaboradorDao.pesquisaListadeObjetoColaboradorPorAgencia(colaborador,agencia);
     }
 
     public void deletarColaborador(Colaborador colaborador) {

@@ -16,8 +16,17 @@ public class ServiceCartao {
     private DaoCartao daoCartao;
 
 
+    public void inserir(Cartao cartao){
+        genericDao.inserir(cartao);
+    }
+
+
     public List<Cartao> pesquisaListaDeCartoesExistentes(Cartao cartao){
         return genericDao.pesquisarListaDeObjeto(cartao);
+    }
+
+    public void deletarCartao(Cartao cartao){
+       genericDao.deletar(cartao);
     }
 
 

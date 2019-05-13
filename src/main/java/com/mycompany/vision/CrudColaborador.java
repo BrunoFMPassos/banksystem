@@ -226,7 +226,6 @@ public class CrudColaborador extends BasePage {
 
         AjaxButton filtrar = new AjaxButton("filtrar", form) {
 
-
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);

@@ -19,9 +19,9 @@ public class TipoDeCartao implements Serializable {
     @Column(nullable=false, length=200)
     private String descricao;
     @Column(nullable=false, length=200)
-    private Double baselimite;
+    private String baselimite;
     @Column(nullable=false, length=200)
-    private Double Tarifa;
+    private String Tarifa;
     @Column(nullable=false, length=200)
     private String pessoa;
 
@@ -49,12 +49,20 @@ public class TipoDeCartao implements Serializable {
         this.descricao = descricao;
     }
 
-    public Double getBaselimite() {
+    public String getBaselimite() {
         return baselimite;
     }
 
-    public void setBaselimite(Double baselimite) {
+    public void setBaselimite(String baselimite) {
         this.baselimite = baselimite;
+    }
+
+    public String getTarifa() {
+        return Tarifa;
+    }
+
+    public void setTarifa(String tarifa) {
+        Tarifa = tarifa;
     }
 
     public String getPessoa() {
@@ -65,11 +73,4 @@ public class TipoDeCartao implements Serializable {
         this.pessoa = pessoa;
     }
 
-    public Double getTarifa() {
-        return Tarifa;
-    }
-
-    public void setTarifa(Double tarifa) {
-        Tarifa = tarifa;
-    }
 }

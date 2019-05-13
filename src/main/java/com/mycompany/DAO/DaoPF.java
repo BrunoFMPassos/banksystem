@@ -57,6 +57,20 @@ public class DaoPF extends GenericDAOImpl<PessoaFisica, Long> implements Seriali
         return pessoaFisica;
     }
 
+    public Long pesquisaIdDaPessoaFisicaPorNome(String nome){
+        PessoaFisica pessoaFisica = new PessoaFisica();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        String hql = "from " + pessoaFisica.getClass().getCanonicalName()
+                + " as p where p.nome = :nome";
+        Query query = session.createQuery(hql);
+        query.setParameter("nome", nome);
+        pessoaFisica = (PessoaFisica) query.uniqueResult();
+        Long idPessoaFisica = pessoaFisica.getId();
+        session.close();
+        return idPessoaFisica;
+    }
+
 
     @Override
     public void setSessionFactory(SessionFactory sessionFactory) {

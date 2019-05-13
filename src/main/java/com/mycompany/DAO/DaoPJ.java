@@ -53,6 +53,20 @@ public class DaoPJ extends GenericDAOImpl<PessoaJuridica, Long> implements Seria
         return pessoaJuridica;
     }
 
+    public Long pesquisaIdDaPessoaJuridicaPorRazaoSocial(String razaoSocial){
+        PessoaJuridica pessoaJuridica = new PessoaJuridica();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        String hql = "from " + pessoaJuridica.getClass().getCanonicalName()
+                + " as p where p.razaoSocial = :razaoSocial";
+        Query query = session.createQuery(hql);
+        query.setParameter("razaoSocial", razaoSocial);
+        pessoaJuridica = (PessoaJuridica) query.uniqueResult();
+        Long idPessoaJuridica= pessoaJuridica.getId();
+        session.close();
+        return idPessoaJuridica;
+    }
+
     @Override
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
