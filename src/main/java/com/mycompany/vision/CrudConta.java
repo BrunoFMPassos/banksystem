@@ -36,54 +36,13 @@ public class CrudConta extends BasePage{
     ServiceAgencia serviceAgencia;
     @SpringBean(name = "tipoDeContaService")
     ServiceTipoDeConta serviceTipoDeConta;
-    final Conta conta = new Conta();
+    Conta conta = new Conta();
     private List<Conta> listaDeContas = new ArrayList<Conta>();
     Form<Conta> form;
     TextField<String> inputTitular = new TextField<String>("titular");
 
-    Agencia agencia = new Agencia();
-    final List<Agencia> listaDeAgenciasPesquisa = serviceAgencia.pesquisarListaDeAgenciasPorAgencia(agencia);
-    ChoiceRenderer<Agencia> choiceRenderer = new ChoiceRenderer<Agencia>("numero", "id") {
-        @Override
-        public Object getDisplayValue(Agencia agencia) {
-            // TODO Auto-generated method stub
-            return agencia.getNumero();
-        }
-    };
-    IModel<List<Agencia>> IModellist = new LoadableDetachableModel<List<Agencia>>() {
-        @Override
-        protected List<Agencia> load() {
-            // TODO Auto-generated method stub
-            return listaDeAgenciasPesquisa;
-        }
-    };
-    DropDownChoice<Agencia> selectAgencia = new DropDownChoice<Agencia>(
-            "agenciaFiltrar",
-            IModellist, choiceRenderer
-    );
-
-
-    TipoDeConta tipoDeConta = new TipoDeConta();
-    final List<TipoDeConta> listaDeTiposPesquisa = serviceTipoDeConta.listarTiposDeConta(tipoDeConta);
-    ChoiceRenderer<TipoDeConta> choiceRendererT = new ChoiceRenderer<TipoDeConta>("descricao",
-            "descricao") {
-        @Override
-        public Object getDisplayValue(TipoDeConta  tipoDeConta) {
-            // TODO Auto-generated method stub
-            return tipoDeConta.getDescricao();
-        }
-    };
-    IModel<List<TipoDeConta>> IModellistT = new LoadableDetachableModel<List<TipoDeConta>>() {
-        @Override
-        protected List<TipoDeConta> load() {
-            // TODO Auto-generated method stub
-            return listaDeTiposPesquisa;
-        }
-    };
-    DropDownChoice<TipoDeConta> selectTipo = new DropDownChoice<TipoDeConta>(
-            "tipoDeContaFiltrar",
-            IModellistT, choiceRendererT
-    );
+    DropDownChoice<Agencia> selectAgenciaFiltrar;
+    DropDownChoice<TipoDeConta> selectTipoFiltrar;
 
     private String titularFiltrar = "";
     private String agenciaFiltrar = "";
@@ -91,59 +50,124 @@ public class CrudConta extends BasePage{
     FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackpanel");
     MarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
 
+    ModalWindow modalWindowInserirConta = new ModalWindow("modalinserirconta");
+
     public CrudConta() {
         listaDeContas.addAll(serviceConta.pesquisarListaDeContas(conta));
+        modalWindowInserirConta.setAutoSize(false);
+        modalWindowInserirConta.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
         feedbackPanel.setOutputMarkupId(true);
-
         CompoundPropertyModel<Conta> compoundPropertyModelConta = new CompoundPropertyModel<Conta>(conta);
-
         form = new Form<Conta>("formconta", compoundPropertyModelConta) {
             @Override
             public void onSubmit() {
-
             }
         };
 
         add(form);
         form.add(feedbackPanel);
         form.add(criarTextFieldTitularfiltro());
-        form.add(criarSelectAgencia());
-        form.add(criarSelectTipo());
+        form.add(criarSelectAgenciaFiltrar());
+        form.add(criarSelectTipoFiltrar());
         form.add(criarBtnFiltrar());
         form.add(criarBtnInserir());
         form.add(criarTabela());
         form.add(criarRelatorioJasper());
         form.add(criarRelatorioExcel());
+        form.add(criarModalInserirConta());
     }
 
+    private ModalWindow criarModalInserirConta() {
+        return modalWindowInserirConta;
+    }
 
     private TextField<String> criarTextFieldTitularfiltro() {
         //TextField<String> inputNome = new TextField<String>("nome");
         return inputTitular;
     }
 
-    private DropDownChoice<Agencia> criarSelectAgencia() {
-
-        List<String> listaDeAgencias = new ArrayList<String>();
-        for (Agencia agenciaLoop : listaDeAgenciasPesquisa) {
-            listaDeAgencias.add(agenciaLoop.getNumero().toString());
+    private DropDownChoice<Agencia> criarSelectAgenciaFiltrar() {
+        Agencia agenciaObjFiltrar = new Agencia();
+        final List<Agencia> listaDeAgenciasPesquisaFiltro = serviceAgencia.pesquisarListaDeAgenciasPorAgencia(agenciaObjFiltrar);
+        List<String> listaDeAgenciasFiltrar = new ArrayList<String>();
+        for (Agencia agenciaLoopFiltrar : listaDeAgenciasPesquisaFiltro) {
+            listaDeAgenciasFiltrar.add(agenciaLoopFiltrar.getNumero().toString());
         }
-        selectAgencia.setOutputMarkupId(true);
-        return selectAgencia;
+        ChoiceRenderer<Agencia> choiceRendererA = new ChoiceRenderer<Agencia>("numero", "id") {
+            @Override
+            public Object getDisplayValue(Agencia agencia) {
+                // TODO Auto-generated method stub
+                return agencia.getNumero();
+            }
+        };
+        IModel<List<Agencia>> IModellistA = new LoadableDetachableModel<List<Agencia>>() {
+            @Override
+            protected List<Agencia> load() {
+                // TODO Auto-generated method stub
+                return listaDeAgenciasPesquisaFiltro;
+            }
+        };
+        selectAgenciaFiltrar = new DropDownChoice<Agencia>(
+                "agenciaFiltrar",
+                IModellistA, choiceRendererA
+        ){
+            @Override
+            protected String getNullValidDisplayValue() {
+                return "Selecione...";
+            }
+        };
+
+        selectAgenciaFiltrar.setOutputMarkupId(true);
+        selectAgenciaFiltrar.setNullValid(true);
+        return selectAgenciaFiltrar;
 
     }
 
-    private DropDownChoice<TipoDeConta> criarSelectTipo() {
-
-        List<String> listaDeTipos = new ArrayList<String>();
-        for (TipoDeConta tipoLoop : listaDeTiposPesquisa) {
-            listaDeTipos.add(tipoLoop.getDescricao());
+    private DropDownChoice<TipoDeConta> criarSelectTipoFiltrar() {
+        TipoDeConta tipoDeContaObjFiltrar = new TipoDeConta();
+        final List<TipoDeConta> listaDeTiposPesquisaFiltrar = serviceTipoDeConta.listarTiposDeConta(tipoDeContaObjFiltrar);
+        List<String> listaDeTiposFiltrar = new ArrayList<String>();
+        for (TipoDeConta tipoLoopFiltrar : listaDeTiposPesquisaFiltrar) {
+            listaDeTiposFiltrar.add(tipoLoopFiltrar.getDescricao());
         }
-        selectTipo.setOutputMarkupId(true);
-        return selectTipo;
+
+        ChoiceRenderer<TipoDeConta> choiceRendererT = new ChoiceRenderer<TipoDeConta>("descricao",
+                "descricao") {
+            @Override
+            public Object getDisplayValue(TipoDeConta  tipoDeConta) {
+                // TODO Auto-generated method stub
+                return tipoDeConta.getDescricao();
+            }
+        };
+        IModel<List<TipoDeConta>> IModellistT = new LoadableDetachableModel<List<TipoDeConta>>() {
+            @Override
+            protected List<TipoDeConta> load() {
+                // TODO Auto-generated method stub
+                return listaDeTiposPesquisaFiltrar;
+            }
+        };
+
+
+        selectTipoFiltrar = new DropDownChoice<TipoDeConta>(
+                "tipoDeContaFiltrar",
+                IModellistT, choiceRendererT
+        ){
+            @Override
+            protected String getNullValidDisplayValue() {
+                return "Selecione...";
+            }
+        };
+
+        selectTipoFiltrar.setOutputMarkupId(true);
+        selectTipoFiltrar.setNullValid(true);
+        return selectTipoFiltrar;
 
     }
-
 
     private MarkupContainer criarTabela() {
         rowPanel.setOutputMarkupId(true);
@@ -203,7 +227,18 @@ public class CrudConta extends BasePage{
     private AjaxLink<?> criarBtnInserir() {
         AjaxLink<?> inserir = new AjaxLink<Object>("inserir") {
             public void onClick(AjaxRequestTarget target) {
-                System.out.println("Clicou no Inserir!");
+                final ContaInserirPanel contaInserirPanel = new ContaInserirPanel
+                        (modalWindowInserirConta.getContentId(), new Conta()) {
+                    @Override
+                    public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
+                        serviceConta.executarAoClicarEmSalvarNaModalSalvar(listaDeContas,conta,target,rowPanel,
+                                modalWindowInserirConta,feedbackPanel);
+                        target.add(feedbackPanel);
+                    }
+
+                };
+                modalWindowInserirConta.setContent(contaInserirPanel);
+                modalWindowInserirConta.show(target);
             }
         };
         return inserir;
@@ -216,8 +251,8 @@ public class CrudConta extends BasePage{
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
                 titularFiltrar = inputTitular.getInput();
-                agenciaFiltrar = selectAgencia.getInput();
-                tipoFiltrar = selectTipo.getInput();
+                agenciaFiltrar = selectAgenciaFiltrar.getInput();
+                tipoFiltrar = selectTipoFiltrar.getInput();
                 String titular = titularFiltrar;
                 String agencia = agenciaFiltrar;
                 String tipo = tipoFiltrar;

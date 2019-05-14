@@ -31,7 +31,7 @@ public class Cartao implements Serializable {
     @Column(nullable=false, length=200)
     private String limite;
     @Column(nullable=false, length=200)
-    private Integer senha;
+    private String senha;
 
     public List<Conta> getConta() {
         return conta;
@@ -98,11 +98,12 @@ public class Cartao implements Serializable {
         this.limite = limite;
     }
 
-    public Integer getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(Integer senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
+
 }

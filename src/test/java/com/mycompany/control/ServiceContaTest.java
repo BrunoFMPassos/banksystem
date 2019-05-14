@@ -43,8 +43,8 @@ public class ServiceContaTest {
         conta.setDataAbertura("13/05/2019");
         conta.setPessoaFisica(servicePF.pesquisaObjetoPessoaFisicaPorId(98304L));
         conta.setSaldo("1000");
-        conta.setSenha(1234);
-        conta.setSenhaCartao(1234);
+        conta.setSenha("123456");
+        conta.setSenhaCartao("1234");
         conta.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(1L).getDescricao());
         conta.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(1L));
 
@@ -53,8 +53,8 @@ public class ServiceContaTest {
         conta2.setDataAbertura("13/05/2019");
         conta2.setPessoaFisica(servicePF.pesquisaObjetoPessoaFisicaPorId(98305L));
         conta2.setSaldo("3000");
-        conta2.setSenha(1234);
-        conta2.setSenhaCartao(1234);
+        conta2.setSenha("123456");
+        conta2.setSenhaCartao("1234");
         conta2.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(2L).getDescricao());
         conta2.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(3L));
 
@@ -63,8 +63,8 @@ public class ServiceContaTest {
         conta3.setDataAbertura("13/05/2019");
         conta3.setPessoaJuridica(servicePJ.pesquisarObjetoPessoaJutidicaPorId(65536L));
         conta3.setSaldo("2000");
-        conta3.setSenha(1234);
-        conta3.setSenhaCartao(1234);
+        conta3.setSenha("123456");
+        conta3.setSenhaCartao("1234");
         conta3.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorId(3L).getDescricao());
         conta3.setTipoDeConta(serviceTipoDeConta.pesquisarObjetoTipoDeContaPorId(4L));
     }

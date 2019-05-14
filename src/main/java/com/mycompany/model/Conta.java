@@ -37,7 +37,7 @@ public class Conta implements Serializable {
     @Column(nullable=false, length=200)
     private Integer digito;
     @Column(nullable=false, length=200)
-    private Integer senha;
+    private String senha;
     @Column(nullable = false, length = 200)
     private String saldo;
     @Column(nullable = false, length = 200)
@@ -49,7 +49,7 @@ public class Conta implements Serializable {
     @Column(nullable=false, length=200)
     private String limiteConta;
     @Transient
-    private int senhaCartao;
+    private String senhaCartao;
     @Transient
     private String tipoDeCartao;
     @Transient
@@ -133,15 +133,29 @@ public class Conta implements Serializable {
         this.limiteConta = limiteConta;
     }
 
-    public Integer getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(Integer senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 
+    public String getAgenciaFiltrar() {
+        return agenciaFiltrar;
+    }
 
+    public void setAgenciaFiltrar(String agenciaFiltrar) {
+        this.agenciaFiltrar = agenciaFiltrar;
+    }
+
+    public String getTipoDeContaFiltrar() {
+        return tipoDeContaFiltrar;
+    }
+
+    public void setTipoDeContaFiltrar(String tipoDeContaFiltrar) {
+        this.tipoDeContaFiltrar = tipoDeContaFiltrar;
+    }
 
     public String getStatus() {
         return status;
@@ -167,11 +181,11 @@ public class Conta implements Serializable {
         this.digito = digito;
     }
 
-    public int getSenhaCartao() {
+    public String getSenhaCartao() {
         return senhaCartao;
     }
 
-    public void setSenhaCartao(int senhaCartao) {
+    public void setSenhaCartao(String senhaCartao) {
         this.senhaCartao = senhaCartao;
     }
 

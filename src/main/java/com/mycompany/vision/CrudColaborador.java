@@ -81,9 +81,9 @@ public class CrudColaborador extends BasePage {
         form.add(criarBtnFiltrar());
         form.add(criarBtnInserir());
         form.add(criarTabela());
-        form.add(cirarModalInserirColaborador());
-        form.add(cirarModalEditarColaborador());
-        form.add(cirarModalExluirColaborador());
+        form.add(criarModalInserirColaborador());
+        form.add(criarModalEditarColaborador());
+        form.add(criarModalExluirColaborador());
         form.add(criarRelatorioJasper());
         form.add(criarRelatorioExcel());
     }
@@ -189,15 +189,15 @@ public class CrudColaborador extends BasePage {
         return rowPanel;
     }
 
-    private ModalWindow cirarModalInserirColaborador() {
+    private ModalWindow criarModalInserirColaborador() {
         return modalWindowInserirColaborador;
     }
 
-    private ModalWindow cirarModalEditarColaborador() {
+    private ModalWindow criarModalEditarColaborador() {
         return modalWindowEditarColaborador;
     }
 
-    private ModalWindow cirarModalExluirColaborador() {
+    private ModalWindow criarModalExluirColaborador() {
         return modalWindowExcluirColaborador;
     }
 

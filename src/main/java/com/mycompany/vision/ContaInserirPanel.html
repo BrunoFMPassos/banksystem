@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<wicket:panel>
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
+        <form wicket:id="formulariocadastroconta">
+            <div wicket:id="feedbackpanel"></div>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Conta</label>
+            <br/>
+            <div class="container">
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <label style="font-size: 10px; color: #3a3f48;">Tipo:</label>
+                    <select style="width: 35%; color: #3a3f48;" type="text" class="field noLast"
+                            wicket:id="tipoDeConta">
+                    </select>
+                    <label style="font-size: 10px; color: #3a3f48;">Titular:</label>
+                    <select style="width: 35%; color: #3a3f48;" type="text" class="field Last"
+                            wicket:id="titular">
+                    </select>
+                    <input id="data" style="width: 37%;" class="field" wicket:id="dataAbertura"
+                           placeholder="Data de Abertura:">
+                    <label style="font-size: 10px; margin-left: 8%; color: #3a3f48;">Agência:</label>
+                    <select style="width: 30%; color: #3a3f48;" type="text" class="field Last"
+                            wicket:id="agencia">
+                    </select>
+                    <input style="width: 20%;" pattern="[0-9]+$" size="6" type="text" class="field Last" wicket:id="senha"  placeholder="Senha:">
+                </div>
+                <br/>
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <label style="font-size: 10px; color: #3a3f48;">Tipo de Cartão:</label>
+                    <select style="width: 40%; color: #3a3f48;" type="text" class="field noLast"
+                            wicket:id="tipoDeCartao">
+                    </select>
+                    <input style="width: 20%;" size="4" pattern="[0-9]+$" type="text" class="field Last" wicket:id="senhaCartao"  placeholder="Senha do Cartão:">
+                </div>
+                <br/>
+                <div style="margin-top:2%; text-align: left;">
+                    <input class="btn-confirma" type="button" wicket:id="salvarconta" value="Salvar"/>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>
+
+
+

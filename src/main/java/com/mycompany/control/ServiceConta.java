@@ -6,6 +6,7 @@ import com.mycompany.model.*;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Query;
@@ -38,17 +39,17 @@ public class ServiceConta {
         Boolean informacoesObrigatoriasPreenchidas = verificaSeInformacoesObrigatoriasPreenchidas(conta,mensagem);
         if(informacoesObrigatoriasPreenchidas){
             Cartao cartao = new Cartao();
-            preparaCartaoParaInserir(conta,cartao);
-            serviceCartao.inserir(cartao);
-            conta.setCartao(cartao);
-            conta.setNumero(gerarNumeroDaConta());
-            conta.setDigito(gerarDigitoConta());
-            conta.setLimiteConta(gerarLimiteDaConta(conta));
-            conta.setVerificador(gerarVerificadorConta(conta));
-            genericDao.inserir(conta);
+            preparaContaParaInserir(conta,mensagem);
+            if(mensagem.getListaVazia()) {
+                preparaCartaoParaInserir(conta, cartao);
+                serviceCartao.inserir(cartao);
+                conta.setCartao(cartao);
+                genericDao.inserir(conta);
+            }
         }
         return mensagem;
     }
+
 
     public  Mensagem update(Conta conta){
         Mensagem mensagem = new Mensagem();
@@ -137,6 +138,32 @@ public class ServiceConta {
         Double baseLimiteDoTipoDeConta = Double.parseDouble(conta.getTipoDeConta().getBaselimite());
         Double limiteDaConta = (rendaMensalDoTitular*baseLimiteDoTipoDeConta)/100;
         return  limiteDaConta.toString();
+    }
+
+    public void preparaContaParaInserir(Conta conta, Mensagem mensagem){
+        if(conta.getTipoDeConta().getPessoa().equals("Física")){
+            PessoaFisica pf = servicePF.pesquisaObjetoPessoaFisicaPorNome(conta.getTitular());
+            if(pf != null) {
+                conta.setPessoaFisica(pf);
+            }else{
+                mensagem.adcionarMensagemNaLista("Esse tipo de conta é permitido apenas para pessoas Físicas!");
+            }
+        }else if(conta.getTipoDeConta().getPessoa().equals("Jurídica")){
+            PessoaJuridica pj = servicePJ.pesquisaObjetoPessoaJuridicaPorRazaoSocial(conta.getTitular());
+            if(pj != null){
+            conta.setPessoaJuridica(pj);
+            }else {
+                mensagem.adcionarMensagemNaLista("Esse tipo de conta é permitido apenas para pessoas Jurídicas!");
+            }
+        }
+        if(mensagem.getListaVazia()) {
+            conta.setStatus("Ativa");
+            conta.setSaldo("0");
+            conta.setNumero(gerarNumeroDaConta());
+            conta.setDigito(gerarDigitoConta());
+            conta.setLimiteConta(gerarLimiteDaConta(conta));
+            conta.setVerificador(gerarVerificadorConta(conta));
+        }
     }
 
     public void preparaCartaoParaInserir(Conta conta, Cartao cartao){
@@ -246,7 +273,37 @@ public class ServiceConta {
     }
 
     public boolean verificaSeInformacoesObrigatoriasPreenchidas(Conta conta, Mensagem mensagem){
-        return true;
+        Boolean informacoesObrigatoriasPreenchidas = true;
+
+        if (conta.getTipoDeConta() == null){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo Tipo de Conta é obrigatório!");
+        }
+        if (conta.getTitular() == null){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo Titular de Conta é obrigatório!");
+        }
+        if (conta.getDataAbertura() == null){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo Data de Abertura é obrigatório!");
+        }
+        if (conta.getSenha() == null){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo Senha é obrigatório!");
+        }
+        if (conta.getAgencia() == null){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo Agencia é obrigatório!");
+        }
+        if (conta.getTipoDeCartao() == null){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo Tipo de Cartão é obrigatório!");
+        }
+        if (conta.getSenhaCartao() == null){
+            informacoesObrigatoriasPreenchidas = false;
+            mensagem.adcionarMensagemNaLista("O campo Senha do cartão é obrigatório!");
+        }
+        return informacoesObrigatoriasPreenchidas;
     }
 
     public List<Conta> pesquisaListadeContasPorTitular(Conta conta, List<PessoaFisica> listaPF, List<PessoaJuridica> listaPJ) {
@@ -410,6 +467,23 @@ public class ServiceConta {
 
     }
 
+    public void pesquisarListaDePFePJ(List<String> listaDePessoasPesquisa){
+        PessoaFisica pf = new PessoaFisica();
+        PessoaJuridica pj = new PessoaJuridica();
+
+            List<PessoaFisica> listaDePF = new ArrayList<PessoaFisica>();
+            List<PessoaJuridica> listaDePJ = new ArrayList<PessoaJuridica>();
+            listaDePF.addAll(servicePF.listarPessoasFisicas(pf));
+            listaDePJ.addAll(servicePJ.listarPessoasJuridicas(pj));
+            for(PessoaFisica pfDaLista: listaDePF){
+                listaDePessoasPesquisa.add(pfDaLista.getNome());
+            }
+            for(PessoaJuridica pjDaLista: listaDePJ){
+                listaDePessoasPesquisa.add(pjDaLista.getRazaoSocial());
+            }
+
+    }
+
     public void executarAoClicarEmSalvarNaModalEditar(
             List<Conta> listaDeContas, Conta conta,
             AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, FeedbackPanel feedbackPanel) {
@@ -430,8 +504,6 @@ public class ServiceConta {
         }
 
     }
-
-
 
 
     public void setServiceCartao(ServiceCartao serviceCartao) {
