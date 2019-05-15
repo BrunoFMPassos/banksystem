@@ -77,6 +77,16 @@ public class DaoConta extends GenericDAOImpl<Conta, Long> implements Serializabl
         return resultado;
     }
 
+    public void deletar( Conta conta) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Cartao cartao = conta.getCartao();
+        session.delete(conta);
+        session.delete(cartao);
+        session.getTransaction().commit();
+        session.close();
+    }
+
     @Override
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;

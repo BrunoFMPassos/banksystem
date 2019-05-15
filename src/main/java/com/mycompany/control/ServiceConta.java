@@ -5,8 +5,11 @@ import com.mycompany.DAO.GenericDao;
 import com.mycompany.model.*;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Query;
@@ -55,12 +58,14 @@ public class ServiceConta {
         Mensagem mensagem = new Mensagem();
         Boolean informacoesObrigatoriasPreenchidas = verificaSeInformacoesObrigatoriasPreenchidas(conta,mensagem);
         if(informacoesObrigatoriasPreenchidas){
-            if(conta.getStatus().equals("Ativa")) {
-                Cartao cartao = conta.getCartao();
-                preparaCartaoParaUpdate(conta,cartao);
-                conta.setLimiteConta(gerarLimiteDaConta(conta));
-                genericDao.inserir(conta);
-            }
+                boolean dadosObrigatoriosPreenchidos = verificaSeInformacoesObrigatoriasPreenchidas(conta, mensagem);
+                if(dadosObrigatoriosPreenchidos) {
+                    Cartao cartao = conta.getCartao();
+                    preparaCartaoParaUpdate(conta, cartao);
+                    preparaContaParaInserir(conta,mensagem);
+                    conta.setLimiteConta(gerarLimiteDaConta(conta));
+                    genericDao.inserir(conta);
+                }
         }
         return mensagem;
     }
@@ -68,27 +73,39 @@ public class ServiceConta {
     public Mensagem deletar(Conta conta){
         Mensagem mensagem = new Mensagem();
         if(conta.getStatus().equals("Inativa")){
-            Cartao cartao = conta.getCartao();
-            serviceCartao.deletarCartao(cartao);
-            genericDao.deletar(conta);
-        }
-        return null;
-    }
-
-    public Mensagem ativarOuDesativarConta(Conta conta){
-        Mensagem mensagem = new Mensagem();
-        if(conta.getStatus().equals("Inativa")){
-            conta.setStatus("Ativa");
+            daoConta.deletar(conta);
+        }else{
+            mensagem.adcionarMensagemNaLista("Contas Ativas não podem ser excluídas!");
         }
         return mensagem;
     }
 
-    public Mensagem desativar(Conta conta){
-        Mensagem mensagem = new Mensagem();
+    public void executarAoClicarEmSimNaModalExcluir(
+            List<Conta> listaDeContas, Conta conta,
+            AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, FeedbackPanel feedbackPanel) {
+        Mensagem mensagem = deletar(conta);
+        if(mensagem.getListaVazia()) {
+            listaDeContas.clear();
+            listaDeContas.addAll(pesquisarListaDeContas(conta));
+            modalWindow.close(target);
+            target.add(rowPanel);
+        }else{
+            int  index = 0;
+            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+                feedbackPanel.error(mensagem.getListaDeMensagens().get(index));
+                index++;
+            }
+            target.add(feedbackPanel);
+        }
+
+    }
+
+    public void desativarConta(Conta conta, AjaxRequestTarget target, FeedbackPanel feedbackPanel){
         if(conta.getStatus().equals("Ativa")){
             conta.setStatus("Inativa");
+            feedbackPanel.error("Conta desativada com sucesso!");
+            target.add(feedbackPanel);
         }
-        return mensagem;
     }
 
     public Long gerarNumeroDaConta(){
@@ -157,13 +174,30 @@ public class ServiceConta {
             }
         }
         if(mensagem.getListaVazia()) {
-            conta.setStatus("Ativa");
+            if(conta.getStatus()==null) {
+                conta.setStatus("Ativa");
+            }
             conta.setSaldo("0");
             conta.setNumero(gerarNumeroDaConta());
             conta.setDigito(gerarDigitoConta());
             conta.setLimiteConta(gerarLimiteDaConta(conta));
             conta.setVerificador(gerarVerificadorConta(conta));
         }
+    }
+
+    public void preparaContaParaMostrar(Conta conta){
+        String titular;
+        if(conta.getPessoaJuridica() == null) {
+            conta.setTitular(conta.getPessoaFisica().getNome());
+        }else if(conta.getPessoaFisica() == null){
+            conta.setTitular(conta.getPessoaJuridica().getRazaoSocial());
+        }
+        conta.setSenhaCartao(conta.getCartao().getSenha());
+        conta.setTipoDeCartao(conta.getCartao().getTipoDeCartao().getDescricao());
+        conta.setNumeroCartao(conta.getCartao().getNumero().toString());
+        conta.setCvvCartao(conta.getCartao().getCvv().toString());
+        conta.setLimiteCartao(conta.getCartao().getLimite());
+        conta.setDataValidadeCartao(conta.getCartao().getDataValidade());
     }
 
     public void preparaCartaoParaInserir(Conta conta, Cartao cartao){
@@ -179,7 +213,7 @@ public class ServiceConta {
     public void preparaCartaoParaUpdate(Conta conta, Cartao cartao){
         cartao.setNumero(conta.getCartao().getNumero());
         cartao.setCvv(conta.getCartao().getCvv());
-        cartao.setDataValidade(gerarDataValidadeDoCartao());
+        cartao.setDataValidade(cartao.getDataValidade());
         cartao.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorDescricao(conta.getTipoDeCartao()));
         cartao.setLimite(gerarLimiteDoCartao(conta,cartao));
         cartao.setSenha(conta.getSenhaCartao());
@@ -331,6 +365,32 @@ public class ServiceConta {
         }
         return contasFiltradas;
     }
+
+    public void ocultaLabelNaVisao(Label label, Boolean editar){
+        if(!editar){
+            label.setVisible(false);
+        }else{
+            label.setVisible(true);
+        }
+    }
+
+    public void ocultaTextFieldNaVisao(TextField textField, Boolean editar){
+        if(!editar){
+            textField.setVisible(false);
+        }else{
+            textField.setVisible(true);
+        }
+    }
+
+    public void ocultaAjaxLinkNaVisao(AjaxLink ajaxLink, Boolean editar){
+        if(!editar){
+            ajaxLink.setVisible(false);
+        }else{
+            ajaxLink.setVisible(true);
+        }
+    }
+
+
     public void filtrarContaNaVisao(String titular, String agencia, String tipo, List<Conta> listaDeContas, Conta conta, AjaxRequestTarget target, MarkupContainer rowPanel) {
         if (!titular.isEmpty() && agencia.isEmpty() && tipo.isEmpty()) {
             PessoaFisica pf = new PessoaFisica();

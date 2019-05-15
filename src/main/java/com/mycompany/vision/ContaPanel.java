@@ -3,11 +3,14 @@ package com.mycompany.vision;
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.mycompany.control.*;
 import com.mycompany.model.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -20,7 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContaInserirPanel extends Panel {
+public class ContaPanel extends Panel {
 
     @SpringBean(name = "agenciaService")
     ServiceAgencia serviceAgencia;
@@ -40,14 +43,14 @@ public class ContaInserirPanel extends Panel {
     FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackpanel");
 
 
-    public ContaInserirPanel(String id, Conta conta) {
+    public ContaPanel(String id, Conta conta, Boolean editar) {
         super(id);
         feedbackPanel.setOutputMarkupId(true);
-        this.conta = this.conta;
-        add(criarContainer());
+        this.conta = conta;
+        add(criarContainer(editar));
     }
 
-    public WebMarkupContainer criarContainer(){
+    public WebMarkupContainer criarContainer(Boolean editar){
         WebMarkupContainer container = new WebMarkupContainer("container");
         form = new Form<Conta>("formulariocadastroconta", new CompoundPropertyModel<Conta>(conta));
         form.setOutputMarkupId(true);
@@ -60,6 +63,20 @@ public class ContaInserirPanel extends Panel {
         form.add(criarTextFieldDataDeAbertura());
         form.add(criarTextFieldSenha());
         form.add(criarTextFieldSenhaCartao());
+        form.add(criarLabelNumero(editar));
+        form.add(criarLabelSaldo(editar));
+        form.add(criarLabelLimite(editar));
+        form.add(criarLabelNumeroCartao(editar));
+        form.add(criarLabelLimiteCartao(editar));
+        form.add(criarLabelValidade(editar));
+        form.add(criarTextFieldNumero(editar));
+        form.add(criarTextFieldDigito(editar));
+        form.add(criarTextFieldSaldo(editar));
+        form.add(criarTextFieldLimite(editar));
+        form.add(criarTextFieldNumeroCartao(editar));
+        form.add(criarTextFieldLimiteCartao(editar));
+        form.add(criarTextFieldDataValidadeCartao(editar));
+        form.add(criarBtnDesativar(editar));
         container.add(form);
         return container;
     }
@@ -70,7 +87,6 @@ public class ContaInserirPanel extends Panel {
           protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 executaAoClicarEmSalvar(target,conta);
           }
-
           @Override
           protected void onError(AjaxRequestTarget target, Form<?> form) {
               super.onError(target, form);
@@ -79,6 +95,105 @@ public class ContaInserirPanel extends Panel {
       };
       inserir.setOutputMarkupId(true);
       return inserir;
+    }
+
+    private AjaxLink criarBtnDesativar(Boolean editar){
+        AjaxLink desativar = new AjaxLink("desativarconta") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                serviceConta.desativarConta(conta,target,feedbackPanel);
+            }
+        };
+        desativar.setOutputMarkupId(true);
+        serviceConta.ocultaAjaxLinkNaVisao(desativar,editar);
+        return desativar;
+    }
+
+    private Label criarLabelNumero(Boolean editar){
+        Label labelNumero = new Label("labelNumero");
+        serviceConta.ocultaLabelNaVisao(labelNumero,editar);
+        return labelNumero;
+    }
+
+    private Label criarLabelSaldo(Boolean editar){
+        Label labelSaldo = new Label("labelSaldo");
+        serviceConta.ocultaLabelNaVisao(labelSaldo,editar);
+        return labelSaldo;
+    }
+
+    private Label criarLabelLimite(Boolean editar){
+        Label labelLimite = new Label("labelLimite");
+        serviceConta.ocultaLabelNaVisao(labelLimite,editar);
+        return labelLimite;
+    }
+
+    private Label criarLabelNumeroCartao(Boolean editar){
+        Label labelNumeroCartao = new Label("labelNumeroCartao");
+        serviceConta.ocultaLabelNaVisao(labelNumeroCartao,editar);
+        return labelNumeroCartao;
+    }
+
+    private Label criarLabelLimiteCartao(Boolean editar){
+        Label labelLimiteCartao = new Label("labelLimiteCartao");
+        serviceConta.ocultaLabelNaVisao(labelLimiteCartao,editar);
+        return labelLimiteCartao;
+    }
+
+    private Label criarLabelValidade(Boolean editar){
+        Label labelValidade = new Label("labelValidade");
+        serviceConta.ocultaLabelNaVisao(labelValidade,editar);
+        return labelValidade;
+    }
+
+    private TextField criarTextFieldNumero(Boolean editar) {
+        TextField numero = new TextField("numero");
+        numero.setEnabled(false);
+        numero.setOutputMarkupId(true);
+        serviceConta.ocultaTextFieldNaVisao(numero,editar);
+        return numero;
+    }
+
+    private TextField criarTextFieldDigito(Boolean editar) {
+        TextField digito = new TextField("digito");
+        digito.setEnabled(false);
+        serviceConta.ocultaTextFieldNaVisao(digito,editar);
+        return digito;
+    }
+
+    private TextField criarTextFieldSaldo(Boolean editar) {
+        TextField saldo = new TextField("saldo");
+        saldo.setEnabled(false);
+        serviceConta.ocultaTextFieldNaVisao(saldo,editar);
+        return saldo;
+    }
+
+    private TextField criarTextFieldLimite(Boolean editar) {
+        TextField limite = new TextField("limiteConta");
+        limite.setEnabled(false);
+        serviceConta.ocultaTextFieldNaVisao(limite,editar);
+        return limite;
+    }
+
+    private TextField criarTextFieldNumeroCartao(Boolean editar) {
+        TextField numeroCartao = new TextField("numeroCartao");
+        numeroCartao.setEnabled(false);
+        serviceConta.ocultaTextFieldNaVisao(numeroCartao,editar);
+        return numeroCartao;
+    }
+
+
+    private TextField criarTextFieldLimiteCartao(Boolean editar) {
+        TextField limiteCartao = new TextField("limiteCartao");
+        limiteCartao.setEnabled(false);
+        serviceConta.ocultaTextFieldNaVisao(limiteCartao,editar);
+        return limiteCartao;
+    }
+
+    private TextField criarTextFieldDataValidadeCartao(Boolean editar) {
+        TextField dataValidadeCartao = new TextField("dataValidadeCartao");
+        dataValidadeCartao.setEnabled(false);
+        serviceConta.ocultaTextFieldNaVisao(dataValidadeCartao,editar);
+        return dataValidadeCartao;
     }
 
     private DropDownChoice<TipoDeConta> criarSelectTipoDeConta() {

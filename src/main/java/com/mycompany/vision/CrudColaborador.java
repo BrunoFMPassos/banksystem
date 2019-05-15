@@ -84,8 +84,6 @@ public class CrudColaborador extends BasePage {
         form.add(criarModalInserirColaborador());
         form.add(criarModalEditarColaborador());
         form.add(criarModalExluirColaborador());
-        form.add(criarRelatorioJasper());
-        form.add(criarRelatorioExcel());
     }
 
 
@@ -122,7 +120,6 @@ public class CrudColaborador extends BasePage {
                 Label textperfil = new Label("textperfil", user.getPerfil());
 
                 AjaxLink<?> editar = new AjaxLink<Object>("editar") {
-
                     public void onClick(AjaxRequestTarget target) {
                         final ColaboradorPanel modalEditarColaborador = new
                                 ColaboradorPanel(modalWindowEditarColaborador.getContentId(), colaboradorDaLista) {
@@ -134,7 +131,6 @@ public class CrudColaborador extends BasePage {
                                         target.add(feedbackPanel);
                                     }
                                 };
-
                         modalWindowEditarColaborador.setContent(modalEditarColaborador);
                         modalWindowEditarColaborador.show(target);
 
@@ -238,32 +234,4 @@ public class CrudColaborador extends BasePage {
         };
         return filtrar;
     }
-
-
-    Link<?> criarRelatorioJasper() {
-
-        Link<?> btnRelatorio = new Link<Object>("relatorio") {
-
-            @Override
-            public void onClick() {
-                // TODO Auto-generated method stub
-                System.out.println("Clicou no relatório!");
-            }
-        };
-        return btnRelatorio;
-    }
-
-    Link<?> criarRelatorioExcel() {
-
-        Link<?> btnExcel = new Link<Object>("excel") {
-
-            @Override
-            public void onClick() {
-                System.out.println("Clicou no excel!");
-            }
-        };
-        return btnExcel;
-    }
-
-
 }

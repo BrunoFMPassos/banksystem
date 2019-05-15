@@ -2,7 +2,6 @@ package com.mycompany.vision;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
-import com.googlecode.wicket.jquery.ui.markup.html.link.Link;
 import com.mycompany.control.ServiceAgencia;
 import com.mycompany.model.Agencia;
 import org.apache.wicket.MarkupContainer;
@@ -78,25 +77,23 @@ public class CrudAgencia extends BasePage {
         form.add(criarTextFieldNumerofiltro());
         form.add(criarBtnFiltrar());
         form.add(criarBtnInserir());
-        form.add(criarRelatorioJasper());
-        form.add(criarRelatorioExcel());
         form.add(criarTabela());
-        form.add(cirarModalInserirAgencia());
-        form.add(cirarModalEditarAgencia());
-        form.add(cirarModalExcluirAgencia());
+        form.add(criarModalInserirAgencia());
+        form.add(criarModalEditarAgencia());
+        form.add(criarModalExcluirAgencia());
     }
 
     private TextField<String> criarTextFieldNumerofiltro() {
         return inputNumero;
     }
 
-    private ModalWindow cirarModalInserirAgencia() {
+    private ModalWindow criarModalInserirAgencia() {
         return modalWindowInserirAgencia;
     }
-    private ModalWindow cirarModalEditarAgencia() {
+    private ModalWindow criarModalEditarAgencia() {
         return modalWindowEditarAgencia;
     }
-    private ModalWindow cirarModalExcluirAgencia() {
+    private ModalWindow criarModalExcluirAgencia() {
         return modalWindowExcluirAgencia;
     }
 
@@ -221,30 +218,5 @@ public class CrudAgencia extends BasePage {
             }
         };
         return filtrar;
-    }
-
-    Link<?> criarRelatorioJasper() {
-
-        Link<?> btnRelatorio = new Link<Object>("relatorio") {
-
-            @Override
-            public void onClick() {
-                // TODO Auto-generated method stub
-                System.out.println("Clicou no relatório!");
-            }
-        };
-        return btnRelatorio;
-    }
-
-    Link<?> criarRelatorioExcel() {
-
-        Link<?> btnExcel = new Link<Object>("excel") {
-
-            @Override
-            public void onClick() {
-                System.out.println("Clicou no excel!");
-            }
-        };
-        return btnExcel;
     }
 }

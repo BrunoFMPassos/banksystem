@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -77,13 +76,11 @@ public class CrudTipoDeConta extends BasePage{
         add(form);
         form.add(criarBtnFiltrar());
         form.add(criarBtnInserir());
-        form.add(criarRelatorioExcel());
-        form.add(criarRelatorioJasper());
         form.add(criarTabela());
         form.add(criarTextFieldDescricaofiltro());
-        form.add(cirarModalInserirTipoDeConta());
-        form.add(cirarModalEditarTipoDeConta());
-        form.add(cirarModalExluirTipoDeConta());
+        form.add(criarModalInserirTipoDeConta());
+        form.add(criarModalEditarTipoDeConta());
+        form.add(criarModalExluirTipoDeConta());
     }
 
     private TextField<String> criarTextFieldDescricaofiltro() {
@@ -91,15 +88,15 @@ public class CrudTipoDeConta extends BasePage{
         return inputDescricao;
     }
 
-    private ModalWindow cirarModalInserirTipoDeConta() {
+    private ModalWindow criarModalInserirTipoDeConta() {
         return modalWindowInserirTipoDeConta;
     }
 
-    private ModalWindow cirarModalEditarTipoDeConta() {
+    private ModalWindow criarModalEditarTipoDeConta() {
         return modalWindowEditarTipoDeConta;
     }
 
-    private ModalWindow cirarModalExluirTipoDeConta() {
+    private ModalWindow criarModalExluirTipoDeConta() {
         return modalWindowExcluirTipoDeConta;
     }
 
@@ -221,31 +218,4 @@ public class CrudTipoDeConta extends BasePage{
         };
         return filtrar;
     }
-
-    Link<?> criarRelatorioJasper() {
-
-        Link<?> btnRelatorio = new Link<Object>("relatorio") {
-
-            @Override
-            public void onClick() {
-                // TODO Auto-generated method stub
-                System.out.println("Clicou no relatório!");
-            }
-        };
-        return btnRelatorio;
-    }
-
-    Link<?> criarRelatorioExcel() {
-
-        Link<?> btnExcel = new Link<Object>("excel") {
-
-            @Override
-            public void onClick() {
-                System.out.println("Clicou no excel!");
-            }
-        };
-        return btnExcel;
-    }
-
-
 }

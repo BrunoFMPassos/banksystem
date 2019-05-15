@@ -2,7 +2,6 @@ package com.mycompany.vision;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
-import com.googlecode.wicket.jquery.ui.markup.html.link.Link;
 import com.mycompany.control.ServiceAgencia;
 import com.mycompany.control.ServiceConta;
 import com.mycompany.control.ServiceTipoDeConta;
@@ -50,17 +49,42 @@ public class CrudConta extends BasePage{
     FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackpanel");
     MarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
 
-    ModalWindow modalWindowInserirConta = new ModalWindow("modalinserirconta");
+    ModalWindow modalInserirConta = new ModalWindow("modalinserirconta");
+    ModalWindow modalEditarConta = new ModalWindow("modaleditarconta");
+    ModalWindow modalExcluirConta = new ModalWindow("modalexcluirconta");
 
     public CrudConta() {
         listaDeContas.addAll(serviceConta.pesquisarListaDeContas(conta));
-        modalWindowInserirConta.setAutoSize(false);
-        modalWindowInserirConta.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+
+        modalInserirConta.setAutoSize(false);
+        modalInserirConta.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             @Override
             public void onClose(AjaxRequestTarget target) {
                 target.add(form);
             }
         });
+        modalInserirConta.setResizable(false);
+
+
+        modalEditarConta.setAutoSize(false);
+        modalEditarConta.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
+        modalEditarConta.setResizable(false);
+
+        modalExcluirConta.setAutoSize(true);
+        modalExcluirConta.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
+        modalExcluirConta.setResizable(false);
+
+
         feedbackPanel.setOutputMarkupId(true);
         CompoundPropertyModel<Conta> compoundPropertyModelConta = new CompoundPropertyModel<Conta>(conta);
         form = new Form<Conta>("formconta", compoundPropertyModelConta) {
@@ -68,6 +92,7 @@ public class CrudConta extends BasePage{
             public void onSubmit() {
             }
         };
+
 
         add(form);
         form.add(feedbackPanel);
@@ -77,13 +102,21 @@ public class CrudConta extends BasePage{
         form.add(criarBtnFiltrar());
         form.add(criarBtnInserir());
         form.add(criarTabela());
-        form.add(criarRelatorioJasper());
-        form.add(criarRelatorioExcel());
         form.add(criarModalInserirConta());
+        form.add(criarModalEditarConta());
+        form.add(criarModalExcluirConta());
     }
 
     private ModalWindow criarModalInserirConta() {
-        return modalWindowInserirConta;
+        return modalInserirConta;
+    }
+
+    private ModalWindow criarModalEditarConta() {
+        return modalEditarConta;
+    }
+
+    private ModalWindow criarModalExcluirConta() {
+        return modalExcluirConta;
     }
 
     private TextField<String> criarTextFieldTitularfiltro() {
@@ -194,18 +227,47 @@ public class CrudConta extends BasePage{
                 Label texttipo = new Label("texttipo", contaDaLista.getTipoDeConta().getDescricao());
 
                 AjaxLink<?> editar = new AjaxLink<Object>("editar") {
-
                     public void onClick(AjaxRequestTarget target) {
-                        System.out.println("Clicou no Editar!");
-
+                        serviceConta.preparaContaParaMostrar(contaDaLista);
+                        final ContaPanel contaEditarPanel = new
+                                ContaPanel(modalEditarConta.getContentId(),contaDaLista,true) {
+                                    @Override
+                                    public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
+                                        super.executaAoClicarEmSalvar(target, conta);
+                                        serviceConta.executarAoClicarEmSalvarNaModalEditar(listaDeContas,conta,target,rowPanel, modalEditarConta,feedbackPanel);
+                                        target.add(feedbackPanel);
+                                    }
+                                };
+                        modalEditarConta.setContent(contaEditarPanel);
+                        modalEditarConta.show(target);
                     }
-
                 };
 
                 final AjaxLink<?> excluir = new AjaxLink<Object>("excluir") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        System.out.println("Clicou no Excluir!");
+
+                        final PanelExcluir<Conta> panelExcluirConta = new PanelExcluir<Conta>(modalExcluirConta.getContentId()) {
+                            @Override
+                            public void excluir(AjaxRequestTarget target, Conta conta) {
+                                super.excluir(target, conta);
+                                serviceConta.executarAoClicarEmSimNaModalExcluir(listaDeContas,contaDaLista,target,rowPanel,modalExcluirConta,feedbackPanel);
+                            }
+
+                            @Override
+                            public void fecharSemExcluir(AjaxRequestTarget target, Conta conta) {
+                                super.fecharSemExcluir(target, conta);
+                                modalExcluirConta.close(target);
+                            }
+
+                            @Override
+                            public Label mostrarValorASerExcluido(String string) {
+                                return super.mostrarValorASerExcluido(contaDaLista.getNumero().toString());
+                            }
+                        };
+
+                        modalExcluirConta.setContent(panelExcluirConta);
+                        modalExcluirConta.show(target);
                     }
 
                 };
@@ -227,18 +289,18 @@ public class CrudConta extends BasePage{
     private AjaxLink<?> criarBtnInserir() {
         AjaxLink<?> inserir = new AjaxLink<Object>("inserir") {
             public void onClick(AjaxRequestTarget target) {
-                final ContaInserirPanel contaInserirPanel = new ContaInserirPanel
-                        (modalWindowInserirConta.getContentId(), new Conta()) {
+                final ContaPanel contaInserirPanel = new ContaPanel
+                        (modalInserirConta.getContentId(), new Conta(),false) {
                     @Override
                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
                         serviceConta.executarAoClicarEmSalvarNaModalSalvar(listaDeContas,conta,target,rowPanel,
-                                modalWindowInserirConta,feedbackPanel);
+                                modalInserirConta,feedbackPanel);
                         target.add(feedbackPanel);
                     }
 
                 };
-                modalWindowInserirConta.setContent(contaInserirPanel);
-                modalWindowInserirConta.show(target);
+                modalInserirConta.setContent(contaInserirPanel);
+                modalInserirConta.show(target);
             }
         };
         return inserir;
@@ -268,29 +330,4 @@ public class CrudConta extends BasePage{
         return filtrar;
     }
 
-
-    Link<?> criarRelatorioJasper() {
-
-        Link<?> btnRelatorio = new Link<Object>("relatorio") {
-
-            @Override
-            public void onClick() {
-                // TODO Auto-generated method stub
-                System.out.println("Clicou no relatório!");
-            }
-        };
-        return btnRelatorio;
-    }
-
-    Link<?> criarRelatorioExcel() {
-
-        Link<?> btnExcel = new Link<Object>("excel") {
-
-            @Override
-            public void onClick() {
-                System.out.println("Clicou no excel!");
-            }
-        };
-        return btnExcel;
-    }
 }

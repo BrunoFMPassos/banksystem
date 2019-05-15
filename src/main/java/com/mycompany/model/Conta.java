@@ -58,6 +58,26 @@ public class Conta implements Serializable {
     private String agenciaFiltrar;
     @Transient
     private String tipoDeContaFiltrar;
+    @Transient
+    private String numeroCartao;
+    @Transient
+    private String cvvCartao;
+    @Transient
+    private String limiteCartao;
+    @Transient
+    private String dataValidadeCartao;
+    @Transient
+    private String labelNumero = "Numero:";
+    @Transient
+    private String labelSaldo = "Saldo:";
+    @Transient
+    private String labelLimite = "Limite:";
+    @Transient
+    private String labelNumeroCartao = "Numero Cartão:";
+    @Transient
+    private String labelLimiteCartao = "Limite:";
+    @Transient
+    private String labelValidade= "Validade:";
 
 
 
@@ -211,5 +231,45 @@ public class Conta implements Serializable {
 
     public void setTitular(String titular) {
         this.titular = titular;
+    }
+
+    public String getNumeroCartao() {
+        return numeroCartao;
+    }
+
+    public void setNumeroCartao(String numeroCartao) {
+        this.numeroCartao = numeroCartao;
+    }
+
+    public String getCvvCartao() {
+        return cvvCartao;
+    }
+
+    public void setCvvCartao(String cvvCartao) {
+        this.cvvCartao = cvvCartao;
+    }
+
+    public String getLimiteCartao() {
+        return limiteCartao;
+    }
+
+    public void setLimiteCartao(String limiteCartao) {
+        this.limiteCartao = limiteCartao;
+    }
+
+    public String getDataValidadeCartao() {
+        return dataValidadeCartao;
+    }
+
+    public void setDataValidadeCartao(String dataValidadeCartao) {
+        this.dataValidadeCartao = dataValidadeCartao;
+    }
+
+    public String getLabelNumero() {
+        return labelNumero;
+    }
+
+    public void setLabelNumero(String labelNumero) {
+        this.labelNumero = labelNumero;
     }
 }
