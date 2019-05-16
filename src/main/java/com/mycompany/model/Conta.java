@@ -7,6 +7,9 @@ import java.io.Serializable;
 @Table(name = "conta")
 public class Conta implements Serializable {
 
+    @OneToMany(mappedBy = "conta", targetEntity = Movimentacao.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     @ManyToOne
     @JoinColumn(name="pessoafisica_id")
     private PessoaFisica pessoaFisica;

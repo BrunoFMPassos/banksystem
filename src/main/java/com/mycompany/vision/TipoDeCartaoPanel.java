@@ -3,6 +3,7 @@ package com.mycompany.vision;
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.mycompany.control.ServiceTipoDeCartao;
 import com.mycompany.model.TipoDeCartao;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
@@ -72,13 +73,15 @@ public class TipoDeCartaoPanel extends Panel {
         return descricao;
     }
 
-    private NumberTextField criarTextFieldTarifa() {
-        NumberTextField tarifa = new NumberTextField("tarifa");
+    private TextField criarTextFieldTarifa() {
+        TextField tarifa = new TextField("tarifa");
+        tarifa.add(new AttributeModifier("onfocus", "$(this).mask('999.999');"));
         return tarifa;
     }
 
-    private NumberTextField criarTextFieldBaseLimite() {
-        NumberTextField baselimite = new NumberTextField("baselimite");
+    private TextField criarTextFieldBaseLimite() {
+        TextField baselimite = new TextField("baselimite");
+        baselimite.add(new AttributeModifier("onfocus", "$(this).mask('999');"));
         return baselimite;
     }
 

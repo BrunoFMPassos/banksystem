@@ -58,14 +58,13 @@ public class ServiceConta {
         Mensagem mensagem = new Mensagem();
         Boolean informacoesObrigatoriasPreenchidas = verificaSeInformacoesObrigatoriasPreenchidas(conta,mensagem);
         if(informacoesObrigatoriasPreenchidas){
-                boolean dadosObrigatoriosPreenchidos = verificaSeInformacoesObrigatoriasPreenchidas(conta, mensagem);
-                if(dadosObrigatoriosPreenchidos) {
                     Cartao cartao = conta.getCartao();
                     preparaCartaoParaUpdate(conta, cartao);
                     preparaContaParaInserir(conta,mensagem);
                     conta.setLimiteConta(gerarLimiteDaConta(conta));
+                    serviceCartao.inserir(cartao);
+                    conta.setCartao(cartao);
                     genericDao.inserir(conta);
-                }
         }
         return mensagem;
     }
@@ -177,7 +176,9 @@ public class ServiceConta {
             if(conta.getStatus()==null) {
                 conta.setStatus("Ativa");
             }
-            conta.setSaldo("0");
+            if(conta.getSaldo() == null) {
+                conta.setSaldo("0");
+            }
             conta.setNumero(gerarNumeroDaConta());
             conta.setDigito(gerarDigitoConta());
             conta.setLimiteConta(gerarLimiteDaConta(conta));
@@ -218,6 +219,19 @@ public class ServiceConta {
         cartao.setLimite(gerarLimiteDoCartao(conta,cartao));
         cartao.setSenha(conta.getSenhaCartao());
         cartao.setStatus(conta.getStatus());
+    }
+
+    public void preparaContaParaOperacoes(Conta conta){
+        conta.setLimiteCartao(conta.getCartao().getLimite());
+        if(conta.getPessoaFisica() == null){
+            conta.setTitular(conta.getPessoaJuridica().getRazaoSocial());
+        }else if(conta.getPessoaJuridica() == null){
+            conta.setTitular(conta.getPessoaFisica().getNome());
+        }
+        conta.setNumeroCartao(conta.getCartao().getNumero().toString());
+        conta.setCvvCartao(conta.getCartao().getCvv().toString());
+        conta.setTipoDeCartao(conta.getCartao().getTipoDeCartao().getDescricao());
+        conta.setSenhaCartao(conta.getCartao().getSenha());
     }
 
     public Long gerarNumeroDoCartao(){

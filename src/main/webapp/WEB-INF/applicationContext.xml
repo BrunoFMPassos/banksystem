@@ -42,6 +42,7 @@
                 <value>com.mycompany.model.Cartao</value>
                 <value>com.mycompany.model.TipoDeConta</value>
                 <value>com.mycompany.model.TipoDeCartao</value>
+                <value>com.mycompany.model.Movimentacao</value>
             </list>
         </property>
     </bean>
@@ -136,6 +137,11 @@
         <property name="servicePJ" ref="pjService"/>
         <property name="serviceTipoDeCartao" ref="tipoDeCartaoService"/>
         <property name="serviceTipoDeConta" ref="tipoDeContaService"/>
+    </bean>
+
+    <bean id="operacoesService" class="com.mycompany.control.ServiceOperacoes">
+        <property name="genericDao" ref="genericDao"/>
+        <property name="serviceConta" ref="contaService"/>
     </bean>
 
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">
