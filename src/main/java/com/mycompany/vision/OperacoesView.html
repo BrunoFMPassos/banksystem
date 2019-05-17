@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <title>Contas</title>
+</head>
+<body>
+<wicket:extend>
+    <form id="formconta" wicket:id="formconta" name="formularioconta">
+        <div class="container">
+            <div class="col-sm-12 div1">
+                <div wicket:id="feedbackpanel">
+                </div>
+                <h2 class="titulo">Contas</h2>
+                <br/>
+                <input class="field noLast" width="10%" wicket:id="numero" type="text"
+                       placeholder="Numero:"/>
+                <button class="btn-confirma" id="filtrarconta" wicket:id="filtrarconta" type="submit" name="submit">Filtrar
+                </button>
+            </div>
+            <br/>
+            <div id="2" class="col-sm-12 div1">
+                <div wicket:id="modaloperacao"></div>
+                <br/>
+                <div wicket:id="rowPanel">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th style="color: #6C7A89">Numero</th>
+                            <th style="color: #6C7A89">Titular</th>
+                            <th style="color: #6C7A89">Saque</th>
+                            <th style="text-align:center; color: #6C7A89;">Depósito</th>
+                            <th style="text-align:center; color: #6C7A89;">Transferencia</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr wicket:id="rows">
+                            <td style="color: #6C7A89" wicket:id="textnumero">Col</td>
+                            <td style="color: #6C7A89" wicket:id="texttitular">Col</td>
+                            <td style="text-align:center;"><input style="heigth: 60%; min-width:40%; padding:5px;"
+                                                                  class="btn-info-btn" type="submit"
+                                                                  wicket:id="saque"
+                                                                  value="Saque"/></td>
+                            <td style="text-align:center;"><input style="heigth: 60%; min-width:40%; padding:5px;"
+                                                                  class="btn-info-btn" type="submit"
+                                                                  wicket:id="deposito"
+                                                                  value="Depósito"/></td>
+                            <td style="text-align:center;"><input style="heigth: 60%; min-width:40%; padding:5px;"
+                                                                  class="btn-info-btn" type="submit"
+                                                                  wicket:id="transferencia"
+                                                                  value="Transferência"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="barra-navegacao" wicket:id="navigator"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</wicket:extend>
+</body>
+</html>

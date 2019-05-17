@@ -10,8 +10,11 @@ public class PessoaJuridica  implements Serializable {
 
     @OneToMany(mappedBy = "pessoaJuridica", targetEntity = Conta.class,
             fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-
     private List<Conta> conta;
+
+    @OneToMany(mappedBy = "pessoaJuridica", targetEntity = Contato.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Contato> contato;
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

@@ -10,8 +10,11 @@ public class PessoaFisica extends Pessoa implements Serializable {
 
     @OneToMany(mappedBy = "pessoaFisica", targetEntity = Conta.class,
             fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-
     private List<Conta> conta;
+
+    @OneToMany(mappedBy = "pessoaFisica", targetEntity = Contato.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Contato> contato;
 
     @Column(nullable=false, length=200)
     private String rendaMensal;

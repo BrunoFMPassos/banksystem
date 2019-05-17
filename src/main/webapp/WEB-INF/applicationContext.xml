@@ -43,6 +43,7 @@
                 <value>com.mycompany.model.TipoDeConta</value>
                 <value>com.mycompany.model.TipoDeCartao</value>
                 <value>com.mycompany.model.Movimentacao</value>
+                <value>com.mycompany.model.Contato</value>
             </list>
         </property>
     </bean>

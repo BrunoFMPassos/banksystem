@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<wicket:panel>
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
+        <form wicket:id="formulariocadastroconta">
+            <div wicket:id="feedbackpanel"></div>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelSaque">Saque</label>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelDeposito">Depósito</label>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelTransferencia">Transferência</label>
+            <br/>
+            <div class="container">
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input style="width: 12%; margin-right: 1%;" type="text" class="field" wicket:id="numero">
+                    <input style="width: 4%;" type="text" class="field  noLast" wicket:id="digito">
+                    <input style="width: 12%;" type="text" class="field Last" wicket:id="valor" placeholder="Valor:">
+                    <input style="width: 20%;"  size="6" type="password" class="field Last" wicket:id="senhaVerificar"  placeholder="Senha:">
+                </div>
+                <br/>
+                <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelContaDestino">Conta Destino</label>
+                <br/>
+                <div class="col-sm-12 div1" style="padding: 2%; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input style="width: 12%; margin-right: 1%;" type="text" class="field" wicket:id="numeroContaDestino">
+                </div>
+                <br/>
+                <div style="margin-top:2%; text-align: left;">
+                    <input class="btn-confirma" type="button" wicket:id="finalizar" value="Finalizar"/>
+                    <input  style="margin-left: 60%;" class="btn-warning-btn" type="button" wicket:id="adicionarContato" value="Adicionar Contato"/>
+                </div>
+            </div>
+            <br/>
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>
+
+
+

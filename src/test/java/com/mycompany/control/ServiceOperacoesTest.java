@@ -34,7 +34,7 @@ public class ServiceOperacoesTest {
     @Test
     public void deposito() {
         try{
-            serviceOperacoes.deposito(conta3,"100");
+            serviceOperacoes.deposito(conta3,"100","1234");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
@@ -45,7 +45,7 @@ public class ServiceOperacoesTest {
     public void saque() {
         try{
 
-            serviceOperacoes.saque(conta1,"100");
+            serviceOperacoes.saque(conta1,"100","1234");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);
@@ -55,7 +55,7 @@ public class ServiceOperacoesTest {
     @Test
     public void transferencia() {
         try{
-            serviceOperacoes.transferencia(conta2,conta3,"100");
+            serviceOperacoes.transferencia(conta2,conta3,"100","1234");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);

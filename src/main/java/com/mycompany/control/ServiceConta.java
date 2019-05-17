@@ -179,10 +179,18 @@ public class ServiceConta {
             if(conta.getSaldo() == null) {
                 conta.setSaldo("0");
             }
-            conta.setNumero(gerarNumeroDaConta());
-            conta.setDigito(gerarDigitoConta());
-            conta.setLimiteConta(gerarLimiteDaConta(conta));
-            conta.setVerificador(gerarVerificadorConta(conta));
+            if(conta.getNumero() == null) {
+                conta.setNumero(gerarNumeroDaConta());
+            }
+            if(conta.getDigito() == null) {
+                conta.setDigito(gerarDigitoConta());
+            }
+            if(conta.getLimiteConta() == null) {
+                conta.setLimiteConta(gerarLimiteDaConta(conta));
+            }
+            if(conta.getVerificador() == null) {
+                conta.setVerificador(gerarVerificadorConta(conta));
+            }
         }
     }
 
@@ -222,6 +230,10 @@ public class ServiceConta {
     }
 
     public void preparaContaParaOperacoes(Conta conta){
+        conta.setNumero(conta.getNumero());
+        conta.setDigito(conta.getDigito());
+        conta.setCartao(conta.getCartao());
+        conta.setLimiteConta(conta.getLimiteConta());
         conta.setLimiteCartao(conta.getCartao().getLimite());
         if(conta.getPessoaFisica() == null){
             conta.setTitular(conta.getPessoaJuridica().getRazaoSocial());
@@ -306,6 +318,10 @@ public class ServiceConta {
             titular = pf.getNome();
         }
         return titular;
+    }
+
+    public Conta pesquisaObjetoContaPorNumero(Long numero){
+        return daoConta.pesquisaObjetoContaPorNumero(numero);
     }
 
     public List<Conta> pesquisarListaDeContasPorAgencia(Conta conta, Agencia agencia){
@@ -513,6 +529,24 @@ public class ServiceConta {
                 }
             }
             target.add(rowPanel);
+        }else {
+            listaDeContas.clear();
+            listaDeContas.addAll(daoConta.pesquisarListaDeContas(conta));
+        }
+        target.add(rowPanel);
+    }
+
+
+    public void filtrarContaNaVisaoOperacoes(String numero, List<Conta> listaDeContas, Conta conta, AjaxRequestTarget target, MarkupContainer rowPanel) {
+        Long numeroBusca = 0L;
+        if(!numero.isEmpty()) {
+            numeroBusca = Long.parseLong(numero);
+        }
+        if (!numero.isEmpty()) {
+            listaDeContas.clear();
+            listaDeContas.addAll(genericDao.pesquisaListadeObjetosPorLong(conta,"numero",numeroBusca));
+            target.add(rowPanel);
+
         }else {
             listaDeContas.clear();
             listaDeContas.addAll(daoConta.pesquisarListaDeContas(conta));

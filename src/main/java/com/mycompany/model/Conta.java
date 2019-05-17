@@ -2,6 +2,7 @@ package com.mycompany.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "conta")
@@ -9,6 +10,11 @@ public class Conta implements Serializable {
 
     @OneToMany(mappedBy = "conta", targetEntity = Movimentacao.class,
             fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Movimentacao> movimentacao;
+
+    @OneToMany(mappedBy = "conta", targetEntity = Contato.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Contato> contato;
 
     @ManyToOne
     @JoinColumn(name="pessoafisica_id")
@@ -51,6 +57,8 @@ public class Conta implements Serializable {
     private String dataAbertura;
     @Column(nullable=false, length=200)
     private String limiteConta;
+
+
     @Transient
     private String senhaCartao;
     @Transient
@@ -81,6 +89,22 @@ public class Conta implements Serializable {
     private String labelLimiteCartao = "Limite:";
     @Transient
     private String labelValidade= "Validade:";
+    @Transient
+    private String labelSaque= "Saque:";
+    @Transient
+    private String labelDeposito= "Depósito:";
+    @Transient
+    private String labelTransferencia= "Transferência:";
+    @Transient
+    private String labelContaDestino= "Conta Destino:";
+    @Transient
+    private String numeroContaDestino;
+    @Transient
+    private String digitoContaDestino;
+    @Transient
+    private String valor;
+    @Transient
+    private String senhaVerificar;
 
 
 
@@ -274,5 +298,125 @@ public class Conta implements Serializable {
 
     public void setLabelNumero(String labelNumero) {
         this.labelNumero = labelNumero;
+    }
+
+    public List<Movimentacao> getMovimentacao() {
+        return movimentacao;
+    }
+
+    public void setMovimentacao(List<Movimentacao> movimentacao) {
+        this.movimentacao = movimentacao;
+    }
+
+    public List<Contato> getContato() {
+        return contato;
+    }
+
+    public void setContato(List<Contato> contato) {
+        this.contato = contato;
+    }
+
+    public String getLabelSaldo() {
+        return labelSaldo;
+    }
+
+    public void setLabelSaldo(String labelSaldo) {
+        this.labelSaldo = labelSaldo;
+    }
+
+    public String getLabelLimite() {
+        return labelLimite;
+    }
+
+    public void setLabelLimite(String labelLimite) {
+        this.labelLimite = labelLimite;
+    }
+
+    public String getLabelNumeroCartao() {
+        return labelNumeroCartao;
+    }
+
+    public void setLabelNumeroCartao(String labelNumeroCartao) {
+        this.labelNumeroCartao = labelNumeroCartao;
+    }
+
+    public String getLabelLimiteCartao() {
+        return labelLimiteCartao;
+    }
+
+    public void setLabelLimiteCartao(String labelLimiteCartao) {
+        this.labelLimiteCartao = labelLimiteCartao;
+    }
+
+    public String getLabelValidade() {
+        return labelValidade;
+    }
+
+    public void setLabelValidade(String labelValidade) {
+        this.labelValidade = labelValidade;
+    }
+
+    public String getLabelSaque() {
+        return labelSaque;
+    }
+
+    public void setLabelSaque(String labelSaque) {
+        this.labelSaque = labelSaque;
+    }
+
+    public String getLabelDeposito() {
+        return labelDeposito;
+    }
+
+    public void setLabelDeposito(String labelDeposito) {
+        this.labelDeposito = labelDeposito;
+    }
+
+    public String getLabelTransferencia() {
+        return labelTransferencia;
+    }
+
+    public void setLabelTransferencia(String labelTransferencia) {
+        this.labelTransferencia = labelTransferencia;
+    }
+
+    public String getLabelContaDestino() {
+        return labelContaDestino;
+    }
+
+    public void setLabelContaDestino(String labelContaDestino) {
+        this.labelContaDestino = labelContaDestino;
+    }
+
+    public String getNumeroContaDestino() {
+        return numeroContaDestino;
+    }
+
+    public void setNumeroContaDestino(String numeroContaDestino) {
+        this.numeroContaDestino = numeroContaDestino;
+    }
+
+    public String getDigitoContaDestino() {
+        return digitoContaDestino;
+    }
+
+    public void setDigitoContaDestino(String digitoContaDestino) {
+        this.digitoContaDestino = digitoContaDestino;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public String getSenhaVerificar() {
+        return senhaVerificar;
+    }
+
+    public void setSenhaVerificar(String senhaVerificar) {
+        this.senhaVerificar = senhaVerificar;
     }
 }
