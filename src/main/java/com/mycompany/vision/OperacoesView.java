@@ -48,14 +48,12 @@ public class OperacoesView extends BasePage{
     private String numeroFiltrar = "";
     private String agenciaFiltrar = "";
     private String tipoFiltrar = "";
-    FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackpanel");
     MarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
 
     ModalWindow modalOperacao = new ModalWindow("modaloperacao");
 
     public OperacoesView() {
         listaDeContas.addAll(serviceConta.pesquisarListaDeContas(conta));
-
         modalOperacao.setAutoSize(false);
         modalOperacao.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             @Override
@@ -65,7 +63,6 @@ public class OperacoesView extends BasePage{
         });
         modalOperacao.setResizable(false);
 
-        feedbackPanel.setOutputMarkupId(true);
         CompoundPropertyModel<Conta> compoundPropertyModelConta = new CompoundPropertyModel<Conta>(conta);
         form = new Form<Conta>("formconta", compoundPropertyModelConta) {
             @Override
@@ -74,7 +71,6 @@ public class OperacoesView extends BasePage{
         };
 
         add(form);
-        form.add(feedbackPanel);
         form.add(criarModalOperacao());
         form.add(criarTextFieldTitularfiltro());
         form.add(criarBtnFiltrar());
@@ -125,7 +121,7 @@ public class OperacoesView extends BasePage{
                                         super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
                                                 target,modalOperacao,feedbackPanel,"Saque", conta.getSenhaVerificar(),
-                                                conta.getValor(),conta.getNumeroContaDestino());
+                                                conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
                                         target.add(feedbackPanel);
                                     }
                                 };
@@ -144,7 +140,7 @@ public class OperacoesView extends BasePage{
                                         super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
                                                 target,modalOperacao,feedbackPanel,"Deposito", conta.getSenhaVerificar(),
-                                                conta.getValor(),conta.getNumeroContaDestino());
+                                                conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
                                         target.add(feedbackPanel);
                                     }
                                 };
@@ -158,13 +154,13 @@ public class OperacoesView extends BasePage{
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         final OperacoesPanel operacoesPanel = new
-                                OperacoesPanel(modalOperacao.getContentId(),contaDaLista,"Trasnferencia") {
+                                OperacoesPanel(modalOperacao.getContentId(),contaDaLista,"Transferencia") {
                                     @Override
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
                                         super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
                                                 target,modalOperacao,feedbackPanel,"Transferencia", conta.getSenhaVerificar(),
-                                                conta.getValor(),conta.getNumeroContaDestino());
+                                                conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
                                         target.add(feedbackPanel);
                                     }
                                 };
@@ -196,12 +192,6 @@ public class OperacoesView extends BasePage{
                 numeroFiltrar = inputNumero.getInput();
                 String numero = numeroFiltrar;
                 serviceConta.filtrarContaNaVisaoOperacoes(numero,listaDeContas,conta,target,rowPanel);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
-                target.add(feedbackPanel);
             }
         };
         return filtrar;

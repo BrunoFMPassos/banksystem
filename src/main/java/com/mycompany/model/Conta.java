@@ -38,6 +38,7 @@ public class Conta implements Serializable {
 
 
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -98,6 +99,8 @@ public class Conta implements Serializable {
     @Transient
     private String labelContaDestino= "Conta Destino:";
     @Transient
+    private String labelContato = "Contatos";
+    @Transient
     private String numeroContaDestino;
     @Transient
     private String digitoContaDestino;
@@ -105,6 +108,12 @@ public class Conta implements Serializable {
     private String valor;
     @Transient
     private String senhaVerificar;
+    @Transient
+    private String apelidoContato;
+    @Transient
+    private String numeroBanco;
+    @Transient
+    private Contato contatoObjeto;
 
 
 
@@ -418,5 +427,38 @@ public class Conta implements Serializable {
 
     public void setSenhaVerificar(String senhaVerificar) {
         this.senhaVerificar = senhaVerificar;
+    }
+
+    public String getApelidoContato() {
+        return apelidoContato;
+    }
+
+    public void setApelidoContato(String apelidoContato) {
+        this.apelidoContato = apelidoContato;
+    }
+
+    public String getLabelContato() {
+        return labelContato;
+    }
+
+    public void setLabelContato(String labelContato) {
+        this.labelContato = labelContato;
+    }
+
+    public String getNumeroBanco() {
+        return numeroBanco;
+    }
+
+    public void setNumeroBanco(String numeroBanco) {
+        this.numeroBanco = numeroBanco;
+    }
+
+
+    public Contato getContatoObjeto() {
+        return contatoObjeto;
+    }
+
+    public void setContatoObjeto(Contato contatoObjeto) {
+        this.contatoObjeto = contatoObjeto;
     }
 }
