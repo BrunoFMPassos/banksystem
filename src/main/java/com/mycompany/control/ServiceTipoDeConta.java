@@ -167,7 +167,10 @@ public class ServiceTipoDeConta {
             informacoesObrigatoriasPreenchidasValidas = false;
             mensagem.adcionarMensagemNaLista("O campo tipo de pessoa é obrigatório");
         }
-
+        if(tipoDeConta.getTaxaDeTransferencia()==null){
+            informacoesObrigatoriasPreenchidasValidas = false;
+            mensagem.adcionarMensagemNaLista("O campo taxa de transferência é obrigatório");
+        }
         return informacoesObrigatoriasPreenchidasValidas;
     }
 

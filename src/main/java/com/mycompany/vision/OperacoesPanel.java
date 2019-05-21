@@ -38,6 +38,7 @@ public class OperacoesPanel extends Panel {
     DropDownChoice<Contato> selectContatos;
     TextField apelido;
     TextField numeroContaDestino;
+    TextField numeroBanco;
 
     public OperacoesPanel(String id, Conta conta, String op) {
         super(id);
@@ -89,7 +90,8 @@ public class OperacoesPanel extends Panel {
             public void onClick(AjaxRequestTarget target) {
                 String apelidoString = apelido.getValue();
                 String numeroContaDestinoString = numeroContaDestino.getValue();
-                serviceOperacoes.inserirContato(conta, apelidoString, numeroContaDestinoString, target, selectContatos, feedbackPanel);
+                String numeroBancoString = numeroBanco.getValue();
+                serviceOperacoes.inserirContato(conta, apelidoString, numeroContaDestinoString, numeroBancoString, target, selectContatos, feedbackPanel);
             }
         };
         contato.setOutputMarkupId(true);
@@ -166,7 +168,13 @@ public class OperacoesPanel extends Panel {
     }
 
     private TextField criarTextFieldNumeroBanco(String op) {
-        TextField numeroBanco = new TextField("numeroBanco");
+        numeroBanco = new TextField("numeroBanco");
+        AjaxFormComponentUpdatingBehavior  updating = new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+            }
+        };
+        numeroBanco.add(updating);
         serviceOperacoes.ocultarTextFieldNaVisao(numeroBanco, op);
         numeroBanco.add(new AttributeModifier("onfocus", "$(this).mask('999');"));
         return numeroBanco;

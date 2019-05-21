@@ -115,6 +115,16 @@ td{
     -webkit-font-smoothing: antialiased;
 }
 
+.div_alerta{
+    width:200px;
+    height:100px;
+    background:#f00;
+    position:absolute;
+    z-index:100;
+    top:30%;
+    left:40%;
+}
+
 .barra-navegacao a{
     color: #5cb85c;
 }

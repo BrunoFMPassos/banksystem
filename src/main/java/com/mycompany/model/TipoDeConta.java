@@ -23,6 +23,8 @@ public class TipoDeConta implements Serializable {
     private String tarifa;
     @Column(nullable=false, length=200)
     private String pessoa;
+    @Column(nullable=false, length=200)
+    private String taxaDeTransferencia;
 
 
     public List<Conta> getContas() {
@@ -71,5 +73,13 @@ public class TipoDeConta implements Serializable {
 
     public void setTarifa(String tarifa) {
         this.tarifa = tarifa;
+    }
+
+    public String getTaxaDeTransferencia() {
+        return taxaDeTransferencia;
+    }
+
+    public void setTaxaDeTransferencia(String taxaDeTransferencia) {
+        this.taxaDeTransferencia = taxaDeTransferencia;
     }
 }

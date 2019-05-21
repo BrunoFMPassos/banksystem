@@ -53,7 +53,7 @@ public class OperacoesView extends BasePage{
     ModalWindow modalOperacao = new ModalWindow("modaloperacao");
 
     public OperacoesView() {
-        listaDeContas.addAll(serviceConta.pesquisarListaDeContas(conta));
+        listaDeContas.addAll(serviceConta.pesquisarListaDeContasParaOperacoes(conta));
         modalOperacao.setAutoSize(false);
         modalOperacao.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             @Override
@@ -169,6 +169,10 @@ public class OperacoesView extends BasePage{
                     }
 
                 };
+
+                serviceOperacoes.ocultarBtnParaContaSalarioNaVisao(deposito,contaDaLista);
+                serviceOperacoes.ocultarBtnParaContaSalarioNaVisao(transferencia,contaDaLista);
+
                 item.add(textnumero);
                 item.add(texttitular);
                 item.add(saque);

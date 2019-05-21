@@ -46,6 +46,7 @@ public class TipoDeContaPanel extends Panel {
         form.add(criarTextFieldDescricao());
         form.add(criarTextFieldTarifa());
         form.add(criarSelectPessoa());
+        form.add(criarTextFieldTaxaDeTransferencia());
         container.add(form);
         return  container;
 
@@ -86,6 +87,13 @@ public class TipoDeContaPanel extends Panel {
         baselimite.add(new AttributeModifier("onfocus", "$(this).mask('999');"));
         return baselimite;
     }
+
+    private TextField criarTextFieldTaxaDeTransferencia() {
+        TextField baselimite = new TextField("taxaDeTransferencia");
+        baselimite.add(new AttributeModifier("onfocus", "$(this).mask('99999');"));
+        return baselimite;
+    }
+
 
     private DropDownChoice<String> criarSelectPessoa() {
 

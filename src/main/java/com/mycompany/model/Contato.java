@@ -28,6 +28,9 @@ public class Contato {
     @Column(nullable=false, length=200)
     private String contaDestino;
 
+    @Column(nullable=false, length=200)
+    private String numeroBanco;
+
 
     public PessoaFisica getPessoaFisica() {
         return pessoaFisica;
@@ -75,5 +78,13 @@ public class Contato {
 
     public void setContaDestino(String contaDestino) {
         this.contaDestino = contaDestino;
+    }
+
+    public String getNumeroBanco() {
+        return numeroBanco;
+    }
+
+    public void setNumeroBanco(String numeroBanco) {
+        this.numeroBanco = numeroBanco;
     }
 }

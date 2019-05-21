@@ -336,6 +336,19 @@ public class ServiceConta {
         return daoConta.pesquisarListaDeContas(conta);
     }
 
+    public List<Conta> pesquisarListaDeContasParaOperacoes(Conta conta){
+
+        List<Conta> listaDeContas = daoConta.pesquisarListaDeContas(conta);
+        List<Conta> listaDeContasAtivas = new ArrayList<Conta>();
+        for(Conta contaDaLista: listaDeContas){
+            if(contaDaLista.getStatus().equals("Ativa")){
+                listaDeContasAtivas.add(contaDaLista);
+            }
+        }
+
+        return listaDeContasAtivas;
+    }
+
     public boolean verificaSeInformacoesObrigatoriasPreenchidas(Conta conta, Mensagem mensagem){
         Boolean informacoesObrigatoriasPreenchidas = true;
 

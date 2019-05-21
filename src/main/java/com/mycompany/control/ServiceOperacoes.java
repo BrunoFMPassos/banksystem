@@ -30,26 +30,30 @@ public class ServiceOperacoes {
     public Mensagem deposito(Conta conta, String valor, String senha) {
         Mensagem mensagem = new Mensagem();
         Boolean senhaCorreta = validarSenha(conta, senha);
-        if (senhaCorreta) {
-            String statusConta = conta.getStatus();
-            if (statusConta.equals("Ativa")) {
-                String numeroOp = "1";
-                String descricaoOp = "Depósito";
-                Movimentacao movimentacao = new Movimentacao();
-                Double valorDeposito = Double.parseDouble(valor);
-                Double saldoAtual = Double.parseDouble(conta.getSaldo());
-                valorDeposito = cobraTarifaSePrimeiroDepósito(movimentacao, conta, valorDeposito);
-                saldoAtual = saldoAtual + valorDeposito;
-                conta.setSaldo(saldoAtual.toString());
-                serviceConta.preparaContaParaOperacoes(conta);
-                serviceConta.update(conta);
-                preparaMovimentaçãoParaInserir(movimentacao, conta, descricaoOp, numeroOp, valor);
-                genericDao.inserir(movimentacao);
+        if (!valor.isEmpty()) {
+            if (senhaCorreta) {
+                String statusConta = conta.getStatus();
+                if (statusConta.equals("Ativa")) {
+                    String numeroOp = "1";
+                    String descricaoOp = "Depósito";
+                    Movimentacao movimentacao = new Movimentacao();
+                    Double valorDeposito = Double.parseDouble(valor);
+                    Double saldoAtual = Double.parseDouble(conta.getSaldo());
+                    valorDeposito = cobraTarifaSePrimeiroDepósito(movimentacao, conta, valorDeposito);
+                    saldoAtual = saldoAtual + valorDeposito;
+                    conta.setSaldo(saldoAtual.toString());
+                    serviceConta.preparaContaParaOperacoes(conta);
+                    serviceConta.update(conta);
+                    preparaMovimentaçãoParaInserir(movimentacao, conta, descricaoOp, numeroOp, valor);
+                    genericDao.inserir(movimentacao);
+                } else {
+                    mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
+                }
             } else {
-                mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
+                mensagem.adcionarMensagemNaLista("Senha Incorreta!");
             }
         } else {
-            mensagem.adcionarMensagemNaLista("Senha Incorreta!");
+            mensagem.adcionarMensagemNaLista("Campo valor obrigatório");
         }
         return mensagem;
     }
@@ -57,102 +61,120 @@ public class ServiceOperacoes {
     public Mensagem saque(Conta conta, String valor, String senha) {
         Mensagem mensagem = new Mensagem();
         Boolean senhaCorreta = validarSenha(conta, senha);
-        if (senhaCorreta) {
-            String statusConta = conta.getStatus();
-            if (statusConta.equals("Ativa")) {
-                Movimentacao movimentacao = new Movimentacao();
-                String numeroOp = "2";
-                String descricaoOp = "Saque";
-                Double valorSaque = Double.parseDouble(valor);
-                Double saldoAtual = Double.parseDouble(conta.getSaldo());
-                Double limiteConta = Double.parseDouble(conta.getLimiteConta());
-                Double limiteDeSaque = saldoAtual + limiteConta;
-                if (limiteDeSaque > valorSaque) {
-                    saldoAtual = saldoAtual - valorSaque;
-                    conta.setSaldo(saldoAtual.toString());
-                    serviceConta.preparaContaParaOperacoes(conta);
-                    serviceConta.update(conta);
-                    preparaMovimentaçãoParaInserir(movimentacao, conta, descricaoOp, numeroOp, valor);
-                    genericDao.inserir(movimentacao);
+        if (!valor.isEmpty()) {
+            if (senhaCorreta) {
+                String statusConta = conta.getStatus();
+                if (statusConta.equals("Ativa")) {
+                    Movimentacao movimentacao = new Movimentacao();
+                    String numeroOp = "2";
+                    String descricaoOp = "Saque";
+                    Double valorSaque = Double.parseDouble(valor);
+                    Double saldoAtual = Double.parseDouble(conta.getSaldo());
+                    Double limiteConta = Double.parseDouble(conta.getLimiteConta());
+                    Double limiteDeSaque = saldoAtual + limiteConta;
+                    if (limiteDeSaque > valorSaque) {
+                        saldoAtual = saldoAtual - valorSaque;
+                        conta.setSaldo(saldoAtual.toString());
+                        serviceConta.preparaContaParaOperacoes(conta);
+                        serviceConta.update(conta);
+                        preparaMovimentaçãoParaInserir(movimentacao, conta, descricaoOp, numeroOp, valor);
+                        genericDao.inserir(movimentacao);
+                    }else {
+                        mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
+                    }
                 } else {
-                    mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
+                    mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
                 }
             } else {
-                mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
+                mensagem.adcionarMensagemNaLista("Senha Incorreta!");
             }
         } else {
-            mensagem.adcionarMensagemNaLista("Senha Incorreta!");
+            mensagem.adcionarMensagemNaLista("Campo valor obrigatório");
         }
         return mensagem;
     }
 
     public Mensagem transferencia(Conta contaDestino, Conta contaOrigem, String valor, String senha) {
         Mensagem mensagem = new Mensagem();
-        Boolean senhaCorreta = validarSenha(contaOrigem, senha);
-        if (senhaCorreta) {
-            String statusContaOrigem = contaOrigem.getStatus();
-            if (contaDestino != null && contaOrigem.getNumeroBanco().equals("001")) {
-                String statusContaDestino = contaDestino.getStatus();
-                if (statusContaOrigem.equals("Ativa") && statusContaDestino.equals("Ativa")) {
-                    realizaTransferencia(valor,contaOrigem,contaDestino,mensagem);
+        Movimentacao movimentacaoDebito = new Movimentacao();
+        Movimentacao movimentacaoCredito = new Movimentacao();
+        Movimentacao movimentacaoTaxa = new Movimentacao();
+        if(contaOrigem.getContatoObjeto()!= null){
+            contaOrigem.setNumeroBanco(contaOrigem.getContatoObjeto().getNumeroBanco());
+            contaDestino = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(contaOrigem.getContatoObjeto().getContaDestino()));
+        }
+        if (contaOrigem.getNumeroBanco() != null) {
+            if (!valor.isEmpty() && Double.parseDouble(valor) > 0) {
+                if (contaOrigem.getNumeroBanco().equals("001")) {
+                    Boolean contaVerificada = verificaSeContaCorreta(contaOrigem);
+                    Boolean contaValida = validaConta(contaDestino);
+                    if (contaValida) {
+                        if (!contaDestino.getNumero().equals(contaOrigem.getNumero())) {
+                            Boolean senhaValida = validarSenha(contaOrigem, senha);
+                            if (senhaValida) {
+                                Double valorDaTransferencia = Double.parseDouble(valor);
+                                if ((Double.parseDouble(contaOrigem.getSaldo()) + Double.parseDouble(contaOrigem.getLimiteConta())) >= valorDaTransferencia) {
+                                    Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo()) - valorDaTransferencia;
+                                    contaOrigem.setSaldo(saldoContaOrigem.toString());
+                                    serviceConta.preparaContaParaOperacoes(contaOrigem);
+                                    serviceConta.inserir(contaOrigem);
+                                    preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
+                                    genericDao.inserir(movimentacaoDebito);
+                                    Double saldoContaDestino = Double.parseDouble(contaDestino.getSaldo()) + valorDaTransferencia;
+                                    contaDestino.setSaldo(saldoContaDestino.toString());
+                                    serviceConta.preparaContaParaOperacoes(contaDestino);
+                                    serviceConta.inserir(contaDestino);
+                                    preparaMovimentaçãoParaInserir(movimentacaoCredito, contaOrigem, "Crédito de transferência", "4", valor);
+                                    genericDao.inserir(movimentacaoCredito);
+                                } else {
+                                    mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
+                                }
+                            } else {
+                                mensagem.adcionarMensagemNaLista("Senha inválida!");
+                            }
+                        }else{
+                            mensagem.adcionarMensagemNaLista("Você não pode transferir para sua própria conta.");
+                        }
+                    } else {
+                        mensagem.adcionarMensagemNaLista("Conta inválida!");
+                    }
                 } else {
-                    mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
+                    Boolean contaVerificada = verificaSeContaCorreta(contaOrigem);
+                    if (contaVerificada) {
+                        Boolean senhaValida = validarSenha(contaOrigem, senha);
+                        if (senhaValida) {
+                            Double valorDaTransferencia = Double.parseDouble(valor);
+                            if ((Double.parseDouble(contaOrigem.getSaldo()) + Double.parseDouble(contaOrigem.getLimiteConta()))
+                                    >= (valorDaTransferencia + Double.parseDouble(contaOrigem.getTipoDeConta().getTaxaDeTransferencia()))) {
+                                Double taxa = Double.parseDouble(contaDestino.getTipoDeConta().getTaxaDeTransferencia());
+                                Double valorADescontar = valorDaTransferencia + taxa;
+                                Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo());
+                                Double novoSaldo = saldoContaOrigem - valorADescontar;
+                                contaOrigem.setSaldo(novoSaldo.toString());
+                                serviceConta.preparaContaParaOperacoes(contaOrigem);
+                                serviceConta.inserir(contaOrigem);
+                                preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
+                                genericDao.inserir(movimentacaoDebito);
+                                preparaMovimentaçãoParaInserir(movimentacaoTaxa, contaOrigem, "Taxa de transferência", "5",
+                                        contaOrigem.getTipoDeConta().getTaxaDeTransferencia());
+                                genericDao.inserir(movimentacaoTaxa);
+                            } else {
+                                mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
+                            }
+                        } else {
+                            mensagem.adcionarMensagemNaLista("Senha inválida!");
+                        }
+                    } else {
+                        mensagem.adcionarMensagemNaLista("Conta Inválida");
+                    }
                 }
-            }else{
-                if (statusContaOrigem.equals("Ativa")) {
-                    realizaTransferencia(valor,contaOrigem,contaDestino,mensagem);
-                } else {
-                    mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
-                }
+            } else {
+                mensagem.adcionarMensagemNaLista("O valor da operação deve ser superior a zero!");
             }
         } else {
-            mensagem.adcionarMensagemNaLista("Senha Incorreta!");
+            mensagem.adcionarMensagemNaLista("O número do banco deve ser informado!");
         }
         return mensagem;
-    }
-
-    public void realizaTransferencia(String valor, Conta contaOrigem, Conta contaDestino, Mensagem mensagem) {
-        Movimentacao movimentacao = new Movimentacao();
-        Movimentacao movimentacaoDestino = new Movimentacao();
-        String numeroOp = "3";
-        String descricaoOp = "Transferência";
-        String numeroOpParaDestino = "4";
-        String descricaoOpParaDestino = "Transferência Recebida";
-        Double valorDaTransferencia;
-        if(contaOrigem.getNumeroBanco().equals("001")) {
-             valorDaTransferencia = Double.parseDouble(valor);
-        }else{
-            valorDaTransferencia = Double.parseDouble(valor)-9;
-            preparaMovimentaçãoParaInserir(movimentacao, contaOrigem,"Tarifa de Transferência","0","9");
-            genericDao.inserir(movimentacao);
-        }
-        Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo());
-        Double limiteContaOrigem = Double.parseDouble(contaOrigem.getLimiteConta());
-        Double saldoContaDestino;
-        if(contaDestino != null) {
-             saldoContaDestino = Double.parseDouble(contaDestino.getSaldo());
-        }else{
-             saldoContaDestino = 0.0;
-        }
-        Double limiteParaTransferir = saldoContaOrigem + limiteContaOrigem;
-        if (limiteParaTransferir > valorDaTransferencia) {
-            saldoContaOrigem = saldoContaOrigem - valorDaTransferencia;
-            saldoContaDestino = saldoContaDestino + valorDaTransferencia;
-            contaOrigem.setSaldo(saldoContaOrigem.toString());
-            serviceConta.preparaContaParaOperacoes(contaOrigem);
-            serviceConta.update(contaOrigem);
-            preparaMovimentaçãoParaInserir(movimentacao, contaOrigem, descricaoOp, numeroOp, valor);
-            genericDao.inserir(movimentacao);
-            if(contaDestino != null) {
-                contaDestino.setSaldo(saldoContaDestino.toString());
-                serviceConta.preparaContaParaOperacoes(contaDestino);
-                serviceConta.update(contaDestino);
-                preparaMovimentaçãoParaInserir(movimentacaoDestino, contaDestino, descricaoOpParaDestino, numeroOpParaDestino, valor);
-                genericDao.inserir(movimentacaoDestino);
-            }
-        }else {
-            mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
-        }
     }
 
 
@@ -198,6 +220,18 @@ public class ServiceOperacoes {
             contaCorreta = true;
         }
         return contaCorreta;
+    }
+
+    public Boolean validaConta(Conta conta) {
+        boolean contaValida = false;
+        List<Conta> listaDeContas = serviceConta.pesquisarListaDeContas(conta);
+        for (Conta contaDaLista : listaDeContas) {
+            if (contaDaLista.getNumero().equals(conta.getNumero())) {
+                contaValida = true;
+            }
+        }
+
+        return contaValida;
     }
 
     public Boolean validarSenha(Conta conta, String senha) {
@@ -260,7 +294,6 @@ public class ServiceOperacoes {
                 target.add(feedbackPanel);
             }
         }
-
     }
 
     public void ocultarLabelNaVisaoParaSaque(Label label, String op) {
@@ -299,7 +332,13 @@ public class ServiceOperacoes {
         }
     }
 
-    public void inserirContato(Conta conta, String apelido, String contaDestino,
+    public void ocultarBtnParaContaSalarioNaVisao(AjaxLink ajaxLink, Conta conta){
+        if(conta.getTipoDeConta().getDescricao().equals("Conta Salário")){
+            ajaxLink.setVisible(false);
+        }
+    }
+
+    public void inserirContato(Conta conta, String apelido, String contaDestino, String numeroBanco,
                                AjaxRequestTarget target, DropDownChoice dropDownChoice, FeedbackPanel feedbackPanel) {
         Mensagem mensagem = new Mensagem();
         Contato contato = new Contato();
@@ -316,21 +355,29 @@ public class ServiceOperacoes {
         if (contatoExistente) {
             mensagem.adcionarMensagemNaLista("Contato com mesmo apelido ou número de conta já existente");
         } else {
-            contato.setConta(conta);
-            contato.setContaDestino(contaDestino);
-            contato.setApelido(apelido);
-            Conta contaDoContato = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(contaDestino));
-            if (contaDoContato.getPessoaFisica() == null) {
-                contato.setPessoaJuridica(contaDoContato.getPessoaJuridica());
+            if (!contaDestino.isEmpty()) {
+                contato.setConta(conta);
+                contato.setContaDestino(contaDestino);
+                contato.setApelido(apelido);
+                contato.setNumeroBanco(numeroBanco);
+                Conta contaDoContato = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(contaDestino));
+                if (contaDoContato.getPessoaFisica() == null) {
+                    contato.setPessoaJuridica(contaDoContato.getPessoaJuridica());
+                }
+                if (contaDoContato.getPessoaJuridica() == null) {
+                    contato.setPessoaFisica(contaDoContato.getPessoaFisica());
+                }
+                if (!contato.getContaDestino().isEmpty() && !contato.getApelido().isEmpty() && !contato.getNumeroBanco().isEmpty()) {
+                    serviceContato.inserir(contato);
+                    mensagem.adcionarMensagemNaLista("Contato inserido com sucesso");
+                } else {
+                    mensagem.adcionarMensagemNaLista("Preencha todos os dados do contato!");
+                }
+                target.add(dropDownChoice);
+            } else {
+                mensagem.adcionarMensagemNaLista("Conta inexistente!");
             }
-            if (contaDoContato.getPessoaJuridica() == null) {
-                contato.setPessoaFisica(contaDoContato.getPessoaFisica());
-            }
-            serviceContato.inserir(contato);
-            mensagem.adcionarMensagemNaLista("Contato inserido com sucesso");
-            target.add(dropDownChoice);
         }
-
         for (String mensagemDaLista : mensagem.getListaDeMensagens()) {
             feedbackPanel.error(mensagemDaLista);
         }

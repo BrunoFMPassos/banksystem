@@ -18,14 +18,24 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 </head>
-<body>
-	<form id="formulariologin" wicket:id="formulariologin"
+<body onload="document.getElementById('alerta').style.display='none';">
+	<form id="formulariologin" wicket:id="formulariologin" onclick="document.getElementById('alerta').style.display='none';"
 		name="formulariologin">
 		<div id="1" class="col-sm-12"
 			style="width: 100vw; height: 100vh; background: lightgray; display: flex; flex-direction: row; justify-content: center; align-items: center;">
 			<div
 				style="background: white; width: 20%; min-width: 200px; min-height: 200px; max-heigth: 200px; padding: 10px; padding-top: 2%; border-radius: 5px;">
-				<div wicket:id="message"></div>
+				<div id="alerta"
+						style="
+						    background:#d04648;
+						    font-size: 12px;
+						    color: white;
+						    border-radius: 5px;
+							position:absolute;
+							padding: 5px;
+							z-index:100;
+							top:10%;"
+					 wicket:id="message"></div>
 				<div
 					style="display: flex; justify-content: center; align-items: center;">
 					<input style="" class="form-control" id="textfieldu"
