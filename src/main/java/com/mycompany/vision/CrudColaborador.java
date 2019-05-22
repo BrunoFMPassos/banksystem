@@ -4,6 +4,7 @@ import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
 import com.googlecode.wicket.jquery.ui.markup.html.link.Link;
 import com.mycompany.control.ServiceColaborador;
+import com.mycompany.control.ServiceRelatorios;
 import com.mycompany.model.Colaborador;
 import com.mycompany.model.User;
 import org.apache.wicket.MarkupContainer;
@@ -28,6 +29,8 @@ public class CrudColaborador extends BasePage {
 
     @SpringBean(name = "colaboradorService")
     ServiceColaborador serviceColaborador;
+    @SpringBean(name = "relatoriosService")
+    ServiceRelatorios<Colaborador> serviceRelatorios;
     final Colaborador colaborador = new Colaborador();
     private List<Colaborador> listaDeColaboradores = new ArrayList<Colaborador>();
     Form<Colaborador> form;
@@ -74,7 +77,6 @@ public class CrudColaborador extends BasePage {
             }
         };
 
-
         add(form);
         form.add(criarTextFieldNomefiltro());
         form.add(criarTextFieldAgenciafiltro());
@@ -84,6 +86,8 @@ public class CrudColaborador extends BasePage {
         form.add(criarModalInserirColaborador());
         form.add(criarModalEditarColaborador());
         form.add(criarModalExluirColaborador());
+        form.add(criarRelatorioJasper());
+        form.add(criarRelatorioExcel());
     }
 
 
@@ -233,5 +237,39 @@ public class CrudColaborador extends BasePage {
             }
         };
         return filtrar;
+    }
+
+    Link<?> criarRelatorioJasper() {
+
+        Link<?> btnRelatorio = new Link<Object>("relatorio"){
+
+
+            private static final long serialVersionUID = -5081583125636401676L;
+
+
+            @Override
+            public void onClick() {
+                    serviceRelatorios.gererRelatorioPDF(listaDeColaboradores,"Colaboradores","Colaboradores");
+            }
+        };
+        return btnRelatorio;
+
+    };
+
+    Link<?> criarRelatorioExcel() {
+
+        Link<?> btnExcel = new Link<Object>("excel"){
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void onClick() {
+                serviceRelatorios.gerarRelatorioExcelColaborador(listaDeColaboradores);
+            }
+
+        };
+
+        return btnExcel;
+
     }
 }

@@ -157,6 +157,9 @@
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
+    <bean id="relatoriosService" class="com.mycompany.control.ServiceRelatorios">
+    </bean>
+
     <bean id="loginService" class="com.mycompany.control.ServiceLogin">
         <property name="serviceUser" ref="userService"/>
     </bean>
