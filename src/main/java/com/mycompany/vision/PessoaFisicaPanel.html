@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<body onload="document.getElementById('alerta').style.display='none';">
 <wicket:panel>
 
-    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;" onclick="document.getElementById('alerta').style.display='none';">
         <form wicket:id="formulariocadastropf">
-            <div wicket:id="feedbackpanel"></div>
+            <div wicket:id="feedbackpanel" id="alerta"></div>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Pessoa Fisica</label>
             <br/>
             <div class="container">

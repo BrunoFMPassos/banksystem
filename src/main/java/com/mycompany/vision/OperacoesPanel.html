@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<body onload="document.getElementById('alerta').style.display='none';">
 <wicket:panel>
-    <div wicket:id="container" style="width: 100%; border-radius: 3px; margin-left: 5%;">
+    <div wicket:id="container" style="width: 100%; border-radius: 3px; margin-left: 5%;"
+         onclick="document.getElementById('alerta').style.display='none';">
         <form wicket:id="formulariocadastroconta">
-            <div wicket:id="feedbackpanel"></div>
+            <div wicket:id="feedbackpanel" id="alerta"></div>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelSaque">Saque</label>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelDeposito">Depósito</label>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelTransferencia">Transferência</label>

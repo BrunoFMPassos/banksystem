@@ -115,14 +115,15 @@ td{
     -webkit-font-smoothing: antialiased;
 }
 
-.div_alerta{
-    width:200px;
-    height:100px;
-    background:#f00;
+#alerta{
+    background:#d04648;
+    font-size: 12px;
+    color: white;
+    border-radius: 5px;
     position:absolute;
     z-index:100;
-    top:30%;
-    left:40%;
+    opacity: 0.9;
+    margin: 2%;
 }
 
 .barra-navegacao a{

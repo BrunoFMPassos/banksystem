@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<body onload="document.getElementById('alerta').style.display='none';">
 <wicket:panel>
 
-    <div wicket:id="container" style="width: 100%; border-radius: 3px;">
-        <form wicket:id="formulariocadastropj">
+    <div wicket:id="container" style="width: 100%; border-radius: 3px;" onclick="document.getElementById('alerta').style.display='none';">
+        <form wicket:id="formulariocadastropj" id="alerta">
             <div wicket:id="feedbackpanel"></div>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Pessoa Jurídica</label>
             <br/>

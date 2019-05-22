@@ -15,11 +15,11 @@
 
     <title></title>
 </head>
-<body>
+<body onload="document.getElementById('alerta').style.display='none';">
 <wicket:panel>
-    <div wicket:id="containerExcluir" style="padding: 3%; margin-bottom: 0%; text-align: center;">
+    <div wicket:id="containerExcluir" style="padding: 3%; margin-bottom: 0%; text-align: center;" onclick="document.getElementById('alerta').style.display='none';">
         <form wicket:id="formexcluir">
-            <div wicket:id="feedbackpanel"></div>
+            <div wicket:id="feedbackpanel" id="alerta"></div>
             <label class="titulo">Deseja realmente excluir o registro?</label>
             <br>
             <label style="font-size: 18px; color: #525965;" wicket:id = "valor">[Valor]</label>
