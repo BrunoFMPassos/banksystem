@@ -150,6 +150,7 @@
         <property name="genericDao" ref="genericDao"/>
         <property name="serviceConta" ref="contaService"/>
         <property name="serviceContato" ref="contatoService"/>
+        <property name="serviceRelatorios" ref="relatoriosService"/>
     </bean>
 
     <bean id="contatoService" class="com.mycompany.control.ServiceContato">

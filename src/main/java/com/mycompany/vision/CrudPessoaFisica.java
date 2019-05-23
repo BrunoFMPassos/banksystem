@@ -2,7 +2,9 @@ package com.mycompany.vision;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
+import com.googlecode.wicket.jquery.ui.markup.html.link.Link;
 import com.mycompany.control.ServicePF;
+import com.mycompany.control.ServiceRelatorios;
 import com.mycompany.model.PessoaFisica;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -25,6 +27,9 @@ public class CrudPessoaFisica extends BasePage {
 
     @SpringBean(name = "pfService")
     ServicePF servicePF;
+    @SpringBean(name = "relatoriosService")
+    ServiceRelatorios<PessoaFisica> serviceRelatorios;
+
     final PessoaFisica pessoaFisica = new PessoaFisica();
 
     private List<PessoaFisica> listaDePessoasFisicas = new ArrayList<PessoaFisica>();
@@ -82,6 +87,8 @@ public class CrudPessoaFisica extends BasePage {
         form.add(criarModalInserirPf());
         form.add(criarModalEditarPf());
         form.add(criarModalExluirPf());
+        form.add(criarRelatorioExcel());
+        form.add(criarRelatorioJasper());
     }
 
     private TextField<String> criarTextFieldNomefiltro() {
@@ -227,5 +234,42 @@ public class CrudPessoaFisica extends BasePage {
             }
         };
         return filtrar;
+    }
+
+
+
+    Link<?> criarRelatorioJasper() {
+
+        Link<?> btnRelatorio = new Link<Object>("relatorio"){
+
+
+            private static final long serialVersionUID = -5081583125636401676L;
+
+
+            @Override
+            public void onClick() {
+                serviceRelatorios.gererRelatorioPDF(listaDePessoasFisicas,"Pessoa_Fisica","Pessoas_Físicas");
+
+            }
+        };
+        return btnRelatorio;
+
+    };
+
+    Link<?> criarRelatorioExcel() {
+
+        Link<?> btnExcel = new Link<Object>("excel"){
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void onClick() {
+                serviceRelatorios.gerarRelatorioExcelPessoaFisica(listaDePessoasFisicas);
+            }
+
+        };
+
+        return btnExcel;
+
     }
 }

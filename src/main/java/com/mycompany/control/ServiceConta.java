@@ -60,7 +60,6 @@ public class ServiceConta {
         if(informacoesObrigatoriasPreenchidas){
                     Cartao cartao = conta.getCartao();
                     preparaCartaoParaUpdate(conta, cartao);
-                    preparaContaParaInserir(conta,mensagem);
                     conta.setLimiteConta(gerarLimiteDaConta(conta));
                     serviceCartao.inserir(cartao);
                     conta.setCartao(cartao);

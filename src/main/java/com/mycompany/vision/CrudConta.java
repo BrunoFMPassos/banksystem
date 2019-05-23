@@ -2,9 +2,7 @@ package com.mycompany.vision;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
-import com.mycompany.control.ServiceAgencia;
-import com.mycompany.control.ServiceConta;
-import com.mycompany.control.ServiceTipoDeConta;
+import com.mycompany.control.*;
 import com.mycompany.model.*;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -15,6 +13,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.repeater.Item;
@@ -35,6 +34,11 @@ public class CrudConta extends BasePage{
     ServiceAgencia serviceAgencia;
     @SpringBean(name = "tipoDeContaService")
     ServiceTipoDeConta serviceTipoDeConta;
+    @SpringBean(name = "operacoesService")
+    ServiceOperacoes serviceOperacoes;
+    @SpringBean(name = "relatoriosService")
+    ServiceRelatorios<Movimentacao> serviceRelatorios;
+
     Conta conta = new Conta();
     private List<Conta> listaDeContas = new ArrayList<Conta>();
     Form<Conta> form;
@@ -226,6 +230,14 @@ public class CrudConta extends BasePage{
                 Label texttitular = new Label("texttitular", titular);
                 Label texttipo = new Label("texttipo", contaDaLista.getTipoDeConta().getDescricao());
 
+                Link<?> extrato = new Link<Object>("extrato") {
+                    public void onClick() {
+                        Movimentacao movimentacao = new Movimentacao();
+                        List<Movimentacao> listaDeMovimentacoesDaConta = serviceOperacoes.buscaMovimentacoesPorConta(movimentacao,contaDaLista);
+                        serviceRelatorios.gererRelatorioExtratoPDF(listaDeMovimentacoesDaConta,contaDaLista);
+                    }
+                };
+
                 AjaxLink<?> editar = new AjaxLink<Object>("editar") {
                     public void onClick(AjaxRequestTarget target) {
                         serviceConta.preparaContaParaMostrar(contaDaLista);
@@ -274,6 +286,7 @@ public class CrudConta extends BasePage{
                 item.add(textnumero);
                 item.add(texttitular);
                 item.add(texttipo);
+                item.add(extrato);
                 item.add(editar);
                 item.add(excluir);
             }

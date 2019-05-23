@@ -2,7 +2,9 @@ package com.mycompany.vision;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
+import com.googlecode.wicket.jquery.ui.markup.html.link.Link;
 import com.mycompany.control.ServicePJ;
+import com.mycompany.control.ServiceRelatorios;
 import com.mycompany.model.PessoaJuridica;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -24,6 +26,8 @@ import java.util.List;
 public class CrudPessoaJuridica extends BasePage{
     @SpringBean(name = "pjService")
     ServicePJ servicePJ;
+    @SpringBean(name = "relatoriosService")
+    ServiceRelatorios<PessoaJuridica> serviceRelatorios;
     final PessoaJuridica pessoaJuridica = new PessoaJuridica();
 
     private List<PessoaJuridica> listaDePessoasJuridicas = new ArrayList<PessoaJuridica>();
@@ -83,6 +87,8 @@ public class CrudPessoaJuridica extends BasePage{
         form.add(criarModalInserirPj());
         form.add(criarModalEditarPj());
         form.add(criarModalExluirPj());
+        form.add(criarRelatorioJasper());
+        form.add(criarRelatorioExcel());
 
     }
 
@@ -229,5 +235,39 @@ public class CrudPessoaJuridica extends BasePage{
             }
         };
         return filtrar;
+    }
+
+    Link<?> criarRelatorioJasper() {
+
+        Link<?> btnRelatorio = new Link<Object>("relatorio"){
+
+
+            private static final long serialVersionUID = -5081583125636401676L;
+
+
+            @Override
+            public void onClick() {
+                serviceRelatorios.gererRelatorioPDF(listaDePessoasJuridicas,"Pessoa_Juridica","Pessoas_Jurídicas");
+            }
+        };
+        return btnRelatorio;
+
+    };
+
+    Link<?> criarRelatorioExcel() {
+
+        Link<?> btnExcel = new Link<Object>("excel"){
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void onClick() {
+                serviceRelatorios.gerarRelatorioExcelPessoaJuridica(listaDePessoasJuridicas);
+            }
+
+        };
+
+        return btnExcel;
+
     }
 }

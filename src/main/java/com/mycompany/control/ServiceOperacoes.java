@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.lang.annotation.Target;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +27,8 @@ public class ServiceOperacoes {
     private ServiceConta serviceConta;
     @SpringBean(name = "contatoService")
     private ServiceContato serviceContato;
+    @SpringBean(name = "relatoriosService")
+    private ServiceRelatorios<Movimentacao> serviceRelatorios;
 
     public Mensagem deposito(Conta conta, String valor, String senha) {
         Mensagem mensagem = new Mensagem();
@@ -117,13 +120,13 @@ public class ServiceOperacoes {
                                     Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo()) - valorDaTransferencia;
                                     contaOrigem.setSaldo(saldoContaOrigem.toString());
                                     serviceConta.preparaContaParaOperacoes(contaOrigem);
-                                    serviceConta.inserir(contaOrigem);
+                                    serviceConta.update(contaOrigem);
                                     preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
                                     genericDao.inserir(movimentacaoDebito);
                                     Double saldoContaDestino = Double.parseDouble(contaDestino.getSaldo()) + valorDaTransferencia;
                                     contaDestino.setSaldo(saldoContaDestino.toString());
                                     serviceConta.preparaContaParaOperacoes(contaDestino);
-                                    serviceConta.inserir(contaDestino);
+                                    serviceConta.update(contaDestino);
                                     preparaMovimentaçãoParaInserir(movimentacaoCredito, contaOrigem, "Crédito de transferência", "4", valor);
                                     genericDao.inserir(movimentacaoCredito);
                                 } else {
@@ -152,7 +155,7 @@ public class ServiceOperacoes {
                                 Double novoSaldo = saldoContaOrigem - valorADescontar;
                                 contaOrigem.setSaldo(novoSaldo.toString());
                                 serviceConta.preparaContaParaOperacoes(contaOrigem);
-                                serviceConta.inserir(contaOrigem);
+                                serviceConta.update(contaOrigem);
                                 preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
                                 genericDao.inserir(movimentacaoDebito);
                                 preparaMovimentaçãoParaInserir(movimentacaoTaxa, contaOrigem, "Taxa de transferência", "5",
@@ -242,6 +245,7 @@ public class ServiceOperacoes {
         }
         return senhaValida;
     }
+
 
     public void executarAoCLicarEmFinalizarNaModal(List<Conta> listaDeContas, Conta conta,
                                                    AjaxRequestTarget target,
@@ -385,6 +389,25 @@ public class ServiceOperacoes {
 
     }
 
+    public List<Movimentacao> buscaMovimentacoesPorConta(Movimentacao movimentacao, Conta conta){
+       List<Movimentacao> listaDeMovimentacoes =  genericDao.pesquisarListaDeObjeto(movimentacao);
+        List<Movimentacao> listaDeMovimentacoesDaConta = new ArrayList<Movimentacao>();
+       for(Movimentacao movimentacaoDaLista: listaDeMovimentacoes){
+           if(movimentacaoDaLista.getConta().getNumero().equals(conta.getNumero())){
+               listaDeMovimentacoesDaConta.add(movimentacaoDaLista);
+           }
+       }
+        return listaDeMovimentacoesDaConta;
+    }
+
+    public void preparaMovimentacoesParaExtrato(){
+
+    }
+
+
+    public void setServiceRelatorios(ServiceRelatorios serviceRelatorios) {
+        this.serviceRelatorios = serviceRelatorios;
+    }
 
     public void setServiceConta(ServiceConta serviceConta) {
         this.serviceConta = serviceConta;

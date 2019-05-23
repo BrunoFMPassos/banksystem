@@ -28,7 +28,7 @@ public class PessoaJuridica  implements Serializable {
     @Column(nullable=true, length=200)
     private String inscricaoEstadual;
     @Column(nullable=false, length=200)
-    private String Telefone;
+    private String telefone;
     @Column(nullable=false, length=200)
     private String rendaMensal;
     @Column(nullable=false, length=200)
@@ -86,11 +86,11 @@ public class PessoaJuridica  implements Serializable {
     }
 
     public String getTelefone() {
-        return Telefone;
+        return telefone;
     }
 
     public void setTelefone(String telefone) {
-        Telefone = telefone;
+        this.telefone = telefone;
     }
 
     public String getCidade() {
