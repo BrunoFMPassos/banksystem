@@ -219,13 +219,12 @@ public class ServicePJ {
             informacoesObrigatoriasPreenchidasValidas = false;
             mensagem.adcionarMensagemNaLista("O campo Razão Social é obrigatório!");
         }
-        if (pessoaJuridica.getCnpj().length()!= 18){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cnpj deve conter 14 dígitos!");
-        }
         if (pessoaJuridica.getCnpj() == null){
             informacoesObrigatoriasPreenchidasValidas = false;
             mensagem.adcionarMensagemNaLista("O campo cnpj é obrigatório!");
+        }else if (pessoaJuridica.getCnpj().length()!= 18){
+            informacoesObrigatoriasPreenchidasValidas = false;
+            mensagem.adcionarMensagemNaLista("O campo cnpj deve conter 14 dígitos!");
         }
         if (pessoaJuridica.getTelefone() == null){
             informacoesObrigatoriasPreenchidasValidas = false;

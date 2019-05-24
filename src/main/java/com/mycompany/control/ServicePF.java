@@ -218,14 +218,14 @@ public class ServicePF {
             informacoesObrigatoriasPreenchidasValidas = false;
             mensagem.adcionarMensagemNaLista("O campo nome é obrigatório!");
         }
-        if (pessoaFisica.getCpf().length()!= 14){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cpf deve conter 11 dígitos!");
-        }
+
         if (pessoaFisica.getCpf() == null){
             informacoesObrigatoriasPreenchidasValidas = false;
             mensagem.adcionarMensagemNaLista("O campo cpf é obrigatório!");
-        }
+        }else if (pessoaFisica.getCpf().length()!= 14){
+                informacoesObrigatoriasPreenchidasValidas = false;
+                mensagem.adcionarMensagemNaLista("O campo cpf deve conter 11 dígitos!");
+            }
         if (pessoaFisica.getDataDeNascimento() == null){
             informacoesObrigatoriasPreenchidasValidas = false;
             mensagem.adcionarMensagemNaLista("O campo data de nascimento é obrigatório!");
