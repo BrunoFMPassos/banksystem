@@ -1,5 +1,6 @@
 package com.mycompany.control;
 
+import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.mycompany.DAO.GenericDao;
 import com.mycompany.model.Conta;
 import com.mycompany.model.Contato;
@@ -7,13 +8,15 @@ import com.mycompany.model.Movimentacao;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.FeedbackMessages;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.lang.annotation.Target;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,11 +33,9 @@ public class ServiceOperacoes {
     @SpringBean(name = "relatoriosService")
     private ServiceRelatorios<Movimentacao> serviceRelatorios;
 
-    public Mensagem deposito(Conta conta, String valor, String senha) {
+    public Mensagem deposito(Conta conta, String valor) {
         Mensagem mensagem = new Mensagem();
-        Boolean senhaCorreta = validarSenha(conta, senha);
         if (!valor.isEmpty()) {
-            if (senhaCorreta) {
                 String statusConta = conta.getStatus();
                 if (statusConta.equals("Ativa")) {
                     String numeroOp = "1";
@@ -52,9 +53,6 @@ public class ServiceOperacoes {
                 } else {
                     mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
                 }
-            } else {
-                mensagem.adcionarMensagemNaLista("Senha Incorreta!");
-            }
         } else {
             mensagem.adcionarMensagemNaLista("Campo valor obrigatório");
         }
@@ -82,7 +80,7 @@ public class ServiceOperacoes {
                         serviceConta.update(conta);
                         preparaMovimentaçãoParaInserir(movimentacao, conta, descricaoOp, numeroOp, valor);
                         genericDao.inserir(movimentacao);
-                    }else {
+                    } else {
                         mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
                     }
                 } else {
@@ -102,7 +100,7 @@ public class ServiceOperacoes {
         Movimentacao movimentacaoDebito = new Movimentacao();
         Movimentacao movimentacaoCredito = new Movimentacao();
         Movimentacao movimentacaoTaxa = new Movimentacao();
-        if(contaOrigem.getContatoObjeto()!= null){
+        if (contaOrigem.getContatoObjeto() != null) {
             contaOrigem.setNumeroBanco(contaOrigem.getContatoObjeto().getNumeroBanco());
             contaDestino = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(contaOrigem.getContatoObjeto().getContaDestino()));
         }
@@ -117,25 +115,25 @@ public class ServiceOperacoes {
                             if (senhaValida) {
                                 Double valorDaTransferencia = Double.parseDouble(valor);
                                 if ((Double.parseDouble(contaOrigem.getSaldo()) + Double.parseDouble(contaOrigem.getLimiteConta())) >= valorDaTransferencia) {
-                                    Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo()) - valorDaTransferencia;
-                                    contaOrigem.setSaldo(saldoContaOrigem.toString());
-                                    serviceConta.preparaContaParaOperacoes(contaOrigem);
-                                    serviceConta.update(contaOrigem);
-                                    preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
-                                    genericDao.inserir(movimentacaoDebito);
                                     Double saldoContaDestino = Double.parseDouble(contaDestino.getSaldo()) + valorDaTransferencia;
                                     contaDestino.setSaldo(saldoContaDestino.toString());
                                     serviceConta.preparaContaParaOperacoes(contaDestino);
                                     serviceConta.update(contaDestino);
                                     preparaMovimentaçãoParaInserir(movimentacaoCredito, contaOrigem, "Crédito de transferência", "4", valor);
                                     genericDao.inserir(movimentacaoCredito);
+                                    Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo()) - valorDaTransferencia;
+                                    contaOrigem.setSaldo(saldoContaOrigem.toString());
+                                    serviceConta.preparaContaParaOperacoes(contaOrigem);
+                                    serviceConta.update(contaOrigem);
+                                    preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
+                                    genericDao.inserir(movimentacaoDebito);
                                 } else {
                                     mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
                                 }
                             } else {
                                 mensagem.adcionarMensagemNaLista("Senha inválida!");
                             }
-                        }else{
+                        } else {
                             mensagem.adcionarMensagemNaLista("Você não pode transferir para sua própria conta.");
                         }
                     } else {
@@ -156,11 +154,11 @@ public class ServiceOperacoes {
                                 contaOrigem.setSaldo(novoSaldo.toString());
                                 serviceConta.preparaContaParaOperacoes(contaOrigem);
                                 serviceConta.update(contaOrigem);
-                                preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
-                                genericDao.inserir(movimentacaoDebito);
                                 preparaMovimentaçãoParaInserir(movimentacaoTaxa, contaOrigem, "Taxa de transferência", "5",
                                         contaOrigem.getTipoDeConta().getTaxaDeTransferencia());
                                 genericDao.inserir(movimentacaoTaxa);
+                                preparaMovimentaçãoParaInserir(movimentacaoDebito, contaOrigem, "Débito de transferência", "3", valor);
+                                genericDao.inserir(movimentacaoDebito);
                             } else {
                                 mensagem.adcionarMensagemNaLista("Saldo insuficiente!");
                             }
@@ -227,13 +225,14 @@ public class ServiceOperacoes {
 
     public Boolean validaConta(Conta conta) {
         boolean contaValida = false;
-        List<Conta> listaDeContas = serviceConta.pesquisarListaDeContas(conta);
-        for (Conta contaDaLista : listaDeContas) {
-            if (contaDaLista.getNumero().equals(conta.getNumero())) {
-                contaValida = true;
+        if (conta.getNumero() != null) {
+            List<Conta> listaDeContas = serviceConta.pesquisarListaDeContas(conta);
+            for (Conta contaDaLista : listaDeContas) {
+                if (contaDaLista.getNumero().equals(conta.getNumero())) {
+                    contaValida = true;
+                }
             }
         }
-
         return contaValida;
     }
 
@@ -246,10 +245,40 @@ public class ServiceOperacoes {
         return senhaValida;
     }
 
+    public void emiteComprovante(Conta conta) {
+        Movimentacao movimentacao = new Movimentacao();
+        List<Movimentacao> listaDeMovimentacoes = new ArrayList<Movimentacao>();
+        listaDeMovimentacoes = buscaMovimentacoesPorConta(movimentacao, conta);
+        List<Movimentacao> ultimaMovimentacao = new ArrayList<Movimentacao>();
+        int tamanhoDaLista = listaDeMovimentacoes.size();
+        movimentacao = listaDeMovimentacoes.get(tamanhoDaLista - 1);
+        ultimaMovimentacao.add(movimentacao);
+
+        serviceRelatorios.gererRelatorioExtratoPDF(ultimaMovimentacao, conta);
+
+    }
+
+    public void preparaVisãoParaEmitirComprovante(AjaxButton finalizar, Link comprovante, AjaxLink fechar, String op, FeedbackPanel feedbackPanel) {
+        List<FeedbackMessage> listaDeMensagens = feedbackPanel.getFeedbackMessages().toList();
+
+        if (listaDeMensagens.isEmpty()) {
+            if (op.equals("Deposito") || op.equals("Transferencia")) {
+                ocultarAjaxButtonNaVisao(finalizar);
+                mostrarLinkNaVisao(comprovante);
+                mostrarAjaxLinkNaVisao(fechar);
+            }
+        }
+    }
+
+    public void executarAoClicarEmFecharNaVisão(ModalWindow modalWindow, AjaxRequestTarget target) {
+        modalWindow.close(target);
+    }
+
 
     public void executarAoCLicarEmFinalizarNaModal(List<Conta> listaDeContas, Conta conta,
                                                    AjaxRequestTarget target,
-                                                   ModalWindow modalWindow, FeedbackPanel feedbackPanel, String op,
+                                                   ModalWindow modalWindow, FeedbackPanel feedbackPanel,
+                                                   FeedbackPanel feedbackPanelSuccess, String op,
                                                    String senha, String valor, String numeroContaDestino, Contato contato) {
         if (op.equals("Saque")) {
             Mensagem mensagem = saque(conta, valor, senha);
@@ -265,9 +294,10 @@ public class ServiceOperacoes {
             }
         }
         if (op.equals("Deposito")) {
-            Mensagem mensagem = deposito(conta, valor, senha);
+            Mensagem mensagem = deposito(conta, valor);
             if (mensagem.getListaVazia()) {
-                modalWindow.close(target);
+                feedbackPanelSuccess.error("Depósito realizado com sucesso!");
+                target.add(feedbackPanelSuccess);
             } else {
                 int index = 0;
                 for (String mensagemDaLista : mensagem.getListaDeMensagens()) {
@@ -278,17 +308,20 @@ public class ServiceOperacoes {
             }
         }
         if (op.equals("Transferencia")) {
-            Long numeroContaDestinoLong;
-            if (numeroContaDestino == null) {
+            Long numeroContaDestinoLong = null;
+            if (numeroContaDestino == null && contato!=null) {
                 numeroContaDestinoLong = Long.parseLong(contato.getContaDestino());
-            } else {
+            } else if(numeroContaDestino!=null){
                 numeroContaDestinoLong = Long.parseLong(numeroContaDestino);
             }
-            Conta contaDestino = serviceConta.pesquisaObjetoContaPorNumero(numeroContaDestinoLong);
-
+            Conta contaDestino = new Conta();
+            if (numeroContaDestinoLong != null) {
+                contaDestino = serviceConta.pesquisaObjetoContaPorNumero(numeroContaDestinoLong);
+            }
             Mensagem mensagem = transferencia(contaDestino, conta, valor, senha);
             if (mensagem.getListaVazia()) {
-                modalWindow.close(target);
+                feedbackPanelSuccess.error("Transferência realizada com sucesso!");
+                target.add(feedbackPanelSuccess);
             } else {
                 int index = 0;
                 for (String mensagemDaLista : mensagem.getListaDeMensagens()) {
@@ -301,7 +334,7 @@ public class ServiceOperacoes {
     }
 
     public void ocultarLabelNaVisaoParaSaque(Label label, String op) {
-        if (op.equals("Transferencia")) {
+        if (op.equals("Transferencia") || op.equals("Deposito")) {
             label.setVisible(false);
         }
     }
@@ -330,15 +363,33 @@ public class ServiceOperacoes {
         }
     }
 
-    public void ocultarAjaxLinkNaVisao(AjaxLink ajaxLink, String op) {
+    public void ocultarAjaxLinkNaVisaoParaTransferencia(AjaxLink ajaxLink, String op) {
         if (op.equals("Saque") || op.equals("Deposito")) {
             ajaxLink.setVisible(false);
         }
     }
 
-    public void ocultarBtnParaContaSalarioNaVisao(AjaxLink ajaxLink, Conta conta){
-        if(conta.getTipoDeConta().getDescricao().equals("Conta Salário")){
+    public void ocultarAjaxButtonNaVisao(AjaxButton ajaxButton) {
+        ajaxButton.setVisible(false);
+    }
+
+    public void mostrarLinkNaVisao(Link link) {
+        link.setVisible(true);
+    }
+
+    public void mostrarAjaxLinkNaVisao(AjaxLink link) {
+        link.setVisible(true);
+    }
+
+    public void ocultarBtnPorContaNaVisão(AjaxLink ajaxLink, Conta conta) {
+        if (conta.getTipoDeConta().getDescricao().equals("Conta Salário")) {
             ajaxLink.setVisible(false);
+        }
+    }
+
+    public void ocultarCampoSenhaParDeposito(TextField textField, String op){
+        if(op.equals("Deposito")) {
+            textField.setVisible(false);
         }
     }
 
@@ -389,19 +440,15 @@ public class ServiceOperacoes {
 
     }
 
-    public List<Movimentacao> buscaMovimentacoesPorConta(Movimentacao movimentacao, Conta conta){
-       List<Movimentacao> listaDeMovimentacoes =  genericDao.pesquisarListaDeObjeto(movimentacao);
+    public List<Movimentacao> buscaMovimentacoesPorConta(Movimentacao movimentacao, Conta conta) {
+        List<Movimentacao> listaDeMovimentacoes = genericDao.pesquisarListaDeObjeto(movimentacao);
         List<Movimentacao> listaDeMovimentacoesDaConta = new ArrayList<Movimentacao>();
-       for(Movimentacao movimentacaoDaLista: listaDeMovimentacoes){
-           if(movimentacaoDaLista.getConta().getNumero().equals(conta.getNumero())){
-               listaDeMovimentacoesDaConta.add(movimentacaoDaLista);
-           }
-       }
+        for (Movimentacao movimentacaoDaLista : listaDeMovimentacoes) {
+            if (movimentacaoDaLista.getConta().getNumero().equals(conta.getNumero())) {
+                listaDeMovimentacoesDaConta.add(movimentacaoDaLista);
+            }
+        }
         return listaDeMovimentacoesDaConta;
-    }
-
-    public void preparaMovimentacoesParaExtrato(){
-
     }
 
 

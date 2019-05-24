@@ -252,6 +252,7 @@ public class CrudPessoaFisica extends BasePage {
 
             }
         };
+        btnRelatorio.setOutputMarkupId(true);
         return btnRelatorio;
 
     };
@@ -268,7 +269,7 @@ public class CrudPessoaFisica extends BasePage {
             }
 
         };
-
+        btnExcel.setOutputMarkupId(true);
         return btnExcel;
 
     }

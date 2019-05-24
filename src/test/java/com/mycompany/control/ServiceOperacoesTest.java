@@ -34,7 +34,7 @@ public class ServiceOperacoesTest {
     @Test
     public void deposito() {
         try{
-            serviceOperacoes.deposito(conta3,"100","1234");
+            serviceOperacoes.deposito(conta3,"100");
             System.out.println("Teste realizado com sucesso!");
         }catch (Exception e){
             System.out.println("Erro ao realizar teste: "+e);

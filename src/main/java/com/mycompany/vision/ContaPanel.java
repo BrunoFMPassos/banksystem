@@ -7,6 +7,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -42,9 +43,20 @@ public class ContaPanel extends Panel {
     Form<Conta> form;
     FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackpanel");
 
+    ModalWindow modalDesativarConta = new ModalWindow("modaldesativarconta");
+
 
     public ContaPanel(String id, Conta conta, Boolean editar) {
         super(id);
+
+        modalDesativarConta.setAutoSize(true);
+        modalDesativarConta.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
+
         feedbackPanel.setOutputMarkupId(true);
         this.conta = conta;
         add(criarContainer(editar));
@@ -77,8 +89,14 @@ public class ContaPanel extends Panel {
         form.add(criarTextFieldLimiteCartao(editar));
         form.add(criarTextFieldDataValidadeCartao(editar));
         form.add(criarBtnDesativar(editar));
+        form.add(criarModalDesativarConta());
         container.add(form);
         return container;
+    }
+
+    private ModalWindow criarModalDesativarConta() {
+        modalDesativarConta.setOutputMarkupId(true);
+        return modalDesativarConta;
     }
 
     private AjaxButton criarBtnSalvar(){
@@ -101,7 +119,23 @@ public class ContaPanel extends Panel {
         AjaxLink desativar = new AjaxLink("desativarconta") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                serviceConta.desativarConta(conta,target,feedbackPanel);
+                final DesativarContaPanel desativarContaPanel = new DesativarContaPanel(modalDesativarConta.getContentId(),conta){
+                    @Override
+                    public void desativar(AjaxRequestTarget target, Conta c) {
+                        super.desativar(target, conta);
+                        serviceConta.desativarConta(conta,target,feedbackPanel);
+                        modalDesativarConta.close(target);
+                    }
+
+                    @Override
+                    public void fecharSemDesativar(AjaxRequestTarget target, Conta c) {
+                        super.fecharSemDesativar(target, conta);
+                        modalDesativarConta.close(target);
+                    }
+                };
+
+                modalDesativarConta.setContent(desativarContaPanel);
+                modalDesativarConta.show(target);
             }
         };
         desativar.setOutputMarkupId(true);

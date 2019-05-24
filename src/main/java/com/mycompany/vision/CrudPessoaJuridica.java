@@ -250,6 +250,7 @@ public class CrudPessoaJuridica extends BasePage{
                 serviceRelatorios.gererRelatorioPDF(listaDePessoasJuridicas,"Pessoa_Juridica","Pessoas_Jurídicas");
             }
         };
+        btnRelatorio.setOutputMarkupId(true);
         return btnRelatorio;
 
     };
@@ -266,7 +267,7 @@ public class CrudPessoaJuridica extends BasePage{
             }
 
         };
-
+        btnExcel.setOutputMarkupId(true);
         return btnExcel;
 
     }

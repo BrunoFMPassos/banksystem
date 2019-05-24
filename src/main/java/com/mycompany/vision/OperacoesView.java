@@ -13,18 +13,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -120,7 +115,7 @@ public class OperacoesView extends BasePage{
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
                                         super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
-                                                target,modalOperacao,feedbackPanel,"Saque", conta.getSenhaVerificar(),
+                                                target,modalOperacao,feedbackPanel,feedbackPanelSuccess,"Saque", conta.getSenhaVerificar(),
                                                 conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
                                         target.add(feedbackPanel);
                                     }
@@ -137,11 +132,15 @@ public class OperacoesView extends BasePage{
                                 OperacoesPanel(modalOperacao.getContentId(),contaDaLista,"Deposito") {
                                     @Override
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
-                                        super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
-                                                target,modalOperacao,feedbackPanel,"Deposito", conta.getSenhaVerificar(),
+                                                target,modalOperacao,feedbackPanel,feedbackPanelSuccess,"Deposito", conta.getSenhaVerificar(),
                                                 conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
                                         target.add(feedbackPanel);
+                                    }
+
+                                    @Override
+                                    public void executaAoClicarEmFechar(AjaxRequestTarget target) {
+                                        serviceOperacoes.executarAoClicarEmFecharNaVisão(modalOperacao,target);
                                     }
                                 };
                         modalOperacao.setContent(operacoesPanel);
@@ -159,9 +158,14 @@ public class OperacoesView extends BasePage{
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
                                         super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
-                                                target,modalOperacao,feedbackPanel,"Transferencia", conta.getSenhaVerificar(),
+                                                target,modalOperacao,feedbackPanel,feedbackPanelSuccess,"Transferencia", conta.getSenhaVerificar(),
                                                 conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
                                         target.add(feedbackPanel);
+                                    }
+
+                                    @Override
+                                    public void executaAoClicarEmFechar(AjaxRequestTarget target) {
+                                        serviceOperacoes.executarAoClicarEmFecharNaVisão(modalOperacao,target);
                                     }
                                 };
                         modalOperacao.setContent(operacoesPanel);
@@ -170,8 +174,8 @@ public class OperacoesView extends BasePage{
 
                 };
 
-                serviceOperacoes.ocultarBtnParaContaSalarioNaVisao(deposito,contaDaLista);
-                serviceOperacoes.ocultarBtnParaContaSalarioNaVisao(transferencia,contaDaLista);
+                serviceOperacoes.ocultarBtnPorContaNaVisão(deposito,contaDaLista);
+                serviceOperacoes.ocultarBtnPorContaNaVisão(transferencia,contaDaLista);
 
                 item.add(textnumero);
                 item.add(texttitular);

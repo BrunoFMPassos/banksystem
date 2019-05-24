@@ -71,6 +71,7 @@ public class AgenciaPanel extends Panel {
 
     private RequiredTextField<String> criarTextFieldNumero() {
         RequiredTextField<String> numero = new RequiredTextField<String>("numero");
+        numero.setOutputMarkupId(true);
         return numero;
     }
 
@@ -128,6 +129,7 @@ public class AgenciaPanel extends Panel {
 
     private RequiredTextField<String> criarTextFieldCidade() {
         RequiredTextField<String> cidade = new RequiredTextField<String>("cidade");
+        cidade.setOutputMarkupId(true);
         return cidade;
     }
 

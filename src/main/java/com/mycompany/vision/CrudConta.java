@@ -283,6 +283,8 @@ public class CrudConta extends BasePage{
                     }
 
                 };
+
+                extrato.setOutputMarkupId(true);
                 item.add(textnumero);
                 item.add(texttitular);
                 item.add(texttipo);

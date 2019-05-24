@@ -6,7 +6,7 @@ import com.mycompany.control.ServiceContato;
 import com.mycompany.control.ServiceOperacoes;
 import com.mycompany.model.Conta;
 import com.mycompany.model.Contato;
-import com.mycompany.model.TipoDeConta;
+import com.mycompany.model.Movimentacao;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -14,6 +14,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -35,25 +36,34 @@ public class OperacoesPanel extends Panel {
     private Conta conta = new Conta();
     Form<Conta> form;
     FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackpanel");
+    FeedbackPanel feedbackPanelSuccess = new FeedbackPanel("feedbackpanelsuccess");
     DropDownChoice<Contato> selectContatos;
     TextField apelido;
     TextField numeroContaDestino;
     TextField numeroBanco;
+    WebMarkupContainer container;
+
+    AjaxButton finalizar;
+    Link comprovante;
+    AjaxLink fechar;
 
     public OperacoesPanel(String id, Conta conta, String op) {
         super(id);
         feedbackPanel.setOutputMarkupId(true);
+        feedbackPanelSuccess.setOutputMarkupId(true);
         this.conta = conta;
         add(criarContainer(op));
     }
 
     public WebMarkupContainer criarContainer(String op) {
-        WebMarkupContainer container = new WebMarkupContainer("container");
+        container = new WebMarkupContainer("container");
+        container.setOutputMarkupId(true);
         form = new Form<Conta>("formulariocadastroconta", new CompoundPropertyModel<Conta>(conta));
         form.setOutputMarkupId(true);
         form.add(feedbackPanel);
+        form.add(feedbackPanelSuccess);
         form.add(criarBtnAdicionarContato(op));
-        form.add(criarBtnFinalizar());
+        form.add(criarBtnFinalizar(op));
         form.add(criarLabelContaDestino(op));
         form.add(criarLabelDeposito(op));
         form.add(criarLabelSaque(op));
@@ -65,18 +75,23 @@ public class OperacoesPanel extends Panel {
         form.add(criarTextFieldNumeroBanco(op));
         form.add(criarTextFieldApelido(op));
         form.add(criarSelectContato(op));
-        form.add(criarTextFieldSenha());
+        form.add(criarTextFieldSenha(op));
         form.add(criarTextFieldValor());
+        form.add(criarBtnComprovante());
+        form.add(criarBtnFechar());
+
 
         container.add(form);
         return container;
     }
 
-    private AjaxButton criarBtnFinalizar() {
-        AjaxButton finalizar = new AjaxButton("finalizar") {
+    private AjaxButton criarBtnFinalizar(final String op) {
+            finalizar = new AjaxButton("finalizar") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 executaAoClicarEmSalvar(target, conta);
+                serviceOperacoes.preparaVisãoParaEmitirComprovante(finalizar,comprovante,fechar,op,feedbackPanel);
+                target.add(container);
             }
 
         };
@@ -95,8 +110,33 @@ public class OperacoesPanel extends Panel {
             }
         };
         contato.setOutputMarkupId(true);
-        serviceOperacoes.ocultarAjaxLinkNaVisao(contato, op);
+        serviceOperacoes.ocultarAjaxLinkNaVisaoParaTransferencia(contato, op);
         return contato;
+    }
+    
+    private Link criarBtnComprovante(){
+         comprovante = new Link("comprovante") {
+            @Override
+            public void onClick() {
+
+                serviceOperacoes.emiteComprovante(conta);
+            }
+        };
+         comprovante.setOutputMarkupId(true);
+        comprovante.setVisible(false);
+        return comprovante;
+    }
+
+    private AjaxLink criarBtnFechar(){
+           fechar = new AjaxLink("fechar") {
+               @Override
+               public void onClick(AjaxRequestTarget target) {
+                   executaAoClicarEmFechar(target);
+               }
+           };
+        fechar.setVisible(false);
+        fechar.setOutputMarkupId(true);
+        return fechar;
     }
 
     private Label criarLabelSaque(String op) {
@@ -148,9 +188,10 @@ public class OperacoesPanel extends Panel {
         return valor;
     }
 
-    private PasswordTextField criarTextFieldSenha() {
+    private PasswordTextField criarTextFieldSenha(String op) {
         PasswordTextField senha = new PasswordTextField("senhaVerificar");
         senha.add(new AttributeModifier("onfocus", "$(this).mask('999999');"));
+        serviceOperacoes.ocultarCampoSenhaParDeposito(senha,op);
         return senha;
     }
 
@@ -232,4 +273,10 @@ public class OperacoesPanel extends Panel {
     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
 
     }
+
+    public void executaAoClicarEmFechar(AjaxRequestTarget target) {
+
+    }
+
+
 }

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<body onload="document.getElementById('alerta').style.display='none';">
+<body onload="document.getElementById('alerta').style.display='none'; document.getElementById('success').style.display='none';">
 <wicket:panel>
     <div wicket:id="container" style="width: 100%; border-radius: 3px; margin-left: 5%;"
-         onclick="document.getElementById('alerta').style.display='none';">
+         onclick="document.getElementById('alerta').style.display='none'; document.getElementById('success').style.display='none';">
         <form wicket:id="formulariocadastroconta">
             <div wicket:id="feedbackpanel" id="alerta"></div>
+            <div wicket:id="feedbackpanelsuccess" id="success"></div>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelSaque">Saque</label>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelDeposito">Depósito</label>
             <label class="titulo" style="color:#696969; text-align:center; margin:3%;" wicket:id="labelTransferencia">Transferência</label>
@@ -35,6 +36,8 @@
                 </div>
                 <div style="margin-top: 3%; text-align: left;">
                     <input class="btn-confirma" type="button" wicket:id="finalizar" value="Finalizar"/>
+                    <input class="btn-blue" type="button" id="comprovante" wicket:id="comprovante" value="Comprovante"/>
+                    <input class="btn-danger-btn" type="button" id="fechar" wicket:id="fechar" value="Fechar"/>
                 </div>
             </div>
             <br/>

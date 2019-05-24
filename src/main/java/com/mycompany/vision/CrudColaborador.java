@@ -92,12 +92,12 @@ public class CrudColaborador extends BasePage {
 
 
     private TextField<String> criarTextFieldNomefiltro() {
-        //TextField<String> inputNome = new TextField<String>("nome");
+        inputNome.setOutputMarkupId(true);
         return inputNome;
     }
 
     private TextField<String> criarTextFieldAgenciafiltro() {
-        //TextField<String> inputAgencia = new TextField<String>("agencia");
+        inputAgencia.setOutputMarkupId(true);
         return inputAgencia;
     }
 
@@ -119,9 +119,14 @@ public class CrudColaborador extends BasePage {
 
                 final Colaborador colaboradorDaLista = (Colaborador) item.getModelObject();
                 Label textnome = new Label("textnome", colaboradorDaLista.getNome());
+
                 User user = serviceColaborador.pesquisarObjetoUserPorColaborador(colaboradorDaLista);
                 Label textusuario = new Label("textusuario", user.getUsername());
                 Label textperfil = new Label("textperfil", user.getPerfil());
+
+                textnome.setOutputMarkupId(true);
+                textusuario.setOutputMarkupId(true);
+                textperfil.setOutputMarkupId(true);
 
                 AjaxLink<?> editar = new AjaxLink<Object>("editar") {
                     public void onClick(AjaxRequestTarget target) {
@@ -173,6 +178,9 @@ public class CrudColaborador extends BasePage {
                     }
                 };
 
+                editar.setOutputMarkupId(true);
+                excluir.setOutputMarkupId(true);
+
                 item.add(textnome);
                 item.add(textusuario);
                 item.add(textperfil);
@@ -190,14 +198,17 @@ public class CrudColaborador extends BasePage {
     }
 
     private ModalWindow criarModalInserirColaborador() {
+        modalWindowInserirColaborador.setOutputMarkupId(true);
         return modalWindowInserirColaborador;
     }
 
     private ModalWindow criarModalEditarColaborador() {
+        modalWindowEditarColaborador.setOutputMarkupId(true);
         return modalWindowEditarColaborador;
     }
 
     private ModalWindow criarModalExluirColaborador() {
+        modalWindowExcluirColaborador.setOutputMarkupId(true);
         return modalWindowExcluirColaborador;
     }
 
@@ -218,6 +229,7 @@ public class CrudColaborador extends BasePage {
                 modalWindowInserirColaborador.show(target);
             }
         };
+        inserir.setOutputMarkupId(true);
         return inserir;
     }
 
@@ -236,6 +248,7 @@ public class CrudColaborador extends BasePage {
                 serviceColaborador.filtrarColaboradorNaVisao(nome, agencia, listaDeColaboradores, colaborador, target, rowPanel);
             }
         };
+        filtrar.setOutputMarkupId(true);
         return filtrar;
     }
 
@@ -252,6 +265,7 @@ public class CrudColaborador extends BasePage {
                     serviceRelatorios.gererRelatorioPDF(listaDeColaboradores,"Colaboradores","Colaboradores");
             }
         };
+        btnRelatorio.setOutputMarkupId(true);
         return btnRelatorio;
 
     };
@@ -269,6 +283,7 @@ public class CrudColaborador extends BasePage {
 
         };
 
+        btnExcel.setOutputMarkupId(true);
         return btnExcel;
 
     }

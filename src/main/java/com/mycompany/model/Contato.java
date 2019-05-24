@@ -1,10 +1,11 @@
 package com.mycompany.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "contato")
-public class Contato {
+public class Contato implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="pessoafisica_id")

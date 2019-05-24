@@ -89,17 +89,20 @@ public class ColaboradorPanel extends Panel {
 
     private TextField<String> criarTextFieldNome() {
         TextField<String> nome = new TextField<String>("nome");
+        nome.setOutputMarkupId(true);
         return nome;
     }
 
     private TextField<String> criarTextFieldCpf() {
         TextField<String> cpf = new TextField<String>("cpf");
         cpf.add(new AttributeModifier("onfocus", "$(this).mask('999.999.999-99');"));
+        cpf.setOutputMarkupId(true);
         return cpf;
     }
 
     private TextField<String> criarTextFieldRg() {
         TextField<String> rg = new TextField<String>("rg");
+        rg.setOutputMarkupId(true);
         return rg;
     }
 
@@ -121,6 +124,7 @@ public class ColaboradorPanel extends Panel {
         DateTextField data = new DateTextField("dataDeNascimento");
         data.add(datePicker);
         data.add(new AttributeModifier("onfocus", "$(this).mask('99/99/99');"));
+        data.setOutputMarkupId(true);
         return data;
     }
 
@@ -136,6 +140,7 @@ public class ColaboradorPanel extends Panel {
         RadioGroup<?> sexo = new RadioGroup<Object>("sexo");
         sexo.add(new Radio<String>("masculino", new Model<String>("masculino")));
         sexo.add(new Radio<String>("feminino", new Model<String>("feminino")));
+        sexo.setOutputMarkupId(true);
         return sexo;
     }
 
@@ -178,11 +183,13 @@ public class ColaboradorPanel extends Panel {
 
     private TextField<String> criarTextFieldUsusername() {
         TextField<String> username = new TextField<String>("username");
+        username.setOutputMarkupId(true);
         return username;
     }
 
     private PasswordTextField criarTextFieldDPassword() {
         PasswordTextField password = new PasswordTextField("password");
+        password.setOutputMarkupId(true);
         return password;
     }
 
@@ -218,6 +225,7 @@ public class ColaboradorPanel extends Panel {
 
     private TextField<String> criarTextFieldCidade() {
         TextField<String> cidade = new TextField<String>("cidade");
+        cidade.setOutputMarkupId(true);
         return cidade;
     }
 
