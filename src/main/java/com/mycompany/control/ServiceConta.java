@@ -39,32 +39,48 @@ public class ServiceConta {
 
     public Mensagem inserir(Conta conta){
         Mensagem mensagem = new Mensagem();
-        Boolean informacoesObrigatoriasPreenchidas = verificaSeInformacoesObrigatoriasPreenchidas(conta,mensagem);
-        if(informacoesObrigatoriasPreenchidas){
-            Cartao cartao = new Cartao();
-            preparaContaParaInserir(conta,mensagem);
-            if(mensagem.getListaVazia()) {
-                preparaCartaoParaInserir(conta, cartao);
-                serviceCartao.inserir(cartao);
-                conta.setCartao(cartao);
-                genericDao.inserir(conta);
+        if(conta.getSenha()!=null && conta.getSenhaCartao()!=null){
+            String tipoDePessoa = verificaSeTitularPessoaJuridicaOuFisica(conta);
+            if(conta.getTipoDeConta().getPessoa().equals(tipoDePessoa)) {
+                Cartao cartao = new Cartao();
+                preparaContaParaInserir(conta, mensagem);
+                if (mensagem.getListaVazia()) {
+                    preparaCartaoParaInserir(conta, cartao);
+                    serviceCartao.inserir(cartao);
+                    conta.setCartao(cartao);
+                    genericDao.inserir(conta);
+                }
+            }else{
+                mensagem.adcionarMensagemNaLista("Tipo de conta não permitido para esse titular!");
             }
+        }else{
+            mensagem.adcionarMensagemNaLista("Os campos senha e senha do cartão são obrigatórios!");
         }
         return mensagem;
+    }
+
+    public String verificaSeTitularPessoaJuridicaOuFisica(Conta conta){
+        String tipoDePessoa = "Física";
+        PessoaFisica pf = servicePF.pesquisaObjetoPessoaFisicaPorNome(conta.getTitular());
+        if(pf == null){
+          tipoDePessoa = "Jurídica";
+        }
+        return tipoDePessoa;
     }
 
 
     public  Mensagem update(Conta conta){
         Mensagem mensagem = new Mensagem();
-        Boolean informacoesObrigatoriasPreenchidas = verificaSeInformacoesObrigatoriasPreenchidas(conta,mensagem);
-        if(informacoesObrigatoriasPreenchidas){
+                    Conta contaExistente = pesquisaObjetoContaPorNumero(conta.getNumero());
+                    if(conta.getSenha() == null){
+                        conta.setSenha(contaExistente.getSenha());
+                    }
                     Cartao cartao = conta.getCartao();
                     preparaCartaoParaUpdate(conta, cartao);
                     conta.setLimiteConta(gerarLimiteDaConta(conta));
                     serviceCartao.inserir(cartao);
                     conta.setCartao(cartao);
                     genericDao.inserir(conta);
-        }
         return mensagem;
     }
 
@@ -100,9 +116,14 @@ public class ServiceConta {
 
     public void desativarConta(Conta conta, AjaxRequestTarget target, FeedbackPanel feedbackPanel){
         if(conta.getStatus().equals("Ativa")){
-            conta.setStatus("Inativa");
-            feedbackPanel.error("Conta desativada com sucesso!");
-            target.add(feedbackPanel);
+            if(Double.parseDouble(conta.getSaldo())==0) {
+                conta.setStatus("Inativa");
+                feedbackPanel.error("Conta desativada com sucesso!");
+                target.add(feedbackPanel);
+            }else{
+                feedbackPanel.error("Para desativar uma conta é necessário que o saldo esteja zerado!");
+                target.add(feedbackPanel);
+            }
         }
     }
 
@@ -224,7 +245,11 @@ public class ServiceConta {
         cartao.setDataValidade(cartao.getDataValidade());
         cartao.setTipoDeCartao(serviceTipoDeCartao.pesquisarObjetoTipoDeCartaoPorDescricao(conta.getTipoDeCartao()));
         cartao.setLimite(gerarLimiteDoCartao(conta,cartao));
-        cartao.setSenha(conta.getSenhaCartao());
+        if(conta.getSenhaCartao() == null) {
+            cartao.setSenha(conta.getCartao().getSenha());
+        }else{
+            cartao.setSenha(conta.getSenhaCartao());
+        }
         cartao.setStatus(conta.getStatus());
     }
 
@@ -348,39 +373,6 @@ public class ServiceConta {
         return listaDeContasAtivas;
     }
 
-    public boolean verificaSeInformacoesObrigatoriasPreenchidas(Conta conta, Mensagem mensagem){
-        Boolean informacoesObrigatoriasPreenchidas = true;
-
-        if (conta.getTipoDeConta() == null){
-            informacoesObrigatoriasPreenchidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Tipo de Conta é obrigatório!");
-        }
-        if (conta.getTitular() == null){
-            informacoesObrigatoriasPreenchidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Titular de Conta é obrigatório!");
-        }
-        if (conta.getDataAbertura() == null){
-            informacoesObrigatoriasPreenchidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Data de Abertura é obrigatório!");
-        }
-        if (conta.getSenha() == null){
-            informacoesObrigatoriasPreenchidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Senha é obrigatório!");
-        }
-        if (conta.getAgencia() == null){
-            informacoesObrigatoriasPreenchidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Agencia é obrigatório!");
-        }
-        if (conta.getTipoDeCartao() == null){
-            informacoesObrigatoriasPreenchidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Tipo de Cartão é obrigatório!");
-        }
-        if (conta.getSenhaCartao() == null){
-            informacoesObrigatoriasPreenchidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Senha do cartão é obrigatório!");
-        }
-        return informacoesObrigatoriasPreenchidas;
-    }
 
     public List<Conta> pesquisaListadeContasPorTitular(Conta conta, List<PessoaFisica> listaPF, List<PessoaJuridica> listaPJ) {
         List<Conta> listaDeTodasAsContas = daoConta.pesquisarListaDeContas(conta);

@@ -1,7 +1,9 @@
 package com.mycompany.control;
 
+import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
 import com.mycompany.DAO.DaoPF;
 import com.mycompany.DAO.GenericDao;
+import com.mycompany.model.Conta;
 import com.mycompany.model.PessoaFisica;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -17,23 +19,21 @@ public class ServicePF {
     private DaoPF pfDao;
     @SpringBean(name = "genericDao")
     private GenericDao<PessoaFisica> genericDao;
+    @SpringBean(name = "contaService")
+    private ServiceConta serviceConta;
 
     public Mensagem inserir(PessoaFisica pessoaFisica) {
-
         Mensagem mensagem = new Mensagem();
         Boolean pfNull = verificaSePessoaFisicaNullParaInserir(pessoaFisica);
-        Boolean informacoesObrigatoriasPreenchidasValidas = VerificaSeInformacoesObrigatoriasPreenchidasValidas(pessoaFisica,mensagem);
-        if(informacoesObrigatoriasPreenchidasValidas){
             if (pfNull) {
-                    if (verificaSeCPFUnicoParaInserir(pessoaFisica)){
-                        genericDao.inserir(pessoaFisica);
-                    }else{
-                        mensagem.adcionarMensagemNaLista("Cpf já existente!");
-                    }
-            }else {
+                if (verificaSeCPFUnicoParaInserir(pessoaFisica)) {
+                    genericDao.inserir(pessoaFisica);
+                } else {
+                    mensagem.adcionarMensagemNaLista("Cpf já existente!");
+                }
+            } else {
                 mensagem.adcionarMensagemNaLista("Pessoa Física já existente!");
             }
-        }
         return mensagem;
     }
 
@@ -41,18 +41,15 @@ public class ServicePF {
 
         Mensagem mensagem = new Mensagem();
         Boolean pfNull = verificaSePessoaFisicaNullParaUpdate(pessoaFisica);
-        Boolean informacoesObrigatoriasPreenchidasValidas = VerificaSeInformacoesObrigatoriasPreenchidasValidas(pessoaFisica,mensagem);
-        if(informacoesObrigatoriasPreenchidasValidas){
             if (!pfNull) {
-                if (verificaSeCPFUnicoParaUpdate(pessoaFisica)){
+                if (verificaSeCPFUnicoParaUpdate(pessoaFisica)) {
                     genericDao.inserir(pessoaFisica);
-                }else{
+                } else {
                     mensagem.adcionarMensagemNaLista("Cpf já existente!");
                 }
-            }else {
+            } else {
                 mensagem.adcionarMensagemNaLista("Pessoa Física já existente!");
             }
-        }
         return mensagem;
     }
 
@@ -61,14 +58,14 @@ public class ServicePF {
             AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, FeedbackPanel feedbackPanel) {
 
         Mensagem mensagem = inserir(pessoaFisica);
-        if(mensagem.getListaVazia()) {
+        if (mensagem.getListaVazia()) {
             listaDePessoasFisicas.clear();
             listaDePessoasFisicas.addAll(listarPessoasFisicas(pessoaFisica));
             modalWindow.close(target);
             target.add(rowPanel);
-        }else{
-            int  index = 0;
-            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+        } else {
+            int index = 0;
+            for (String mensagemDaLista : mensagem.getListaDeMensagens()) {
                 feedbackPanel.error(mensagem.getListaDeMensagens().get(index));
                 index++;
             }
@@ -84,14 +81,14 @@ public class ServicePF {
         PessoaFisica pfExistente = pesquisaObjetoPessoaFisicaPorId(pessoaFisica.getId());
         Mensagem mensagem = update(pessoaFisica);
 
-        if(mensagem.getListaVazia()) {
+        if (mensagem.getListaVazia()) {
             listaDePessoasFisicas.clear();
             listaDePessoasFisicas.addAll(listarPessoasFisicas(pessoaFisica));
             modalWindow.close(target);
             target.add(rowPanel);
-        }else{
-            int  index = 0;
-            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+        } else {
+            int index = 0;
+            for (String mensagemDaLista : mensagem.getListaDeMensagens()) {
                 feedbackPanel.error(mensagem.getListaDeMensagens().get(index));
                 index++;
             }
@@ -121,16 +118,49 @@ public class ServicePF {
         return genericDao.pesquisarListaDeObjetosPorStringEmDuasColunas(pessoaFisica, colum1, colum2, string1, string2);
     }
 
-    public List<PessoaFisica> listarPessoasFisicas(PessoaFisica pessoaFisica){
+    public List<PessoaFisica> listarPessoasFisicas(PessoaFisica pessoaFisica) {
         return genericDao.pesquisarListaDeObjeto(pessoaFisica);
     }
 
-    public Long pesquisarIdPessoaFisicaPorNome(String nome){
+    public Long pesquisarIdPessoaFisicaPorNome(String nome) {
         return pfDao.pesquisaIdDaPessoaFisicaPorNome(nome);
     }
 
-    public void deletarPessoaFisica(PessoaFisica pessoaFisica) {
-        genericDao.deletar(pessoaFisica);
+    public void executarAoClicarEmExcluir(PessoaFisica pessoaFisica, AjaxRequestTarget target,
+                                          ModalWindow modalWindow, FeedbackPanel feedbackPanel){
+        Mensagem mensagem = deletarPessoaFisica(pessoaFisica,modalWindow,target);
+        if(!mensagem.getListaVazia()){
+            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+                feedbackPanel.error(mensagemDaLista);
+                target.add(feedbackPanel);
+            }
+        }
+    }
+
+    public Mensagem deletarPessoaFisica(PessoaFisica pessoaFisica, ModalWindow modalWindow, AjaxRequestTarget target) {
+        Mensagem mensagem = new Mensagem();
+        Boolean deletaPessoafisica = validaPessoaFisicaParaDeletar(pessoaFisica);
+        if(deletaPessoafisica) {
+            genericDao.deletar(pessoaFisica);
+            modalWindow.close(target);
+        }else{
+            mensagem.adcionarMensagemNaLista("Pessoa física em uso!");
+        }
+        return mensagem;
+    }
+
+    public Boolean validaPessoaFisicaParaDeletar(PessoaFisica pessoaFisica) {
+        Boolean deletarPessoaFisica = true;
+        Conta conta = new Conta();
+        List<Conta> listaDeContas = serviceConta.pesquisarListaDeContas(conta);
+        for (Conta contaDaLista : listaDeContas) {
+            if (contaDaLista.getPessoaFisica() != null) {
+                if (contaDaLista.getPessoaFisica().getId().equals(pessoaFisica.getId())) {
+                    deletarPessoaFisica = false;
+                }
+            }
+        }
+        return deletarPessoaFisica;
     }
 
     public void filtrarPessoaFisicaNaVisao(String nome, String cpf, List<PessoaFisica> listaDePessoasFisicas, PessoaFisica pessoaFisica, AjaxRequestTarget target, MarkupContainer rowPanel) {
@@ -197,8 +227,8 @@ public class ServicePF {
         Boolean cpfUnico = true;
         int verificador = 0;
         for (PessoaFisica pfDaLista : listarPessoasFisicas(pessoaFisica)) {
-            if (pessoaFisica.getId().toString().equals(pfDaLista.getId().toString())){
-            }else{
+            if (pessoaFisica.getId().toString().equals(pfDaLista.getId().toString())) {
+            } else {
                 if (pfDaLista.getCpf().equals(pessoaFisica.getCpf())) {
                     verificador++;
                 }
@@ -210,57 +240,6 @@ public class ServicePF {
         return cpfUnico;
     }
 
-    public boolean VerificaSeInformacoesObrigatoriasPreenchidasValidas(PessoaFisica pessoaFisica, Mensagem mensagem){
-
-        Boolean informacoesObrigatoriasPreenchidasValidas = true;
-
-        if (pessoaFisica.getNome() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo nome é obrigatório!");
-        }
-
-        if (pessoaFisica.getCpf() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cpf é obrigatório!");
-        }else if (pessoaFisica.getCpf().length()!= 14){
-                informacoesObrigatoriasPreenchidasValidas = false;
-                mensagem.adcionarMensagemNaLista("O campo cpf deve conter 11 dígitos!");
-            }
-        if (pessoaFisica.getDataDeNascimento() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo data de nascimento é obrigatório!");
-        }
-        if (pessoaFisica.getTelefone() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo telefone é obrigatório!");
-        }
-        if (pessoaFisica.getRendaMensal() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo renda mensal é obrigatório!");
-        }
-        if (pessoaFisica.getSexo() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo sexo é obrigatório!");
-        }
-        if (pessoaFisica.getCep() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cep é obrigatório!");
-        }
-        if (pessoaFisica.getCidade() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cidade é obrigatório!");
-        }
-        if (pessoaFisica.getUF() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo UF é obrigatório!");
-        }
-        if (pessoaFisica.getEndereco() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo endereço é obrigatório!");
-        }
-
-        return informacoesObrigatoriasPreenchidasValidas;
-    }
 
 
     public void setPfDao(DaoPF pfDao) {
@@ -269,5 +248,9 @@ public class ServicePF {
 
     public void setGenericDao(GenericDao<PessoaFisica> genericDao) {
         this.genericDao = genericDao;
+    }
+
+    public void setServiceConta(ServiceConta serviceConta) {
+        this.serviceConta = serviceConta;
     }
 }

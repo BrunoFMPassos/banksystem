@@ -85,17 +85,20 @@ public class PessoaFisicaPanel extends Panel {
 
     private TextField<String> criarTextFieldNome() {
         TextField<String> nome = new TextField<String>("nome");
+        nome.setRequired(true);
         return nome;
     }
 
     private TextField<String> criarTextFieldCpf() {
         TextField<String> cpf = new TextField<String>("cpf");
         cpf.add(new AttributeModifier("onfocus", "$(this).mask('999.999.999-99');"));
+        cpf.setRequired(true);
         return cpf;
     }
 
     private TextField<String> criarTextFieldRg() {
         TextField<String> rg = new TextField<String>("rg");
+        rg.setRequired(true);
         return rg;
     }
 
@@ -116,17 +119,20 @@ public class PessoaFisicaPanel extends Panel {
         DateTextField data = new DateTextField("dataDeNascimento");
         data.add(datePicker);
         data.add(new AttributeModifier("onfocus", "$(this).mask('99/99/99');"));
+        data.setRequired(true);
         return data;
     }
 
     private TextField<String> criarTextFieldTelefone() {
         TextField<String> telefone = new TextField<String>("telefone");
         telefone.add(new AttributeModifier("onfocus", "$(this).mask('(99)9 9999-9999');"));
+        telefone.setRequired(true);
         return telefone;
     }
 
     private TextField<String> criarTextFieldRendaMensal() {
         TextField<String> rendaMensal = new TextField<String>("rendaMensal");
+        rendaMensal.setRequired(true);
         return rendaMensal;
     }
 
@@ -134,11 +140,13 @@ public class PessoaFisicaPanel extends Panel {
         RadioGroup<?> sexo = new RadioGroup<Object>("sexo");
         sexo.add(new Radio<String>("masculino", new Model<String>("masculino")));
         sexo.add(new Radio<String>("feminino", new Model<String>("feminino")));
+        sexo.setRequired(true);
         return sexo;
     }
 
     private TextField<String> criarTextFieldCidade() {
         TextField<String> cidade = new TextField<String>("cidade");
+        cidade.setRequired(true);
         return cidade;
     }
 
@@ -191,16 +199,19 @@ public class PessoaFisicaPanel extends Panel {
 
         DropDownChoice<String> selectUF = new DropDownChoice<String>("UF",IModellist, choiceRenderer);
         selectUF.setOutputMarkupId(true);
+        selectUF.setRequired(true);
         return selectUF;
     }
 
     private TextField<String> criarTextFieldEndereco() {
         TextField<String> endereco = new TextField<String>("endereco");
+        endereco.setRequired(true);
         return endereco;
     }
 
     private TextField<String> criarTextFieldBairro() {
         TextField<String> bairro = new TextField<String>("bairro");
+        bairro.setRequired(true);
         return bairro;
     }
 
@@ -212,6 +223,7 @@ public class PessoaFisicaPanel extends Panel {
     private TextField<String> criarTextFieldCep() {
         TextField<String> cep = new TextField<String>("cep");
         //cep.add(new AttributeModifier("onfocus", "$(this).mask('99999-999');"));
+        cep.setRequired(true);
         return cep;
     }
 

@@ -148,10 +148,9 @@ public class CrudPessoaJuridica extends BasePage{
                             @Override
                             public void excluir(AjaxRequestTarget target, PessoaJuridica pessoaJuridica) {
                                 super.excluir(target, pessoaJuridica);
-                                servicePJ.deletarPessoaJuridica(pjDaLista);
+                                servicePJ.executarAoClicarEmExcluir(pjDaLista,target,modalWindowExcluirPj,feedbackPanel);
                                 listaDePessoasJuridicas.clear();
                                 listaDePessoasJuridicas.addAll(servicePJ.listarPessoasJuridicas(pjDaLista));
-                                modalWindowExcluirPj.close(target);
                                 target.add(rowPanel);
                             }
 

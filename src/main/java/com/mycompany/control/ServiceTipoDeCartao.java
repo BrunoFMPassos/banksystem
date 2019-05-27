@@ -2,6 +2,7 @@ package com.mycompany.control;
 
 import com.mycompany.DAO.DaoTipoDeCartao;
 import com.mycompany.DAO.GenericDao;
+import com.mycompany.model.Conta;
 import com.mycompany.model.TipoDeCartao;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -9,11 +10,14 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 public class ServiceTipoDeCartao {
     @SpringBean(name = "genericDao")
     private GenericDao<TipoDeCartao> genericDao;
+    @SpringBean(name = "contaService")
+    private ServiceConta serviceConta;
     @SpringBean(name = "tipoDeCartaoDao")
     private DaoTipoDeCartao daoTipoDeCartao;
 
@@ -105,8 +109,39 @@ public class ServiceTipoDeCartao {
         return genericDao.pesquisarListaDeObjeto(tipoDeCartao);
     }
 
-    public void deletarTipoDeCartao(TipoDeCartao tipoDeCartao){
-        genericDao.deletar(tipoDeCartao);
+    public void executarAoClicarEmExcluir(TipoDeCartao tipoDeCartao, AjaxRequestTarget target,
+                                          ModalWindow modalWindow, FeedbackPanel feedbackPanel){
+        Mensagem mensagem = deletarTipoDeCartao(tipoDeCartao,modalWindow,target);
+        if(!mensagem.getListaVazia()){
+            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+                feedbackPanel.error(mensagemDaLista);
+                target.add(feedbackPanel);
+            }
+        }
+    }
+
+    public Mensagem deletarTipoDeCartao(TipoDeCartao tipoDeCartao, ModalWindow modalWindow, AjaxRequestTarget target){
+        Mensagem mensagem = new Mensagem();
+        Boolean deletaTipoCartao = validaTipoDeCartaoParaDeletar(tipoDeCartao);
+        if(deletaTipoCartao) {
+            genericDao.deletar(tipoDeCartao);
+            modalWindow.close(target);
+        }else{
+            mensagem.adcionarMensagemNaLista("Tipo de cartão em uso!");
+        }
+        return mensagem;
+    }
+
+    public Boolean validaTipoDeCartaoParaDeletar(TipoDeCartao tipoDeCartao){
+        Boolean deletaTipoDeCartao = true;
+        Conta conta = new Conta();
+        List<Conta> listaDeContas = serviceConta.pesquisarListaDeContas(conta);
+        for(Conta contaDaLista:listaDeContas){
+            if(contaDaLista.getCartao().getTipoDeCartao().getId().equals(tipoDeCartao.getId())){
+                deletaTipoDeCartao = false;
+            }
+        }
+        return deletaTipoDeCartao;
     }
 
     public void filtrarTipoDeCartaoNaVisao(String descricao, List<TipoDeCartao> listaDeTiposDeCartao, TipoDeCartao tipoDeCartao,
@@ -175,5 +210,9 @@ public class ServiceTipoDeCartao {
 
     public void setDaoTipoDeCartao(DaoTipoDeCartao daoTipoDeCartao) {
         this.daoTipoDeCartao = daoTipoDeCartao;
+    }
+
+    public void setServiceConta(ServiceConta serviceConta) {
+        this.serviceConta = serviceConta;
     }
 }

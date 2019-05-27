@@ -2,6 +2,7 @@ package com.mycompany.control;
 
 import com.mycompany.DAO.DaoPJ;
 import com.mycompany.DAO.GenericDao;
+import com.mycompany.model.Conta;
 import com.mycompany.model.PessoaJuridica;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -16,6 +17,8 @@ public class ServicePJ {
     private DaoPJ pjDao;
     @SpringBean(name = "genericDao")
     private GenericDao<PessoaJuridica> genericDao;
+    @SpringBean(name = "contaService")
+    private ServiceConta serviceConta;
 
 
 
@@ -23,8 +26,6 @@ public class ServicePJ {
 
         Mensagem mensagem = new Mensagem();
         Boolean pjNull = verificaSePessoaJuridicaNullParaInserir(pessoaJuridica);
-        Boolean informacoesObrigatoriasPreenchidasValidas = VerificaSeInformacoesObrigatoriasPreenchidasValidas(pessoaJuridica,mensagem);
-        if(informacoesObrigatoriasPreenchidasValidas){
             if (pjNull) {
                 if (verificaSeCnpjUnicoParaInserir(pessoaJuridica)){
                     genericDao.inserir(pessoaJuridica);
@@ -34,7 +35,6 @@ public class ServicePJ {
             }else {
                 mensagem.adcionarMensagemNaLista("Pessoa Jurídica já existente!");
             }
-        }
         return mensagem;
     }
 
@@ -42,8 +42,6 @@ public class ServicePJ {
 
         Mensagem mensagem = new Mensagem();
         Boolean pfNull = verificaSePessoaJuridicaNullParaUpdate(pessoaJuridica);
-        Boolean informacoesObrigatoriasPreenchidasValidas = VerificaSeInformacoesObrigatoriasPreenchidasValidas(pessoaJuridica,mensagem);
-        if(informacoesObrigatoriasPreenchidasValidas){
             if (!pfNull) {
                 if (verificaSeCnpjUnicoParaUpdate(pessoaJuridica)){
                     genericDao.inserir(pessoaJuridica);
@@ -53,7 +51,6 @@ public class ServicePJ {
             }else {
                 mensagem.adcionarMensagemNaLista("Pessoa Jurídica já existente!");
             }
-        }
         return mensagem;
     }
 
@@ -130,8 +127,42 @@ public class ServicePJ {
         return genericDao.pesquisarListaDeObjeto(pessoaJuridica);
     }
 
-    public void deletarPessoaJuridica(PessoaJuridica pessoaJuridica) {
-        genericDao.deletar(pessoaJuridica);
+
+    public void executarAoClicarEmExcluir(PessoaJuridica pessoaJuridica, AjaxRequestTarget target,
+                                          ModalWindow modalWindow, FeedbackPanel feedbackPanel){
+        Mensagem mensagem = deletarPessoaJuridica(pessoaJuridica,modalWindow,target);
+        if(!mensagem.getListaVazia()){
+            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+                feedbackPanel.error(mensagemDaLista);
+                target.add(feedbackPanel);
+            }
+        }
+    }
+
+    public Mensagem deletarPessoaJuridica(PessoaJuridica pessoaJuridica, ModalWindow modalWindow, AjaxRequestTarget target) {
+        Mensagem mensagem = new Mensagem();
+        Boolean deletaPessoaJuridica = validaPessoaJuridicaParaDeletar(pessoaJuridica);
+        if(deletaPessoaJuridica) {
+            genericDao.deletar(pessoaJuridica);
+            modalWindow.close(target);
+        }else{
+            mensagem.adcionarMensagemNaLista("Pessoa jurídica em uso!");
+        }
+        return mensagem;
+    }
+
+    public Boolean validaPessoaJuridicaParaDeletar(PessoaJuridica pessoaJuridica) {
+        Boolean deletarPessoaJuridica = true;
+        Conta conta = new Conta();
+        List<Conta> listaDeContas = serviceConta.pesquisarListaDeContas(conta);
+        for (Conta contaDaLista : listaDeContas) {
+            if (contaDaLista.getPessoaJuridica() != null) {
+                if (contaDaLista.getPessoaJuridica().getId().equals(pessoaJuridica.getId())) {
+                    deletarPessoaJuridica = false;
+                }
+            }
+        }
+        return deletarPessoaJuridica;
     }
 
     public void filtrarPessoaJuridicaNaVisao(String razaoSocial, String cnpj, List<PessoaJuridica> listaDePessoasJuridicas,
@@ -212,48 +243,6 @@ public class ServicePJ {
         return cnpjUnico;
     }
 
-    public boolean VerificaSeInformacoesObrigatoriasPreenchidasValidas(PessoaJuridica pessoaJuridica, Mensagem mensagem){
-        Boolean informacoesObrigatoriasPreenchidasValidas = true;
-
-        if (pessoaJuridica.getRazaoSocial() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo Razão Social é obrigatório!");
-        }
-        if (pessoaJuridica.getCnpj() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cnpj é obrigatório!");
-        }else if (pessoaJuridica.getCnpj().length()!= 18){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cnpj deve conter 14 dígitos!");
-        }
-        if (pessoaJuridica.getTelefone() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo telefone é obrigatório!");
-        }
-        if (pessoaJuridica.getRendaMensal() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo renda mensal é obrigatório!");
-        }
-
-        if (pessoaJuridica.getCep() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cep é obrigatório!");
-        }
-        if (pessoaJuridica.getCidade() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo cidade é obrigatório!");
-        }
-        if (pessoaJuridica.getUF() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo UF é obrigatório!");
-        }
-        if (pessoaJuridica.getEnderecoDesc() == null){
-            informacoesObrigatoriasPreenchidasValidas = false;
-            mensagem.adcionarMensagemNaLista("O campo endereço é obrigatório!");
-        }
-
-        return informacoesObrigatoriasPreenchidasValidas;
-    }
 
 
 
@@ -264,4 +253,10 @@ public class ServicePJ {
     public void setGenericDao(GenericDao<PessoaJuridica> genericDao) {
         this.genericDao = genericDao;
     }
+
+    public void setServiceConta(ServiceConta serviceConta) {
+        this.serviceConta = serviceConta;
+    }
 }
+
+

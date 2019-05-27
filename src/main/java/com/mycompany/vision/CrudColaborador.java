@@ -190,7 +190,6 @@ public class CrudColaborador extends BasePage {
 
 
         };
-
         dataView.setItemsPerPage(5);
         rowPanel.add(dataView);
         rowPanel.add(new PagingNavigator("navigator", dataView));
@@ -235,9 +234,7 @@ public class CrudColaborador extends BasePage {
 
 
     private AjaxButton criarBtnFiltrar() {
-
         AjaxButton filtrar = new AjaxButton("filtrar", form) {
-
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);

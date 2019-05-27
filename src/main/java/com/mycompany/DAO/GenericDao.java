@@ -102,6 +102,7 @@ public class GenericDao<T extends Object> implements Serializable {
         session.close();
     }
 
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }

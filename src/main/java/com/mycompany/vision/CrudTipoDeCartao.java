@@ -146,10 +146,9 @@ public class CrudTipoDeCartao extends BasePage {
                             @Override
                             public void excluir(AjaxRequestTarget target, TipoDeCartao tipoDeCartao) {
                                 super.excluir(target, tipoDeCartao);
-                                serviceTipoDeCartao.deletarTipoDeCartao(tipoDeCartaoDaLista);
+                                serviceTipoDeCartao.executarAoClicarEmExcluir(tipoDeCartaoDaLista,target,modalWindowExcluirTipoDeCartao,feedbackPanel);
                                 listaDeTiposDeCartao.clear();
                                 listaDeTiposDeCartao.addAll(serviceTipoDeCartao.listarTiposDeCartao(tipoDeCartaoDaLista));
-                                modalWindowExcluirTipoDeCartao.close(target);
                                 target.add(rowPanel);
                             }
 

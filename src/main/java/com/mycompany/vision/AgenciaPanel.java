@@ -72,6 +72,7 @@ public class AgenciaPanel extends Panel {
     private RequiredTextField<String> criarTextFieldNumero() {
         RequiredTextField<String> numero = new RequiredTextField<String>("numero");
         numero.setOutputMarkupId(true);
+        numero.setRequired(true);
         return numero;
     }
 
@@ -124,12 +125,14 @@ public class AgenciaPanel extends Panel {
 
         DropDownChoice<String> selectUF = new DropDownChoice<String>("UF",IModellist, choiceRenderer);
         selectUF.setOutputMarkupId(true);
+        selectUF.setRequired(true);
         return selectUF;
     }
 
     private RequiredTextField<String> criarTextFieldCidade() {
         RequiredTextField<String> cidade = new RequiredTextField<String>("cidade");
         cidade.setOutputMarkupId(true);
+        cidade.setRequired(true);
         return cidade;
     }
 

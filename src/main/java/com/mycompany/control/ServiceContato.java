@@ -23,7 +23,6 @@ public class ServiceContato {
         return daoContato.pesquisarListaDeObjetosContatoPorConta(contato,conta);
     }
 
-
     public void setGenericDao(GenericDao<Contato> genericDao) {
         this.genericDao = genericDao;
     }

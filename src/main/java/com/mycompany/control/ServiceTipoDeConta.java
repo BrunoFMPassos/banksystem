@@ -2,6 +2,7 @@ package com.mycompany.control;
 
 import com.mycompany.DAO.DaoTipoDeConta;
 import com.mycompany.DAO.GenericDao;
+import com.mycompany.model.Conta;
 import com.mycompany.model.TipoDeConta;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -14,6 +15,8 @@ import java.util.List;
 public class ServiceTipoDeConta {
     @SpringBean(name = "genericDao")
     private GenericDao<TipoDeConta> genericDao;
+    @SpringBean(name = "contaService")
+    private ServiceConta serviceConta;
     @SpringBean(name = "tipoDeContaDao")
     private DaoTipoDeConta daoTipoDeConta;
 
@@ -106,8 +109,39 @@ public class ServiceTipoDeConta {
         return genericDao.pesquisarListaDeObjeto(tipoDeConta);
     }
 
-    public void deletarTipoDeConta(TipoDeConta tipoDeConta){
-        genericDao.deletar(tipoDeConta);
+    public void executarAoClicarEmExcluir(TipoDeConta tipoDeConta, AjaxRequestTarget target,
+                                          ModalWindow modalWindow, FeedbackPanel feedbackPanel){
+        Mensagem mensagem = deletarTipoDeConta(tipoDeConta,modalWindow,target);
+        if(!mensagem.getListaVazia()){
+            for(String mensagemDaLista: mensagem.getListaDeMensagens()){
+                feedbackPanel.error(mensagemDaLista);
+                target.add(feedbackPanel);
+            }
+        }
+    }
+
+    public Mensagem deletarTipoDeConta(TipoDeConta tipoDeConta, ModalWindow modalWindow, AjaxRequestTarget target){
+        Mensagem mensagem = new Mensagem();
+        Boolean deletaTipoConta = validaTipoDeContaParaDeletar(tipoDeConta);
+        if(deletaTipoConta) {
+            genericDao.deletar(tipoDeConta);
+            modalWindow.close(target);
+        }else{
+            mensagem.adcionarMensagemNaLista("Tipo de conta em uso!");
+        }
+        return mensagem;
+    }
+
+    public Boolean validaTipoDeContaParaDeletar(TipoDeConta tipoDeConta){
+        Boolean deletaTipoDeConta = true;
+        Conta conta = new Conta();
+        List<Conta> listaDeContas = serviceConta.pesquisarListaDeContas(conta);
+        for(Conta contaDaLista:listaDeContas){
+            if(contaDaLista.getTipoDeConta().getId().equals(tipoDeConta.getId())){
+                deletaTipoDeConta = false;
+            }
+        }
+        return deletaTipoDeConta;
     }
 
     public void filtrarTipoDeContaNaVisao(String descricao, List<TipoDeConta> listaDeTiposDeConta, TipoDeConta tipoDeConta,
@@ -181,5 +215,9 @@ public class ServiceTipoDeConta {
 
     public void setGenericDao(GenericDao<TipoDeConta> genericDao) {
         this.genericDao = genericDao;
+    }
+
+    public void setServiceConta(ServiceConta serviceConta) {
+        this.serviceConta = serviceConta;
     }
 }

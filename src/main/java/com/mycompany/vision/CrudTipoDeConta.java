@@ -146,10 +146,9 @@ public class CrudTipoDeConta extends BasePage{
                             @Override
                             public void excluir(AjaxRequestTarget target, TipoDeConta tipoDeConta) {
                                 super.excluir(target, tipoDeConta);
-                                serviceTipoDeConta.deletarTipoDeConta(tipoDeContaDaLista);
+                                serviceTipoDeConta.executarAoClicarEmExcluir(tipoDeContaDaLista,target,modalWindowExcluirTipoDeConta,feedbackPanel);
                                 listaDeTiposDeConta.clear();
                                 listaDeTiposDeConta.addAll(serviceTipoDeConta.listarTiposDeConta(tipoDeContaDaLista));
-                                modalWindowExcluirTipoDeConta.close(target);
                                 target.add(rowPanel);
                             }
 

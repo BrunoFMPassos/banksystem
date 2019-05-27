@@ -110,22 +110,26 @@
 
     <bean id="pfService" class="com.mycompany.control.ServicePF">
         <property name="pfDao" ref="pfDao"/>
+        <property name="serviceConta" ref="contaService"/>
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
     <bean id="pjService" class="com.mycompany.control.ServicePJ">
         <property name="pjDao" ref="pjDao"/>
+        <property name="serviceConta" ref="contaService"/>
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
 
     <bean id="tipoDeContaService" class="com.mycompany.control.ServiceTipoDeConta">
         <property name="daoTipoDeConta" ref="tipoDeContaDao"/>
+        <property name="serviceConta" ref="contaService"/>
         <property name="genericDao" ref="genericDao"/>
     </bean>
 
     <bean id="tipoDeCartaoService" class="com.mycompany.control.ServiceTipoDeCartao">
         <property name="daoTipoDeCartao" ref="tipoDeCartaoDao"/>
+        <property name="serviceConta" ref="contaService"/>
         <property name="genericDao" ref="genericDao"/>
     </bean>
 

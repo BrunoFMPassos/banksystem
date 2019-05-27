@@ -86,6 +86,7 @@ public class PessoaJuridicaPanel extends Panel {
 
     private TextField<String> criarTextFieldRazaoSocial() {
         TextField<String> razaoSocial = new TextField<String>("razaoSocial");
+        razaoSocial.setRequired(true);
         return razaoSocial;
     }
 
@@ -97,27 +98,32 @@ public class PessoaJuridicaPanel extends Panel {
     private TextField<String> criarTextFieldCnpj() {
         TextField<String> cnpj = new TextField<String>("cnpj");
         cnpj.add(new AttributeModifier("onfocus", "$(this).mask('99.999.999/9999-99');"));
+        cnpj.setRequired(true);
         return cnpj;
     }
 
     private TextField<String> criarTextFieldInscricaoEstadual() {
         TextField<String> inscricaoEstadual = new TextField<String>("inscricaoEstadual");
+        inscricaoEstadual.setRequired(true);
         return inscricaoEstadual;
     }
 
     private TextField<String> criarTextFieldTelefone() {
         TextField<String> telefone = new TextField<String>("telefone");
         telefone.add(new AttributeModifier("onfocus", "$(this).mask('(99)9 9999-9999');"));
+        telefone.setRequired(true);
         return telefone;
     }
 
     private TextField<String> criarTextFieldRendaMensal() {
         TextField<String> rendaMensal = new TextField<String>("rendaMensal");
+        rendaMensal.setRequired(true);
         return rendaMensal;
     }
 
     private TextField<String> criarTextFieldCidade() {
         TextField<String> cidade = new TextField<String>("cidade");
+        cidade.setRequired(true);
         return cidade;
     }
 
@@ -170,16 +176,19 @@ public class PessoaJuridicaPanel extends Panel {
 
         DropDownChoice<String> selectUF = new DropDownChoice<String>("UF",IModellist, choiceRenderer);
         selectUF.setOutputMarkupId(true);
+        selectUF.setRequired(true);
         return selectUF;
     }
 
     private TextField<String> criarTextFieldEndereco() {
         TextField<String> endereco = new TextField<String>("enderecoDesc");
+        endereco.setRequired(true);
         return endereco;
     }
 
     private TextField<String> criarTextFieldBairro() {
         TextField<String> bairro = new TextField<String>("bairro");
+        bairro.setRequired(true);
         return bairro;
     }
 
@@ -191,6 +200,7 @@ public class PessoaJuridicaPanel extends Panel {
     private TextField<String> criarTextFieldCep() {
         TextField<String> cep = new TextField<String>("cep");
         //cep.add(new AttributeModifier("onfocus", "$(this).mask('99999-999');"));
+        cep.setRequired(true);
         return cep;
     }
 

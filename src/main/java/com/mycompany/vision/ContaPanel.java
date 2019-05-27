@@ -259,6 +259,7 @@ public class ContaPanel extends Panel {
                 IModellist, choiceRenderer
         );
         selectTipoDeConta.setOutputMarkupId(true);
+        selectTipoDeConta.setRequired(true);
         return selectTipoDeConta;
     }
 
@@ -293,6 +294,7 @@ public class ContaPanel extends Panel {
         );
 
         selectAgencia.setOutputMarkupId(true);
+        selectAgencia.setRequired(true);
         return selectAgencia;
 
     }
@@ -325,6 +327,7 @@ public class ContaPanel extends Panel {
 
 
         selectTitular.setOutputMarkupId(true);
+        selectTitular.setRequired(true);
         return selectTitular;
 
     }
@@ -345,12 +348,14 @@ public class ContaPanel extends Panel {
         DateTextField data = new DateTextField("dataAbertura");
         data.add(datePicker);
         data.add(new AttributeModifier("onfocus", "$(this).mask('99/99/99');"));
+        data.setRequired(true);
         return data;
     }
 
-    private TextField criarTextFieldSenha() {
-        TextField senha = new TextField("senha");
+    private PasswordTextField criarTextFieldSenha() {
+        PasswordTextField senha = new PasswordTextField("senha");
         senha.add(new AttributeModifier("onfocus", "$(this).mask('999999');"));
+        senha.setRequired(false);
         return senha;
     }
 
@@ -386,13 +391,15 @@ public class ContaPanel extends Panel {
 
 
         selectTipoDeCartao.setOutputMarkupId(true);
+        selectTipoDeCartao.setRequired(true);
         return selectTipoDeCartao;
 
     }
 
-    private TextField criarTextFieldSenhaCartao(){
-        TextField senhaCartao = new TextField("senhaCartao");
+    private PasswordTextField criarTextFieldSenhaCartao(){
+        PasswordTextField senhaCartao = new PasswordTextField("senhaCartao");
         senhaCartao.add(new AttributeModifier("onfocus", "$(this).mask('9999');"));
+        senhaCartao.setRequired(false);
         return senhaCartao;
     }
 
