@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Colaborador")
-public class Colaborador extends Pessoa implements Serializable {
+public class Colaborador extends Pessoa implements Serializable{
 
     @ManyToOne
     @JoinColumn(name="user_id")

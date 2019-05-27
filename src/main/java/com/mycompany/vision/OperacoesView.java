@@ -115,9 +115,8 @@ public class OperacoesView extends BasePage{
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
                                         super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
-                                                target,modalOperacao,feedbackPanel,feedbackPanelSuccess,"Saque", conta.getSenhaVerificar(),
+                                                target,modalOperacao,feedbackPanel,"Saque", conta.getSenhaVerificar(),
                                                 conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
-                                        target.add(feedbackPanel);
                                     }
                                 };
                         modalOperacao.setContent(operacoesPanel);
@@ -133,9 +132,8 @@ public class OperacoesView extends BasePage{
                                     @Override
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
-                                                target,modalOperacao,feedbackPanel,feedbackPanelSuccess,"Deposito", conta.getSenhaVerificar(),
+                                                target,modalOperacao,feedbackPanel,"Deposito", conta.getSenhaVerificar(),
                                                 conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
-                                        target.add(feedbackPanel);
                                     }
 
                                     @Override
@@ -158,9 +156,8 @@ public class OperacoesView extends BasePage{
                                     public void executaAoClicarEmSalvar(AjaxRequestTarget target, Conta conta) {
                                         super.executaAoClicarEmSalvar(target, conta);
                                         serviceOperacoes.executarAoCLicarEmFinalizarNaModal(listaDeContas,conta,
-                                                target,modalOperacao,feedbackPanel,feedbackPanelSuccess,"Transferencia", conta.getSenhaVerificar(),
+                                                target,modalOperacao,feedbackPanel,"Transferencia", conta.getSenhaVerificar(),
                                                 conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
-                                        target.add(feedbackPanel);
                                     }
 
                                     @Override

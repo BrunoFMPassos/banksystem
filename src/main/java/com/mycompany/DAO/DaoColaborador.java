@@ -73,7 +73,6 @@ public class DaoColaborador extends GenericDAOImpl<Colaborador, Long> implements
     }
 
 
-
     public List<User> pesquisarListaDeUsuariosExistentes() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();

@@ -58,6 +58,9 @@ public class CrudConta extends BasePage{
     ModalWindow modalExcluirConta = new ModalWindow("modalexcluirconta");
 
     public CrudConta() {
+        form.setOutputMarkupId(true);
+        feedbackPanel.setOutputMarkupId(true);
+
         listaDeContas.addAll(serviceConta.pesquisarListaDeContas(conta));
 
         modalInserirConta.setAutoSize(false);
@@ -88,15 +91,12 @@ public class CrudConta extends BasePage{
         });
         modalExcluirConta.setResizable(false);
 
-
-        feedbackPanel.setOutputMarkupId(true);
         CompoundPropertyModel<Conta> compoundPropertyModelConta = new CompoundPropertyModel<Conta>(conta);
         form = new Form<Conta>("formconta", compoundPropertyModelConta) {
             @Override
             public void onSubmit() {
             }
         };
-
 
         add(form);
         form.add(feedbackPanel);
@@ -285,6 +285,8 @@ public class CrudConta extends BasePage{
                 };
 
                 extrato.setOutputMarkupId(true);
+                editar.setOutputMarkupId(true);
+                excluir.setOutputMarkupId(true);
                 item.add(textnumero);
                 item.add(texttitular);
                 item.add(texttipo);

@@ -119,7 +119,7 @@ public class ServiceOperacoes {
                                     contaDestino.setSaldo(saldoContaDestino.toString());
                                     serviceConta.preparaContaParaOperacoes(contaDestino);
                                     serviceConta.update(contaDestino);
-                                    preparaMovimentaçãoParaInserir(movimentacaoCredito, contaOrigem, "Crédito de transferência", "4", valor);
+                                    preparaMovimentaçãoParaInserir(movimentacaoCredito, contaDestino, "Crédito de transferência", "4", valor);
                                     genericDao.inserir(movimentacaoCredito);
                                     Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo()) - valorDaTransferencia;
                                     contaOrigem.setSaldo(saldoContaOrigem.toString());
@@ -147,7 +147,7 @@ public class ServiceOperacoes {
                             Double valorDaTransferencia = Double.parseDouble(valor);
                             if ((Double.parseDouble(contaOrigem.getSaldo()) + Double.parseDouble(contaOrigem.getLimiteConta()))
                                     >= (valorDaTransferencia + Double.parseDouble(contaOrigem.getTipoDeConta().getTaxaDeTransferencia()))) {
-                                Double taxa = Double.parseDouble(contaDestino.getTipoDeConta().getTaxaDeTransferencia());
+                                Double taxa = Double.parseDouble(contaOrigem.getTipoDeConta().getTaxaDeTransferencia());
                                 Double valorADescontar = valorDaTransferencia + taxa;
                                 Double saldoContaOrigem = Double.parseDouble(contaOrigem.getSaldo());
                                 Double novoSaldo = saldoContaOrigem - valorADescontar;
@@ -258,7 +258,8 @@ public class ServiceOperacoes {
 
     }
 
-    public void preparaVisãoParaEmitirComprovante(AjaxButton finalizar, Link comprovante, AjaxLink fechar, String op, FeedbackPanel feedbackPanel) {
+    public void preparaVisãoParaEmitirComprovante(AjaxButton finalizar, Link comprovante, AjaxLink fechar, String op,
+                                                  FeedbackPanel feedbackPanel) {
         List<FeedbackMessage> listaDeMensagens = feedbackPanel.getFeedbackMessages().toList();
 
         if (listaDeMensagens.isEmpty()) {
@@ -274,11 +275,9 @@ public class ServiceOperacoes {
         modalWindow.close(target);
     }
 
-
     public void executarAoCLicarEmFinalizarNaModal(List<Conta> listaDeContas, Conta conta,
                                                    AjaxRequestTarget target,
-                                                   ModalWindow modalWindow, FeedbackPanel feedbackPanel,
-                                                   FeedbackPanel feedbackPanelSuccess, String op,
+                                                   ModalWindow modalWindow, FeedbackPanel feedbackPanel, String op,
                                                    String senha, String valor, String numeroContaDestino, Contato contato) {
         if (op.equals("Saque")) {
             Mensagem mensagem = saque(conta, valor, senha);
@@ -296,8 +295,7 @@ public class ServiceOperacoes {
         if (op.equals("Deposito")) {
             Mensagem mensagem = deposito(conta, valor);
             if (mensagem.getListaVazia()) {
-                feedbackPanelSuccess.error("Depósito realizado com sucesso!");
-                target.add(feedbackPanelSuccess);
+
             } else {
                 int index = 0;
                 for (String mensagemDaLista : mensagem.getListaDeMensagens()) {
@@ -320,8 +318,7 @@ public class ServiceOperacoes {
             }
             Mensagem mensagem = transferencia(contaDestino, conta, valor, senha);
             if (mensagem.getListaVazia()) {
-                feedbackPanelSuccess.error("Transferência realizada com sucesso!");
-                target.add(feedbackPanelSuccess);
+
             } else {
                 int index = 0;
                 for (String mensagemDaLista : mensagem.getListaDeMensagens()) {
@@ -416,11 +413,13 @@ public class ServiceOperacoes {
                 contato.setApelido(apelido);
                 contato.setNumeroBanco(numeroBanco);
                 Conta contaDoContato = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(contaDestino));
-                if (contaDoContato.getPessoaFisica() == null) {
-                    contato.setPessoaJuridica(contaDoContato.getPessoaJuridica());
-                }
-                if (contaDoContato.getPessoaJuridica() == null) {
-                    contato.setPessoaFisica(contaDoContato.getPessoaFisica());
+                if(contato.getNumeroBanco().equals("001")) {
+                    if (contaDoContato.getPessoaFisica() == null) {
+                        contato.setPessoaJuridica(contaDoContato.getPessoaJuridica());
+                    }
+                    if (contaDoContato.getPessoaJuridica() == null) {
+                        contato.setPessoaFisica(contaDoContato.getPessoaFisica());
+                    }
                 }
                 if (!contato.getContaDestino().isEmpty() && !contato.getApelido().isEmpty() && !contato.getNumeroBanco().isEmpty()) {
                     serviceContato.inserir(contato);

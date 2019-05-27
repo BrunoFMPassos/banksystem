@@ -43,6 +43,7 @@ public class CrudPessoaJuridica extends BasePage{
     ModalWindow modalWindowExcluirPj = new ModalWindow("modalexcluirpj");
 
     public CrudPessoaJuridica() {
+        form.setOutputMarkupId(true);
         listaDePessoasJuridicas.addAll(servicePJ.listarPessoasJuridicas(pessoaJuridica));
 
         modalWindowInserirPj.setAutoSize(false);
@@ -171,6 +172,8 @@ public class CrudPessoaJuridica extends BasePage{
                     }
                 };
 
+                editar.setOutputMarkupId(true);
+                excluir.setOutputMarkupId(true);
                 item.add(textRazaoSocial);
                 item.add(textCnpj);
                 item.add(texttelefone);

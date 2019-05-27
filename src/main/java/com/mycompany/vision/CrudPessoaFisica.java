@@ -45,6 +45,7 @@ public class CrudPessoaFisica extends BasePage {
     ModalWindow modalWindowExcluirPf = new ModalWindow("modalexcluirpf");
 
     public CrudPessoaFisica() {
+        form.setOutputMarkupId(true);
         listaDePessoasFisicas.addAll(servicePF.listarPessoasFisicas(pessoaFisica));
 
         modalWindowInserirPf.setAutoSize(false);
@@ -117,6 +118,8 @@ public class CrudPessoaFisica extends BasePage {
             @Override
             protected void populateItem(Item<PessoaFisica> item) {
 
+                rowPanel.setOutputMarkupId(true);
+
                 final PessoaFisica pfDaLista = (PessoaFisica) item.getModelObject();
                 Label textnome = new Label("textnome", pfDaLista.getNome());
                 Label textcpf = new Label("textcpf", pfDaLista.getCpf());
@@ -171,6 +174,9 @@ public class CrudPessoaFisica extends BasePage {
                         modalWindowExcluirPf.show(target);
                     }
                 };
+
+                editar.setOutputMarkupId(true);
+                excluir.setOutputMarkupId(true);
 
                 item.add(textnome);
                 item.add(textcpf);
