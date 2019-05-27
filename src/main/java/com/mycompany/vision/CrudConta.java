@@ -58,7 +58,6 @@ public class CrudConta extends BasePage{
     ModalWindow modalExcluirConta = new ModalWindow("modalexcluirconta");
 
     public CrudConta() {
-        form.setOutputMarkupId(true);
         feedbackPanel.setOutputMarkupId(true);
 
         listaDeContas.addAll(serviceConta.pesquisarListaDeContas(conta));
@@ -97,6 +96,8 @@ public class CrudConta extends BasePage{
             public void onSubmit() {
             }
         };
+
+        form.setOutputMarkupId(true);
 
         add(form);
         form.add(feedbackPanel);

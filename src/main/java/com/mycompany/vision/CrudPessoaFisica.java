@@ -45,7 +45,7 @@ public class CrudPessoaFisica extends BasePage {
     ModalWindow modalWindowExcluirPf = new ModalWindow("modalexcluirpf");
 
     public CrudPessoaFisica() {
-        form.setOutputMarkupId(true);
+
         listaDePessoasFisicas.addAll(servicePF.listarPessoasFisicas(pessoaFisica));
 
         modalWindowInserirPf.setAutoSize(false);
@@ -79,6 +79,7 @@ public class CrudPessoaFisica extends BasePage {
 
             }
         };
+        form.setOutputMarkupId(true);
         add(form);
         form.add(criarTextFieldNomefiltro());
         form.add(criarTextFieldCpfFiltro());
