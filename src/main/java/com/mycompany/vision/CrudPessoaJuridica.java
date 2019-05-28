@@ -21,6 +21,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CrudPessoaJuridica extends BasePage{
@@ -108,6 +110,12 @@ public class CrudPessoaJuridica extends BasePage{
 
             @Override
             protected List<PessoaJuridica> getData() {
+                Collections.sort(listaDePessoasJuridicas, new Comparator<PessoaJuridica>() {
+                    @Override
+                    public int compare(PessoaJuridica o1, PessoaJuridica o2) {
+                        return o1.getRazaoSocial().compareTo(o2.getRazaoSocial());
+                    }
+                });
                 return listaDePessoasJuridicas;
             }
         };

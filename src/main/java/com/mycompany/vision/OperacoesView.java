@@ -23,6 +23,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class OperacoesView extends BasePage{
@@ -89,6 +91,12 @@ public class OperacoesView extends BasePage{
 
             @Override
             protected List<Conta> getData() {
+                Collections.sort(listaDeContas, new Comparator<Conta>() {
+                    @Override
+                    public int compare(Conta o1, Conta o2) {
+                      return  o1.getNumero().compareTo(o2.getNumero());
+                    }
+                });
                 return listaDeContas;
             }
         };

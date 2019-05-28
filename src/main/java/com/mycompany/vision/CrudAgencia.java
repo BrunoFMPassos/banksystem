@@ -18,7 +18,10 @@ import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CrudAgencia extends BasePage {
@@ -104,6 +107,12 @@ public class CrudAgencia extends BasePage {
 
             @Override
             protected List<Agencia> getData() {
+                Collections.sort(listaDeAgencias, new Comparator<Agencia>() {
+                    @Override
+                    public int compare(Agencia o1, Agencia o2) {
+                        return o1.getNumero().compareTo(o2.getNumero());
+                    }
+                });
                 return listaDeAgencias;
             }
         };

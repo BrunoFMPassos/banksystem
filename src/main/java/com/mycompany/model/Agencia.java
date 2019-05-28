@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "agencia")
-public class Agencia implements Serializable {
+public class Agencia implements Serializable{
 
     @OneToMany(mappedBy = "agencia", targetEntity = Colaborador.class,
             fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -77,6 +77,34 @@ public class ServiceRelatorios<T extends Object> implements Serializable {
         }
     }
 
+    public void gererRelatorioTransferenciaPDF(List<Movimentacao> listaDeMovimentacoes, Conta conta){
+        RelatorioPDFTransferencia rel = new RelatorioPDFTransferencia();
+        try {
+            final byte[] pdfBytes = rel.criarRelatorio(listaDeMovimentacoes, conta);
+            if(pdfBytes != null) {
+                AbstractResourceStreamWriter stream = new AbstractResourceStreamWriter() {
+
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void write(OutputStream output) throws IOException {
+                        output.write(pdfBytes);
+                    }
+                };
+                ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(stream);
+                handler.setContentDisposition(ContentDisposition.ATTACHMENT);
+                handler.setFileName("Comprovante.pdf");
+                getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+            }
+
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            System.out.println("Erro na hora de criar!");
+            e.printStackTrace();
+        }
+    }
+
     public void gerarRelatorioExcelColaborador(List<Colaborador> listaDeColaboradores){
 
         RelatorioExcelColaborador excel = new RelatorioExcelColaborador();

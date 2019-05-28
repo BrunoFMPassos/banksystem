@@ -24,8 +24,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class CrudConta extends BasePage{
     @SpringBean(name = "contaService")
@@ -214,6 +213,12 @@ public class CrudConta extends BasePage{
 
             @Override
             protected List<Conta> getData() {
+                Collections.sort(listaDeContas, new Comparator<Conta>() {
+                    @Override
+                    public int compare(Conta o1, Conta o2) {
+                        return o1.getNumero().compareTo(o1.getNumero());
+                    }
+                });
                 return listaDeContas;
             }
         };
@@ -234,7 +239,7 @@ public class CrudConta extends BasePage{
                 Link<?> extrato = new Link<Object>("extrato") {
                     public void onClick() {
                         Movimentacao movimentacao = new Movimentacao();
-                        List<Movimentacao> listaDeMovimentacoesDaConta = serviceOperacoes.buscaMovimentacoesPorConta(movimentacao,contaDaLista);
+                        List<Movimentacao> listaDeMovimentacoesDaConta = serviceOperacoes.pesquisaMovimentacoesPorConta(movimentacao,contaDaLista);
                         serviceRelatorios.gererRelatorioExtratoPDF(listaDeMovimentacoesDaConta,contaDaLista);
                     }
                 };

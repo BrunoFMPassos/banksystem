@@ -5,11 +5,11 @@ import com.mycompany.DAO.GenericDao;
 import com.mycompany.model.Conta;
 import com.mycompany.model.Contato;
 import com.mycompany.model.Movimentacao;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.FeedbackMessage;
-import org.apache.wicket.feedback.FeedbackMessages;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
@@ -36,23 +36,23 @@ public class ServiceOperacoes {
     public Mensagem deposito(Conta conta, String valor) {
         Mensagem mensagem = new Mensagem();
         if (!valor.isEmpty()) {
-                String statusConta = conta.getStatus();
-                if (statusConta.equals("Ativa")) {
-                    String numeroOp = "1";
-                    String descricaoOp = "Depósito";
-                    Movimentacao movimentacao = new Movimentacao();
-                    Double valorDeposito = Double.parseDouble(valor);
-                    Double saldoAtual = Double.parseDouble(conta.getSaldo());
-                    valorDeposito = cobraTarifaSePrimeiroDepósito(movimentacao, conta, valorDeposito);
-                    saldoAtual = saldoAtual + valorDeposito;
-                    conta.setSaldo(saldoAtual.toString());
-                    serviceConta.preparaContaParaOperacoes(conta);
-                    serviceConta.update(conta);
-                    preparaMovimentaçãoParaInserir(movimentacao, conta, descricaoOp, numeroOp, valor);
-                    genericDao.inserir(movimentacao);
-                } else {
-                    mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
-                }
+            String statusConta = conta.getStatus();
+            if (statusConta.equals("Ativa")) {
+                String numeroOp = "1";
+                String descricaoOp = "Depósito";
+                Movimentacao movimentacao = new Movimentacao();
+                Double valorDeposito = Double.parseDouble(valor);
+                Double saldoAtual = Double.parseDouble(conta.getSaldo());
+                valorDeposito = cobraTarifaSePrimeiroDepósito(movimentacao, conta, valorDeposito);
+                saldoAtual = saldoAtual + valorDeposito;
+                conta.setSaldo(saldoAtual.toString());
+                serviceConta.preparaContaParaOperacoes(conta);
+                serviceConta.update(conta);
+                preparaMovimentaçãoParaInserir(movimentacao, conta, descricaoOp, numeroOp, valor);
+                genericDao.inserir(movimentacao);
+            } else {
+                mensagem.adcionarMensagemNaLista("Somente contas ativas podem realizar operações!");
+            }
         } else {
             mensagem.adcionarMensagemNaLista("Campo valor obrigatório");
         }
@@ -103,6 +103,7 @@ public class ServiceOperacoes {
         if (contaOrigem.getContatoObjeto() != null) {
             contaOrigem.setNumeroBanco(contaOrigem.getContatoObjeto().getNumeroBanco());
             contaDestino = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(contaOrigem.getContatoObjeto().getContaDestino()));
+            contaOrigem.setNumeroContaDestino(contaDestino.getNumero().toString());
         }
         if (contaOrigem.getNumeroBanco() != null) {
             if (!valor.isEmpty() && Double.parseDouble(valor) > 0) {
@@ -192,7 +193,7 @@ public class ServiceOperacoes {
             Movimentacao primeiraMovimentacaoRealizada = new Movimentacao();
             Double tarifaDaConta = Double.parseDouble(conta.getTipoDeConta().getTarifa());
             valor = valor - tarifaDaConta;
-            preparaMovimentaçãoParaInserir(primeiraMovimentacaoRealizada, conta, "Tarifa de Conta", "0", tarifaDaConta.toString());
+            preparaMovimentaçãoParaInserir(primeiraMovimentacaoRealizada, conta, "Tarifa de conta", "0", tarifaDaConta.toString());
             genericDao.inserir(primeiraMovimentacaoRealizada);
         }
 
@@ -208,6 +209,7 @@ public class ServiceOperacoes {
 
     public void preparaMovimentaçãoParaInserir(Movimentacao movimentacao, Conta conta, String descricaoOp, String numeroOp, String valor) {
         movimentacao.setConta(conta);
+        movimentacao.setContaDestino(conta.getNumeroContaDestino());
         movimentacao.setDescricao(descricaoOp);
         movimentacao.setNumero(numeroOp);
         movimentacao.setData(pegarDataHoraAtual());
@@ -245,17 +247,21 @@ public class ServiceOperacoes {
         return senhaValida;
     }
 
-    public void emiteComprovante(Conta conta) {
+    public void emiteComprovante(Conta conta, String op) {
         Movimentacao movimentacao = new Movimentacao();
         List<Movimentacao> listaDeMovimentacoes = new ArrayList<Movimentacao>();
-        listaDeMovimentacoes = buscaMovimentacoesPorConta(movimentacao, conta);
+        listaDeMovimentacoes.clear();
+        listaDeMovimentacoes = pesquisaMovimentacoesPorConta(movimentacao, conta);
         List<Movimentacao> ultimaMovimentacao = new ArrayList<Movimentacao>();
+        ultimaMovimentacao.clear();
         int tamanhoDaLista = listaDeMovimentacoes.size();
         movimentacao = listaDeMovimentacoes.get(tamanhoDaLista - 1);
         ultimaMovimentacao.add(movimentacao);
-
-        serviceRelatorios.gererRelatorioExtratoPDF(ultimaMovimentacao, conta);
-
+        if(!op.equals("Transferencia")) {
+            serviceRelatorios.gererRelatorioExtratoPDF(ultimaMovimentacao, conta);
+        }else{
+            serviceRelatorios.gererRelatorioTransferenciaPDF(ultimaMovimentacao,conta);
+        }
     }
 
     public void preparaVisãoParaEmitirComprovante(AjaxButton finalizar, Link comprovante, AjaxLink fechar, String op,
@@ -307,9 +313,9 @@ public class ServiceOperacoes {
         }
         if (op.equals("Transferencia")) {
             Long numeroContaDestinoLong = null;
-            if (numeroContaDestino == null && contato!=null) {
+            if (numeroContaDestino == null && contato != null) {
                 numeroContaDestinoLong = Long.parseLong(contato.getContaDestino());
-            } else if(numeroContaDestino!=null){
+            } else if (numeroContaDestino != null) {
                 numeroContaDestinoLong = Long.parseLong(numeroContaDestino);
             }
             Conta contaDestino = new Conta();
@@ -384,8 +390,8 @@ public class ServiceOperacoes {
         }
     }
 
-    public void ocultarCampoSenhaParDeposito(TextField textField, String op){
-        if(op.equals("Deposito")) {
+    public void ocultarCampoSenhaParDeposito(TextField textField, String op) {
+        if (op.equals("Deposito")) {
             textField.setVisible(false);
         }
     }
@@ -413,7 +419,7 @@ public class ServiceOperacoes {
                 contato.setApelido(apelido);
                 contato.setNumeroBanco(numeroBanco);
                 Conta contaDoContato = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(contaDestino));
-                if(contato.getNumeroBanco().equals("001")) {
+                if (contato.getNumeroBanco().equals("001")) {
                     if (contaDoContato.getPessoaFisica() == null) {
                         contato.setPessoaJuridica(contaDoContato.getPessoaJuridica());
                     }
@@ -439,7 +445,7 @@ public class ServiceOperacoes {
 
     }
 
-    public List<Movimentacao> buscaMovimentacoesPorConta(Movimentacao movimentacao, Conta conta) {
+    public List<Movimentacao> pesquisaMovimentacoesPorConta(Movimentacao movimentacao, Conta conta) {
         List<Movimentacao> listaDeMovimentacoes = genericDao.pesquisarListaDeObjeto(movimentacao);
         List<Movimentacao> listaDeMovimentacoesDaConta = new ArrayList<Movimentacao>();
         for (Movimentacao movimentacaoDaLista : listaDeMovimentacoes) {
@@ -448,6 +454,78 @@ public class ServiceOperacoes {
             }
         }
         return listaDeMovimentacoesDaConta;
+    }
+
+    public List<Movimentacao> pesquisaTodasAsMovimentacoes(Movimentacao movimentacao) {
+        return genericDao.pesquisarListaDeObjeto(movimentacao);
+    }
+
+    public List<Movimentacao> pesquisaMoviemntacaoPorTipo(Movimentacao movimentacao, String tipo) {
+        return genericDao.pesquisaListadeObjetosPorString(movimentacao, "descricao", tipo);
+    }
+
+    public void filtrarMovimentacaoNaVisao(String conta, String tipo, List<Movimentacao> listaDeMovimentacoes, Movimentacao movimentacao,
+                                           AjaxRequestTarget target, MarkupContainer rowPanel) {
+        if (tipo.equals("0")) {
+            tipo = "Saque";
+        }
+        if (tipo.equals("1")) {
+            tipo = "Depósito";
+        }
+        if (tipo.equals("2")) {
+            tipo = "Débito de transferência";
+        }
+        if (tipo.equals("3")) {
+            tipo = "Crédito de transferência";
+        }
+        if (tipo.equals("4")) {
+            tipo = "Tarifa de conta";
+        }
+        if (tipo.equals("5")) {
+            tipo = "Taxa de transferência";
+        }
+
+        if (!conta.isEmpty() && tipo.isEmpty()) {
+            listaDeMovimentacoes.clear();
+            Conta contaObj = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(conta));
+            if (contaObj != null) {
+                listaDeMovimentacoes.addAll(pesquisaMovimentacoesPorConta(movimentacao, contaObj));
+            }
+            target.add(rowPanel);
+
+        } else if (!tipo.isEmpty() && conta.isEmpty()) {
+            listaDeMovimentacoes.clear();
+            listaDeMovimentacoes.addAll(pesquisaMoviemntacaoPorTipo(movimentacao, tipo));
+            target.add(rowPanel);
+
+        } else if (!tipo.isEmpty() && !conta.isEmpty()) {
+            listaDeMovimentacoes.clear();
+            Conta contaObj = serviceConta.pesquisaObjetoContaPorNumero(Long.parseLong(conta));
+            if (contaObj != null) {
+                List<Movimentacao> movimentacoesPorConta = pesquisaMovimentacoesPorConta(movimentacao, contaObj);
+                List<Movimentacao> movimentacoesPorTipo = pesquisaMoviemntacaoPorTipo(movimentacao, tipo);
+
+                for (Movimentacao movimentacaoDaLista : movimentacoesPorConta) {
+                    for (Movimentacao movimentacaoDaListaTipo : movimentacoesPorTipo) {
+                        if (movimentacaoDaListaTipo.getId().equals(movimentacaoDaLista.getId())) {
+                            listaDeMovimentacoes.add(movimentacaoDaListaTipo);
+                        }
+                    }
+                }
+            }
+            target.add(rowPanel);
+
+        } else {
+            listaDeMovimentacoes.clear();
+            listaDeMovimentacoes.addAll(pesquisaTodasAsMovimentacoes(movimentacao));
+        }
+        target.add(rowPanel);
+    }
+
+    public void preparaMovimentacaoParaRelatorio(List<Movimentacao> listaDeMovimentacoes){
+        for(Movimentacao movimentacao: listaDeMovimentacoes) {
+            movimentacao.setContaString(movimentacao.getConta().getNumero().toString());
+        }
     }
 
 
@@ -467,3 +545,22 @@ public class ServiceOperacoes {
         this.serviceContato = serviceContato;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

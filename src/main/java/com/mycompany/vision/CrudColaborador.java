@@ -21,8 +21,7 @@ import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class CrudColaborador extends BasePage {
@@ -108,6 +107,12 @@ public class CrudColaborador extends BasePage {
 
             @Override
             protected List<Colaborador> getData() {
+                Collections.sort(listaDeColaboradores, new Comparator<Colaborador>() {
+                    @Override
+                    public int compare(Colaborador o1, Colaborador o2) {
+                        return o1.getNome().compareTo(o2.getNome());
+                    }
+                });
                 return listaDeColaboradores;
             }
         };

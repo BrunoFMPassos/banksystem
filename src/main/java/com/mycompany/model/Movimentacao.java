@@ -22,6 +22,14 @@ public class Movimentacao implements Serializable {
     private String valor;
     @Column(nullable=false, length=200)
     private String data;
+    @Column(nullable=true, length=200)
+    private String contaDestino;
+    @Transient
+    private String tipoFiltrar;
+    @Transient
+    private String contaFiltrar;
+    @Transient
+    private String contaString;
 
 
     public Conta getConta() {
@@ -72,4 +80,35 @@ public class Movimentacao implements Serializable {
         this.data = data;
     }
 
+    public String getTipoFiltrar() {
+        return tipoFiltrar;
+    }
+
+    public void setTipoFiltrar(String tipoFiltrar) {
+        this.tipoFiltrar = tipoFiltrar;
+    }
+
+    public String getContaFiltrar() {
+        return contaFiltrar;
+    }
+
+    public void setContaFiltrar(String contaFiltrar) {
+        this.contaFiltrar = contaFiltrar;
+    }
+
+    public String getContaString() {
+        return contaString;
+    }
+
+    public void setContaString(String contaString) {
+        this.contaString = contaString;
+    }
+
+    public String getContaDestino() {
+        return contaDestino;
+    }
+
+    public void setContaDestino(String contaDestino) {
+        this.contaDestino = contaDestino;
+    }
 }

@@ -75,7 +75,7 @@ public class OperacoesPanel extends Panel {
         form.add(criarSelectContato(op));
         form.add(criarTextFieldSenha(op));
         form.add(criarTextFieldValor());
-        form.add(criarBtnComprovante());
+        form.add(criarBtnComprovante(op));
         form.add(criarBtnFechar());
 
 
@@ -90,6 +90,7 @@ public class OperacoesPanel extends Panel {
                 executaAoClicarEmSalvar(target, conta);
                 serviceOperacoes.preparaVisãoParaEmitirComprovante(finalizar,comprovante,fechar,op,feedbackPanel);
                 target.add(container);
+                target.add(comprovante);
             }
 
         };
@@ -112,12 +113,11 @@ public class OperacoesPanel extends Panel {
         return contato;
     }
     
-    private Link criarBtnComprovante(){
+    private Link criarBtnComprovante(final String op){
          comprovante = new Link("comprovante") {
             @Override
             public void onClick() {
-
-                serviceOperacoes.emiteComprovante(conta);
+                serviceOperacoes.emiteComprovante(conta,op);
             }
         };
          comprovante.setOutputMarkupId(true);

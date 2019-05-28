@@ -66,12 +66,13 @@ public class BasePage extends WebPage {
     public MarkupContainer addContainerConta() {
         MarkupContainer conta = new MarkupContainer("containerconta") {
         };
-        conta.add(addcontali());
-        conta.add(addoperacoesli());
+        conta.add(addContaLi());
+        conta.add(addOperacoesLi());
+        conta.add(addMovimentacaoLi());
         return conta;
     }
 
-    public MarkupContainer addcontali() {
+    public MarkupContainer addContaLi() {
         MarkupContainer contali = new MarkupContainer("conta-conta") {
         };
         if (servicePerfil.verificaPerfil().equals("Caixa")) {
@@ -80,11 +81,18 @@ public class BasePage extends WebPage {
         return contali;
     }
 
-    public MarkupContainer addoperacoesli() {
+    public MarkupContainer addOperacoesLi() {
         MarkupContainer operacoesli = new MarkupContainer("conta-operacoes") {
         };
         return operacoesli;
     }
+
+    public MarkupContainer addMovimentacaoLi() {
+        MarkupContainer movimentacoesLi = new MarkupContainer("conta-movimentacoes") {
+        };
+        return movimentacoesLi;
+    }
+
 
 
     public MarkupContainer addContainerEmpresarial() {

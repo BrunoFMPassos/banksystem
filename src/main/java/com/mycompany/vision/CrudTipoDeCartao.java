@@ -19,6 +19,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CrudTipoDeCartao extends BasePage {
@@ -107,6 +109,12 @@ public class CrudTipoDeCartao extends BasePage {
 
             @Override
             protected List<TipoDeCartao> getData() {
+                Collections.sort(listaDeTiposDeCartao, new Comparator<TipoDeCartao>() {
+                    @Override
+                    public int compare(TipoDeCartao o1, TipoDeCartao o2) {
+                        return o1.getDescricao().compareTo(o2.getDescricao());
+                    }
+                });
                 return listaDeTiposDeCartao;
             }
         };
