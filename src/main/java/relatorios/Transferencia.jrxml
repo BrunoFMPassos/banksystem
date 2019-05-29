@@ -38,7 +38,7 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<imageExpression><![CDATA["C:/Users/UNIKA/Documents/bankworkspace/BancoUnika/src/main/java/Images/unika.png"]]></imageExpression>
+				<imageExpression><![CDATA["C:/Users/Bruno Passos/IdeaProjects/Bank/banksystem/src/main/java/Images/unika.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="64" y="11" width="67" height="25" forecolor="#5A78FF" uuid="816276d4-940c-48e3-9bbc-020a84dfe797"/>

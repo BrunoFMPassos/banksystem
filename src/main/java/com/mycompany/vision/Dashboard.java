@@ -21,9 +21,7 @@ public class Dashboard extends BasePage {
 
             }
         };
-        Label titulo = new Label("titulo", "SystemBank");
         add(form);
-        form.add(titulo);
     }
 
 
