@@ -127,6 +127,9 @@ public class OperacoesView extends BasePage{
                                                 conta.getValor(),conta.getNumeroContaDestino(),conta.getContatoObjeto());
                                     }
                                 };
+                        modalOperacao.setInitialWidth(400);
+                        modalOperacao.setInitialHeight(250);
+                        modalOperacao.setResizable(true);
                         modalOperacao.setContent(operacoesPanel);
                         modalOperacao.show(target);
                     }
@@ -149,6 +152,9 @@ public class OperacoesView extends BasePage{
                                         serviceOperacoes.executarAoClicarEmFecharNaVisão(modalOperacao,target);
                                     }
                                 };
+                        modalOperacao.setInitialWidth(300);
+                        modalOperacao.setInitialHeight(250);
+                        modalOperacao.setResizable(true);
                         modalOperacao.setContent(operacoesPanel);
                         modalOperacao.show(target);
                     }
@@ -173,6 +179,9 @@ public class OperacoesView extends BasePage{
                                         serviceOperacoes.executarAoClicarEmFecharNaVisão(modalOperacao,target);
                                     }
                                 };
+                        modalOperacao.setInitialWidth(600);
+                        modalOperacao.setInitialHeight(450);
+                        modalOperacao.setResizable(true);
                         modalOperacao.setContent(operacoesPanel);
                         modalOperacao.show(target);
                     }

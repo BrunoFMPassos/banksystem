@@ -38,7 +38,6 @@ public class ServicePF {
     }
 
     public Mensagem update(PessoaFisica pessoaFisica) {
-
         Mensagem mensagem = new Mensagem();
         Boolean pfNull = verificaSePessoaFisicaNullParaUpdate(pessoaFisica);
             if (!pfNull) {
@@ -56,7 +55,6 @@ public class ServicePF {
     public void executarAoClicarEmSalvarNaModalSalvar(
             List<PessoaFisica> listaDePessoasFisicas, PessoaFisica pessoaFisica,
             AjaxRequestTarget target, MarkupContainer rowPanel, ModalWindow modalWindow, FeedbackPanel feedbackPanel) {
-
         Mensagem mensagem = inserir(pessoaFisica);
         if (mensagem.getListaVazia()) {
             listaDePessoasFisicas.clear();
@@ -71,7 +69,6 @@ public class ServicePF {
             }
             target.add(feedbackPanel);
         }
-
     }
 
     public void executarAoClicarEmSalvarNaModalEditar(

@@ -78,7 +78,6 @@ public class OperacoesPanel extends Panel {
         form.add(criarBtnComprovante(op));
         form.add(criarBtnFechar());
 
-
         container.add(form);
         return container;
     }
@@ -89,9 +88,17 @@ public class OperacoesPanel extends Panel {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 executaAoClicarEmSalvar(target, conta);
                 serviceOperacoes.preparaVisãoParaEmitirComprovante(finalizar,comprovante,fechar,op,feedbackPanel);
+                serviceOperacoes.apagaDadosTemporariosDaConta(conta);
+                target.add(form);
                 target.add(container);
                 target.add(comprovante);
             }
+
+                @Override
+                protected void onError(AjaxRequestTarget target, Form<?> form) {
+                    super.onError(target, form);
+                    target.add(feedbackPanel);
+                }
 
         };
         finalizar.setOutputMarkupId(true);
@@ -186,6 +193,7 @@ public class OperacoesPanel extends Panel {
     private TextField criarTextFieldValor() {
         TextField valor = new TextField("valor");
         valor.setOutputMarkupId(true);
+        valor.setRequired(true);
         return valor;
     }
 
@@ -193,7 +201,7 @@ public class OperacoesPanel extends Panel {
         PasswordTextField senha = new PasswordTextField("senhaVerificar");
         senha.add(new AttributeModifier("onfocus", "$(this).mask('999999');"));
         serviceOperacoes.ocultarCampoSenhaParDeposito(senha,op);
-        senha.setOutputMarkupId(true);
+        senha.setRequired(false);
         return senha;
     }
 

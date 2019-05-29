@@ -53,30 +53,30 @@
 	<pageHeader>
 		<band height="31" splitType="Stretch">
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="73" y="4" width="16" height="15" uuid="b4e6b809-ec7f-4de8-a824-cc5801a92169"/>
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="73" y="4" width="16" height="15" uuid="b4e6b809-ec7f-4de8-a824-cc5801a92169"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{digitoConta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="180" y="4" width="76" height="15" uuid="e11af691-6f5c-4283-abbb-bf612becc519"/>
+				<reportElement stretchType="RelativeToTallestObject" x="180" y="4" width="76" height="15" uuid="e11af691-6f5c-4283-abbb-bf612becc519"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="101" y="4" width="59" height="15" uuid="2cbe775a-99c9-447d-8fb0-721a8863a60d"/>
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="101" y="4" width="59" height="15" uuid="2cbe775a-99c9-447d-8fb0-721a8863a60d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{agenciaConta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="2" y="4" width="66" height="15" uuid="a1a3fe06-e6d3-4816-b72f-e21cc90e774b"/>
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="2" y="4" width="66" height="15" uuid="a1a3fe06-e6d3-4816-b72f-e21cc90e774b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numeroConta}]]></textFieldExpression>
 			</textField>
@@ -85,7 +85,7 @@
 	<columnHeader>
 		<band height="33" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Opaque" x="2" y="-7" width="254" height="2" forecolor="#696868" backcolor="#696868" uuid="de35e62b-9554-46d3-bb48-e5f4dcfa9e82">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="2" y="-7" width="254" height="2" forecolor="#696868" backcolor="#696868" uuid="de35e62b-9554-46d3-bb48-e5f4dcfa9e82">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<graphicElement>
@@ -93,85 +93,85 @@
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="4" width="64" height="20" uuid="d8a27cdd-1ec6-4f4d-b6ce-f6a46c7a211e">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="96" height="20" uuid="d8a27cdd-1ec6-4f4d-b6ce-f6a46c7a211e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="56bdd2b3-6475-4e83-9731-06c965f3118b"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="64" y="4" width="74" height="20" uuid="670fd3ea-369a-44fc-99dd-bf68371fc1bd">
+				<reportElement stretchType="RelativeToTallestObject" x="96" y="4" width="54" height="20" uuid="670fd3ea-369a-44fc-99dd-bf68371fc1bd">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bd0671cf-3a0c-457e-8877-1e3efafa7086"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Valor(R$)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="138" y="4" width="66" height="20" uuid="388a7aa0-5b11-4daa-8f00-96f7e4ab962b">
+				<reportElement stretchType="RelativeToTallestObject" x="150" y="4" width="60" height="20" uuid="388a7aa0-5b11-4daa-8f00-96f7e4ab962b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="179b8a51-d8ab-4c6b-b61e-47eb60ec8d26"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Data]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="204" y="4" width="52" height="20" uuid="7c303c8c-2a69-41c6-8448-6213345e8831">
+				<reportElement stretchType="RelativeToTallestObject" x="210" y="4" width="46" height="20" uuid="7c303c8c-2a69-41c6-8448-6213345e8831">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="244a1905-9476-4d16-adc6-3088115dd148"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Conta Destino]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="39" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="64" height="20" uuid="82e41503-a096-4338-b7a7-b140a6c92c2e">
+		<band height="75" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="96" height="20" uuid="82e41503-a096-4338-b7a7-b140a6c92c2e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="56bdd2b3-6475-4e83-9731-06c965f3118b"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="84" y="0" width="54" height="20" uuid="0879dd63-9853-4bf9-a15f-fdd8348ef1e2">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="116" y="0" width="34" height="20" uuid="0879dd63-9853-4bf9-a15f-fdd8348ef1e2">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bd0671cf-3a0c-457e-8877-1e3efafa7086"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="138" y="0" width="66" height="20" uuid="499c259e-070c-46c2-9ad0-d98d2bb11aef">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="150" y="0" width="60" height="20" uuid="499c259e-070c-46c2-9ad0-d98d2bb11aef">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="179b8a51-d8ab-4c6b-b61e-47eb60ec8d26"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="64" y="0" width="20" height="20" uuid="689ed951-1a97-4e8b-a856-ab168dde098d"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="96" y="0" width="20" height="20" uuid="689ed951-1a97-4e8b-a856-ab168dde098d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{moeda}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="204" y="0" width="52" height="20" uuid="ac5b6c42-bba3-4f86-b837-907d80dc78fb">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="210" y="0" width="46" height="20" uuid="ac5b6c42-bba3-4f86-b837-907d80dc78fb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="244a1905-9476-4d16-adc6-3088115dd148"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{contaDestino}]]></textFieldExpression>
 			</textField>

@@ -52,6 +52,10 @@ public class CrudColaborador extends BasePage {
                 target.add(form);
             }
         });
+        modalWindowInserirColaborador.setInitialWidth(570);
+        modalWindowInserirColaborador.setInitialHeight(340);
+        modalWindowInserirColaborador.setResizable(false);
+
         modalWindowEditarColaborador.setAutoSize(false);
         modalWindowEditarColaborador.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             @Override
@@ -59,6 +63,10 @@ public class CrudColaborador extends BasePage {
                 target.add(form);
             }
         });
+        modalWindowEditarColaborador.setInitialWidth(570);
+        modalWindowEditarColaborador.setInitialHeight(340);
+        modalWindowEditarColaborador.setResizable(false);
+
         modalWindowExcluirColaborador.setAutoSize(true);
         modalWindowExcluirColaborador.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             @Override
