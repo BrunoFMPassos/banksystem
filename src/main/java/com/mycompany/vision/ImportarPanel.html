@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<wicket:panel>
+        <form wicket:id="formularioimportar"  onload="document.getElementById('alerta').style.display='none';">
+            <div wicket:id="feedbackpanel" id="alerta" class="alert alert-danger" role="alert"></div>
+            <label class="titulo" style="color:#696969; text-align:center; margin:3%;">Agência</label>
+            <br/>
+            <div class="container">
+                <div class="col-sm-12" style="padding: 2%; min-width: 300px; border: solid 1px darkgrey; border-radius: 3px;">
+                    <input type="file" wicket:id="selectArquivo">
+                </div>
+                <br/>
+                <div style="margin-top:5%; text-align: left;">
+                    <input class="btn-confirma" type="button" wicket:id="importar" value="Importar"/>
+                </div>
+            </div>
+            <br/>
+        </form>
+</wicket:panel>
+</body>
+</html>
+
+
+

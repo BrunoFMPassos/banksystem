@@ -3,6 +3,7 @@ package com.mycompany.vision;
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.googlecode.wicket.jquery.ui.markup.html.link.AjaxLink;
 import com.mycompany.control.ServiceAgencia;
+import com.mycompany.control.ServiceImportAgencia;
 import com.mycompany.model.Agencia;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -18,6 +19,7 @@ import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.io.FileNotFoundException;
 import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,10 +36,11 @@ public class CrudAgencia extends BasePage {
     TextField<String> inputNumero = new TextField<String>("numero");
     private String numeroFiltrar = "";
     MarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
-
     ModalWindow modalWindowInserirAgencia = new ModalWindow("modalinseriragencia");
     ModalWindow modalWindowEditarAgencia = new ModalWindow("modaleditaragencia");
     ModalWindow modalWindowExcluirAgencia = new ModalWindow("modalexcluiragencia");
+
+    ModalWindow modalWindowImportarAgencia = new ModalWindow("modalimportaragencia");
 
 
     public CrudAgencia() {
@@ -72,6 +75,14 @@ public class CrudAgencia extends BasePage {
             }
         });
 
+        modalWindowImportarAgencia.setAutoSize(false);
+        modalWindowImportarAgencia.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                target.add(form);
+            }
+        });
+
         CompoundPropertyModel<Agencia> compoundPropertyModelAgencia = new CompoundPropertyModel<Agencia>(agencia);
         form = new Form<Agencia>("formagencia", compoundPropertyModelAgencia) {
         };
@@ -84,6 +95,8 @@ public class CrudAgencia extends BasePage {
         form.add(criarModalInserirAgencia());
         form.add(criarModalEditarAgencia());
         form.add(criarModalExcluirAgencia());
+        form.add(criarBtnImportarExcel());
+        form.add(criarModalimportarAgencia());
     }
 
     private TextField<String> criarTextFieldNumerofiltro() {
@@ -98,6 +111,10 @@ public class CrudAgencia extends BasePage {
     }
     private ModalWindow criarModalExcluirAgencia() {
         return modalWindowExcluirAgencia;
+    }
+
+    private ModalWindow criarModalimportarAgencia() {
+        return modalWindowImportarAgencia;
     }
 
     private MarkupContainer criarTabela() {
@@ -212,6 +229,18 @@ public class CrudAgencia extends BasePage {
             }
         };
         return inserir;
+    }
+
+    private AjaxLink<?> criarBtnImportarExcel() {
+        AjaxLink<?> importar = new AjaxLink<Object>("importarexcel") {
+            public void onClick(AjaxRequestTarget target) {
+                final ImportarPanel modalImportarAgencia = new
+                        ImportarPanel(modalWindowImportarAgencia.getContentId());
+                modalWindowImportarAgencia.setContent(modalImportarAgencia);
+                modalWindowImportarAgencia.show(target);
+            }
+        };
+        return importar;
     }
 
     private AjaxButton criarBtnFiltrar() {

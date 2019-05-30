@@ -129,7 +129,7 @@ public class OperacoesView extends BasePage{
                                 };
                         modalOperacao.setInitialWidth(400);
                         modalOperacao.setInitialHeight(250);
-                        modalOperacao.setResizable(true);
+                        modalOperacao.setResizable(false);
                         modalOperacao.setContent(operacoesPanel);
                         modalOperacao.show(target);
                     }
@@ -154,7 +154,7 @@ public class OperacoesView extends BasePage{
                                 };
                         modalOperacao.setInitialWidth(300);
                         modalOperacao.setInitialHeight(250);
-                        modalOperacao.setResizable(true);
+                        modalOperacao.setResizable(false);
                         modalOperacao.setContent(operacoesPanel);
                         modalOperacao.show(target);
                     }
@@ -181,7 +181,7 @@ public class OperacoesView extends BasePage{
                                 };
                         modalOperacao.setInitialWidth(600);
                         modalOperacao.setInitialHeight(450);
-                        modalOperacao.setResizable(true);
+                        modalOperacao.setResizable(false);
                         modalOperacao.setContent(operacoesPanel);
                         modalOperacao.show(target);
                     }

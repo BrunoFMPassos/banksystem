@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class Agencia implements Serializable{
     private String UF;
     @Column(nullable=false, length=200)
     private String numero;
+    @Transient
+    private File  selectArquivo;
 
 
     public Long getId() {
@@ -64,5 +67,13 @@ public class Agencia implements Serializable{
 
     public void setColaboradores(List<Colaborador> colaboradores) {
         this.colaboradores = colaboradores;
+    }
+
+    public File getSelectArquivo() {
+        return selectArquivo;
+    }
+
+    public void setSelectArquivo(File selectArquivo) {
+        this.selectArquivo = selectArquivo;
     }
 }

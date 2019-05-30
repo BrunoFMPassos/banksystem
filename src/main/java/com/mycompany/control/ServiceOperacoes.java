@@ -33,6 +33,7 @@ public class ServiceOperacoes {
     @SpringBean(name = "relatoriosService")
     private ServiceRelatorios<Movimentacao> serviceRelatorios;
 
+
     public Mensagem deposito(Conta conta, String valor) {
         Mensagem mensagem = new Mensagem();
         String statusConta = conta.getStatus();
@@ -257,6 +258,19 @@ public class ServiceOperacoes {
         return senhaValida;
     }
 
+    public void preparaVisãoParaEmitirComprovante(AjaxButton finalizar, Link comprovante, AjaxLink fechar, String op,
+                                                  FeedbackPanel feedbackPanel) {
+        List<FeedbackMessage> listaDeMensagens = feedbackPanel.getFeedbackMessages().toList();
+
+        if (listaDeMensagens.isEmpty()) {
+            if (op.equals("Deposito") || op.equals("Transferencia")) {
+                ocultarAjaxButtonNaVisao(finalizar);
+                mostrarLinkNaVisao(comprovante);
+                mostrarAjaxLinkNaVisao(fechar);
+            }
+        }
+    }
+
     public void emiteComprovante(Conta conta, String op) {
         Movimentacao movimentacao = new Movimentacao();
         List<Movimentacao> listaDeMovimentacoes = new ArrayList<Movimentacao>();
@@ -274,18 +288,6 @@ public class ServiceOperacoes {
         }
     }
 
-    public void preparaVisãoParaEmitirComprovante(AjaxButton finalizar, Link comprovante, AjaxLink fechar, String op,
-                                                  FeedbackPanel feedbackPanel) {
-        List<FeedbackMessage> listaDeMensagens = feedbackPanel.getFeedbackMessages().toList();
-
-        if (listaDeMensagens.isEmpty()) {
-            if (op.equals("Deposito") || op.equals("Transferencia")) {
-                ocultarAjaxButtonNaVisao(finalizar);
-                mostrarLinkNaVisao(comprovante);
-                mostrarAjaxLinkNaVisao(fechar);
-            }
-        }
-    }
 
     public void executarAoClicarEmFecharNaVisão(ModalWindow modalWindow, AjaxRequestTarget target) {
         modalWindow.close(target);
@@ -346,6 +348,7 @@ public class ServiceOperacoes {
         }
     }
 
+
     public void ocultarLabelNaVisaoParaSaque(Label label, String op) {
         if (op.equals("Transferencia") || op.equals("Deposito")) {
             label.setVisible(false);
@@ -394,6 +397,7 @@ public class ServiceOperacoes {
         link.setVisible(true);
     }
 
+
     public void ocultarBtnPorContaNaVisão(AjaxLink ajaxLink, Conta conta) {
         if (conta.getTipoDeConta().getDescricao().equals("Conta Salário")) {
             ajaxLink.setVisible(false);
@@ -423,7 +427,6 @@ public class ServiceOperacoes {
         if (contatoExistente) {
             mensagem.adcionarMensagemNaLista("Contato com mesmo apelido ou número de conta já existente.");
         } else {
-
             if (!contaDestino.isEmpty()) {
                 contato.setConta(conta);
                 contato.setContaDestino(contaDestino);
@@ -555,6 +558,7 @@ public class ServiceOperacoes {
         conta.setApelidoContato(null);
         conta.setDigitoContaDestino(null);
         conta.setNumeroBanco(null);
+        conta.setContatoObjeto(null);
     }
 
 
