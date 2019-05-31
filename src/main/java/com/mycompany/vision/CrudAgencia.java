@@ -40,7 +40,6 @@ public class CrudAgencia extends BasePage {
     ModalWindow modalWindowEditarAgencia = new ModalWindow("modaleditaragencia");
     ModalWindow modalWindowExcluirAgencia = new ModalWindow("modalexcluiragencia");
 
-    ModalWindow modalWindowImportarAgencia = new ModalWindow("modalimportaragencia");
 
 
     public CrudAgencia() {
@@ -75,13 +74,6 @@ public class CrudAgencia extends BasePage {
             }
         });
 
-        modalWindowImportarAgencia.setAutoSize(false);
-        modalWindowImportarAgencia.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
-            @Override
-            public void onClose(AjaxRequestTarget target) {
-                target.add(form);
-            }
-        });
 
         CompoundPropertyModel<Agencia> compoundPropertyModelAgencia = new CompoundPropertyModel<Agencia>(agencia);
         form = new Form<Agencia>("formagencia", compoundPropertyModelAgencia) {
@@ -95,8 +87,6 @@ public class CrudAgencia extends BasePage {
         form.add(criarModalInserirAgencia());
         form.add(criarModalEditarAgencia());
         form.add(criarModalExcluirAgencia());
-        form.add(criarBtnImportarExcel());
-        form.add(criarModalimportarAgencia());
     }
 
     private TextField<String> criarTextFieldNumerofiltro() {
@@ -111,10 +101,6 @@ public class CrudAgencia extends BasePage {
     }
     private ModalWindow criarModalExcluirAgencia() {
         return modalWindowExcluirAgencia;
-    }
-
-    private ModalWindow criarModalimportarAgencia() {
-        return modalWindowImportarAgencia;
     }
 
     private MarkupContainer criarTabela() {
@@ -231,17 +217,6 @@ public class CrudAgencia extends BasePage {
         return inserir;
     }
 
-    private AjaxLink<?> criarBtnImportarExcel() {
-        AjaxLink<?> importar = new AjaxLink<Object>("importarexcel") {
-            public void onClick(AjaxRequestTarget target) {
-                final ImportarPanel modalImportarAgencia = new
-                        ImportarPanel(modalWindowImportarAgencia.getContentId());
-                modalWindowImportarAgencia.setContent(modalImportarAgencia);
-                modalWindowImportarAgencia.show(target);
-            }
-        };
-        return importar;
-    }
 
     private AjaxButton criarBtnFiltrar() {
 

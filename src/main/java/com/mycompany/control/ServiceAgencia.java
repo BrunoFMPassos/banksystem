@@ -3,12 +3,21 @@ package com.mycompany.control;
 import com.mycompany.DAO.DaoAgencia;
 import com.mycompany.DAO.GenericDao;
 import com.mycompany.model.Agencia;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Iterator;
 import java.util.List;
 
 public class ServiceAgencia {
@@ -102,7 +111,7 @@ public class ServiceAgencia {
 
 
     public boolean verificaSeAgenciaNullParaInserir(Agencia agencia) {
-        Boolean agenciaNull = true;
+            Boolean agenciaNull = true;
         Agencia agenciaParaVerificar = agenciaDao.pesquisaObjetoAgenciaPorNumero(agencia.getNumero());
         if (agenciaParaVerificar == null) {
             agenciaNull = true;
@@ -180,6 +189,58 @@ public class ServiceAgencia {
             target.add(feedbackPanel);
         }
 
+    }
+
+
+    public Mensagem lerArqXlsAgencia(File file) {
+        Mensagem mensagem = new Mensagem();
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            POIFSFileSystem fileSystem = new POIFSFileSystem(buf);
+            HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
+            HSSFSheet sheet = workbook.getSheetAt(0);
+            // Capturando as linhas
+            Iterator linhas = sheet.rowIterator();
+             while (linhas.hasNext()) {
+                HSSFRow linha = (HSSFRow) linhas.next();
+                Iterator celulas = linha.cellIterator();
+
+                Agencia agencia = new Agencia();
+
+                while (celulas.hasNext()) {
+                    HSSFCell celula = (HSSFCell) celulas.next();
+                    int z = celula.getColumnIndex();
+                    if(!celula.toString().equals("")) {
+                        switch (z) {
+                            case 0:
+                                agencia.setUF(celula.toString());
+                            case 1:
+                                agencia.setCidade(celula.toString());
+                            case 2:
+                                agencia.setNumero(celula.toString());
+                        }
+                        inserir(agencia);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            mensagem.adcionarMensagemNaLista("Erro: na hora de abrir arquivo no formato XLS");
+        }
+        return mensagem;
+    }
+
+    public void executarAoClicarNoImportar(File file, FeedbackPanel feedbackPanel, FeedbackPanel feedbackPanelSuccess, AjaxRequestTarget target){
+        Mensagem mensagem = lerArqXlsAgencia(file);
+        if(mensagem.getListaVazia()){
+            feedbackPanelSuccess.success("A importação obteve êxito");
+            target.add(feedbackPanelSuccess);
+        }else{
+            List<String> listaDeMensagens = mensagem.getListaDeMensagens();
+            for(String mensagemDaLista: listaDeMensagens){
+                feedbackPanel.error(mensagemDaLista);
+                target.add(feedbackPanel);
+            }
+        }
     }
 
 

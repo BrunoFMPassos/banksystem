@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <title>Teste Excel</title>
+</head>
+<body>
+<wicket:extend>
+    <div style="border: solid 1px #c5c5c5; border-radius: 5px; padding: 3%;"
+            class="container" onload="document.getElementById('alertaSuccess').style.display='none'; document.getElementById('alerta').style.display='none';" >
+        <label class="titulo">Agência</label>
+        <form wicket:id="uploadForm" onclick="document.getElementById('alertaSuccess').style.display='none'; document.getElementById('alerta').style.display='none';">
+            <div wicket:id="feedback" id="alerta" class="alert alert-danger"/>
+            <div wicket:id="feedbacksuccess" id="alertaSuccess" class="alert alert-success"/>
+            <div class="container">
+            <p>
+                <input type="file" wicket:id="uploadField"/> <br/>
+            </p>
+            <input class="btn-blue" type="submit" wicket:id="importar" value="Upload" />
+            </div>
+        </form>
+    </div>
+</wicket:extend>
+</body>
+</html>

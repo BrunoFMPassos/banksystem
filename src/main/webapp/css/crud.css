@@ -140,6 +140,13 @@ td{
     padding: 0%;
 }
 
+#alertaSuccess{
+    position:absolute;
+    z-index:100;
+    margin: 2%;
+    padding: 0%;
+}
+
 .barra-navegacao a{
     color: green;
 }

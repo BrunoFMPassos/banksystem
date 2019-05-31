@@ -198,7 +198,7 @@ public class ServiceOperacoes {
                 primeiraMovimentacao = false;
             }
         }
-        if (primeiraMovimentacao == true) {
+        if (primeiraMovimentacao) {
             Movimentacao primeiraMovimentacaoRealizada = new Movimentacao();
             Double tarifaDaConta = Double.parseDouble(conta.getTipoDeConta().getTarifa());
             valor = valor - tarifaDaConta;

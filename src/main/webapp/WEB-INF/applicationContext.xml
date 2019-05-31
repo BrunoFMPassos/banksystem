@@ -172,9 +172,5 @@
     <bean id="perfilService" class="com.mycompany.control.ServicePerfil">
     </bean>
 
-    <bean id="importarAgenciaService" class="com.mycompany.control.ServiceImportAgencia">
-        <property name="genericDao" ref="genericDao"/>
-    </bean>
-
 
 </beans>
